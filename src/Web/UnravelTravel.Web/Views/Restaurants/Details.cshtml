@@ -1,0 +1,17 @@
+﻿@model UnravelTravel.Services.Data.Models.Restaurants.RestaurantDetailsViewModel
+@{
+    this.ViewData["Title"] = "Destination details";
+}
+<h1 class="text-center">@Model.Name</h1>
+<div class="container">
+    <ul>
+        <li class="text-center">@Model.DestinationName</li>
+        <li class="text-center">@Model.Type</li>
+        <li class="text-center">@Model.Seats</li>
+    </ul>
+    <iframe class="w-100"
+            height="450"
+            src="https://maps.google.com/maps?q=@Model.Address&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            style="border: 0"
+            allowfullscreen></iframe>
+</div>

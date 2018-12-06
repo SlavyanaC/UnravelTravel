@@ -115,8 +115,6 @@
         [Authorize]
         public IActionResult Delete(int id)
         {
-            this.ViewData["countries"] = this.SelectAllCounties();
-
             var destinationToDelete = this.destinationsService.GetViewModelAsync<DestinationEditViewModel>(id)
                 .GetAwaiter()
                 .GetResult();
