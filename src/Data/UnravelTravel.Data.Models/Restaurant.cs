@@ -17,6 +17,12 @@
 
         public string Name { get; set; }
 
+        public string ImageUrl { get; set; }
+
+        public string Address { get; set; }
+
+        public int Seats { get; set; }
+
         public RestaurantType Type { get; set; }
 
         public int DestinationId { get; set; }

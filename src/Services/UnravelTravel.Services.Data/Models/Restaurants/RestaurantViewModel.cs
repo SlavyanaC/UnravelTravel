@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace UnravelTravel.Services.Data.Models.Restaurants
+﻿namespace UnravelTravel.Services.Data.Models.Restaurants
 {
     using UnravelTravel.Common.Mapping;
     using UnravelTravel.Data.Models;
@@ -12,6 +10,12 @@ namespace UnravelTravel.Services.Data.Models.Restaurants
         public string Name { get; set; }
 
         public string Type { get; set; }
+
+        public string ImageUrl { get; set; }
+
+        public string Address { get; set; }
+
+        public int Seats { get; set; }
 
         public int DestinationId { get; set; }
 
