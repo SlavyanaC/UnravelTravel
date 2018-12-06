@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class DestinationCreateInputModel
+    public class DestinationCreateInputModel 
     {
         [Required]
         [RegularExpression("^[A-Z]\\D+[a-z]$")]

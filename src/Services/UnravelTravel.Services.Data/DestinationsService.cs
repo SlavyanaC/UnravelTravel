@@ -21,8 +21,23 @@
             this.countriesRepository = countriesRepository;
         }
 
-        public async Task<int> CreateAsync(string name, int countryId, string imageUrl, string information)
+        public async Task<DestinationViewModel[]> GetAllDestinationsAsync()
         {
+            var destinations = await this.destinationsRepository
+                .All()
+                .To<DestinationViewModel>()
+                .ToArrayAsync();
+
+            return destinations;
+        }
+
+        public async Task<int> CreateAsync(params object[] parameters)
+        {
+            var name = parameters[0].ToString();
+            var countryId = int.Parse(parameters[1].ToString());
+            var imageUrl = parameters[2].ToString();
+            var information = parameters[3].ToString();
+
             var destination = new Destination
             {
                 Name = name,
@@ -37,45 +52,24 @@
             return destination.Id;
         }
 
-        public async Task<DestinationDetailsViewModel> GetDestinationDetailsAsync(int id)
+        public async Task<TViewModel> GetViewModelAsync<TViewModel>(int id)
         {
             var destination = await this.destinationsRepository
                 .All()
                 .Where(d => d.Id == id)
-                .To<DestinationDetailsViewModel>()
+                .To<TViewModel>()
                 .FirstOrDefaultAsync();
 
             return destination;
         }
 
-        public async Task<AllDestinationsViewModel> GetAllDestinationsAsync()
+        public async Task EditAsync(int id, params object[] parameters)
         {
-            var destinations = await this.destinationsRepository
-                .All()
-                .To<DestinationViewModel>()
-                .ToListAsync();
+            var name = parameters[0].ToString();
+            var countryId = int.Parse(parameters[1].ToString());
+            var imageUrl = parameters[2].ToString();
+            var information = parameters[3].ToString();
 
-            var allDestinations = new AllDestinationsViewModel
-            {
-                Destination = destinations,
-            };
-
-            return allDestinations;
-        }
-
-        public async Task<DestinationEditViewModel> GetDestinationToEditAsync(int id)
-        {
-            var destination = await this.destinationsRepository
-                .All()
-                .Where(d => d.Id == id)
-                .To<DestinationEditViewModel>()
-                .FirstOrDefaultAsync();
-
-            return destination;
-        }
-
-        public async Task EditDestinationAsync(int id, string name, int countryId, string imageUrl, string information)
-        {
             var destination = this.destinationsRepository.All().FirstOrDefault(d => d.Id == id);
             var country = this.countriesRepository.All().FirstOrDefault(c => c.Id == countryId);
 
@@ -88,7 +82,7 @@
             await this.destinationsRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteDestination(int id)
+        public async Task DeleteAsync(int id)
         {
             var destination = this.destinationsRepository.All().FirstOrDefault(d => d.Id == id);
 
