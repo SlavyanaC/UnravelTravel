@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace UnravelTravel.Web.Controllers
+﻿namespace UnravelTravel.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+
     public class RestaurantsController : BaseController
     {
         public IActionResult All()
