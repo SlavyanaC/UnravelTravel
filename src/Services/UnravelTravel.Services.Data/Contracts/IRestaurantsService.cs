@@ -1,14 +1,11 @@
 ﻿namespace UnravelTravel.Services.Data.Contracts
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
 
     using UnravelTravel.Services.Data.Models.Restaurants;
 
-    public interface IRestaurantsService
+    public interface IRestaurantsService : ICrudDataService
     {
-        Task<AllRestaurantsViewModel> GetAllRestaurantsAsync();
+        Task<RestaurantViewModel[]> GetAllRestaurantsAsync();
     }
 }

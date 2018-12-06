@@ -4,18 +4,8 @@
 
     using UnravelTravel.Services.Data.Models.Destinations;
 
-    public interface IDestinationsService
+    public interface IDestinationsService : ICrudDataService
     {
-        Task<int> CreateAsync(string name, int countryId, string imageUrl, string information);
-
-        Task<DestinationDetailsViewModel> GetDestinationDetailsAsync(int id);
-
-        Task<AllDestinationsViewModel> GetAllDestinationsAsync();
-
-        Task<DestinationEditViewModel> GetDestinationToEditAsync(int id);
-
-        Task EditDestinationAsync(int id, string name, int countryId, string imageUrl, string information);
-
-        Task DeleteDestination(int id);
+        Task<DestinationViewModel[]> GetAllDestinationsAsync();
     }
 }
