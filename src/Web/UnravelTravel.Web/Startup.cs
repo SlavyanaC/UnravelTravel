@@ -93,6 +93,7 @@
 
             services.AddScoped<IDestinationsService, DestinationsService>();
             services.AddScoped<ICountriesService, CountriesService>();
+            services.AddScoped<IRestaurantsService, RestaurantsService>();
 
             // Identity stores
             services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
