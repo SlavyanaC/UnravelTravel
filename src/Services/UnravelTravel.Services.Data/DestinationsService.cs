@@ -1,9 +1,6 @@
 ﻿namespace UnravelTravel.Services.Data
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
@@ -24,7 +21,6 @@
             this.countriesRepository = countriesRepository;
         }
 
-        // TODO: accept countryId
         public async Task<int> CreateAsync(string name, int countryId, string imageUrl, string information)
         {
             var destination = new Destination
