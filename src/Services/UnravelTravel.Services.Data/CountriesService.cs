@@ -2,7 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
+    using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Common.Mapping;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
@@ -18,13 +20,13 @@
             this.countriesRepository = countriesRepository;
         }
 
-        IEnumerable<CountryViewModel> ICountriesService.GetAll()
+        Task<CountryViewModel[]> ICountriesService.GetAllAsync()
         {
             var countries = this.countriesRepository
                 .All()
                 .OrderBy(c => c.Name)
                 .To<CountryViewModel>()
-                .ToList();
+                .ToArrayAsync();
 
             return countries;
         }

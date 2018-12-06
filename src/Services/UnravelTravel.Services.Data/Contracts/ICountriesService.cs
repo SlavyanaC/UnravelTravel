@@ -1,11 +1,11 @@
 ﻿namespace UnravelTravel.Services.Data.Contracts
 {
-    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using UnravelTravel.Services.Data.Models.Countries;
 
     public interface ICountriesService
     {
-        IEnumerable<CountryViewModel> GetAll();
+        Task<CountryViewModel[]> GetAllAsync();
     }
 }
