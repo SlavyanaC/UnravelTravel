@@ -24,16 +24,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarColor02">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-            <li>
-                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-            </li>
-            @if (this.User.Identity.IsAuthenticated)
-            {
+            <li class="nav-item active"></li>
                 <li>
-                    <a class="nav-link" asp-controller="Destinations" asp-action="Create">Create destination</a>
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
-            }
+            @await this.Html.PartialAsync("_AdminDropdownPartial")
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search">

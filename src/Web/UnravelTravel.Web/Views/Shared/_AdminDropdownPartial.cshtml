@@ -1,0 +1,12 @@
+﻿@if (this.User.IsInRole("Administrator"))
+{
+    <div class="dropdown collapse navbar-collapse d-flex" id="navbarNav">
+        <a class="dropdown-toggle nav-link" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Admin Panel
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="nav-link text-success" asp-controller="Destinations" asp-action="Create">Create Destination</a>
+            <a class="nav-link text-success" asp-controller="Restaurants" asp-action="Create">Create Restaurant</a>
+        </div>
+    </div>
+}
