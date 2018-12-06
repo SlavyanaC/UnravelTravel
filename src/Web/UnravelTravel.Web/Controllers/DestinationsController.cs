@@ -1,5 +1,6 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using Microsoft.AspNetCore.Authorization;
@@ -24,13 +25,7 @@
         [Authorize]
         public IActionResult Create()
         {
-            this.ViewData["Countries"] = this.countriesService.GetAll()
-                .Select(x => new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Name,
-                });
-
+            this.ViewData["Countries"] = this.SelectAllCounties();
             return this.View();
         }
 
@@ -52,10 +47,7 @@
                                 .GetAwaiter()
                                 .GetResult();
 
-            return this.Redirect("/");
-
-            // TODO: Find out why it doesn't work
-            // return this.RedirectToAction(nameof(this.Details), destinationId);
+            return this.RedirectToAction(nameof(this.Details), new { id =destinationId});
         }
 
         public IActionResult Details(int id)
@@ -87,12 +79,7 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
-            this.ViewData["countries"] = this.countriesService.GetAll()
-                .Select(x => new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Name,
-                });
+            this.ViewData["countries"] = this.SelectAllCounties();
 
             var destinationToEdit = this.destinationsService.GetDestinationToEditAsync(id)
                 .GetAwaiter()
@@ -124,15 +111,11 @@
             return this.RedirectToAction(nameof(this.All));
         }
 
+        // TODO: Move to admin area
         [Authorize]
         public IActionResult Delete(int id)
         {
-            this.ViewData["countries"] = this.countriesService.GetAll()
-                .Select(x => new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Name,
-                });
+            this.ViewData["countries"] = this.SelectAllCounties();
 
             var destinationToDelete = this.destinationsService.GetDestinationToEditAsync(id)
                 .GetAwaiter()
@@ -153,6 +136,18 @@
             var id = destinationEditViewModel.Id;
             this.destinationsService.DeleteDestination(id).GetAwaiter().GetResult();
             return this.RedirectToAction(nameof(this.All));
+        }
+
+        private IEnumerable<SelectListItem> SelectAllCounties()
+        {
+            return this.countriesService.GetAllAsync()
+                .GetAwaiter()
+                .GetResult()
+                .Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                });
         }
     }
 }
