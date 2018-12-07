@@ -1,0 +1,13 @@
+﻿@model UnravelTravel.Services.Data.Models.Activities.ActivityDetailsViewModel
+@{
+    this.ViewData["Title"] = "Destination details";
+}
+
+<h1 class="text-center">@Model.Name</h1>
+<div class="container">
+    <ul>
+        <li class="text-center">@Model.LocationName</li>
+        <li class="text-center">@Model.Date</li>
+        <li class="text-center">@Model.Type</li>
+    </ul>
+</div>

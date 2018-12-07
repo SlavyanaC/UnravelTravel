@@ -21,6 +21,19 @@
             this.countriesService = countriesService;
         }
 
+        public IActionResult All()
+        {
+            var destinations = this.destinationsService.GetAllDestinationsAsync()
+                .GetAwaiter()
+                .GetResult();
+            if (destinations == null)
+            {
+                return this.Redirect("/");
+            }
+
+            return this.View(destinations);
+        }
+
         // TODO: Move to admin area
         [Authorize]
         public IActionResult Create()
@@ -63,19 +76,7 @@
             return this.View(destination);
         }
 
-        public IActionResult All()
-        {
-            var destinations = this.destinationsService.GetAllDestinationsAsync()
-                .GetAwaiter()
-                .GetResult();
-            if (destinations == null)
-            {
-                return this.Redirect("/");
-            }
-
-            return this.View(destinations);
-        }
-
+        // TODO: Move to admin area
         [Authorize]
         public IActionResult Edit(int id)
         {
@@ -97,6 +98,11 @@
         [HttpPost]
         public IActionResult Edit(DestinationEditViewModel destinationEditViewModel)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(destinationEditViewModel);
+            }
+
             var id = destinationEditViewModel.Id;
 
             this.destinationsService.EditAsync(
