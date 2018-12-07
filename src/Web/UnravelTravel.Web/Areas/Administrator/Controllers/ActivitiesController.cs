@@ -1,6 +1,10 @@
 ﻿namespace UnravelTravel.Web.Areas.Administrator.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Models.Activities;
     using UnravelTravel.Web.Areas.Administrator.InputModels.Activities;
@@ -8,13 +12,19 @@
     public class ActivitiesController : AdministratorController
     {
         private readonly IActivitiesService activitiesService;
+        private readonly ILocationsService locationsService;
 
-        public ActivitiesController(IActivitiesService activitiesService)
+        public ActivitiesController(IActivitiesService activitiesService, ILocationsService locationsService)
         {
             this.activitiesService = activitiesService;
+            this.locationsService = locationsService;
         }
 
-        public IActionResult Create() => this.View();
+        public IActionResult Create()
+        {
+            this.ViewData["Locations"] = this.SelectAllLocations();
+            return this.View();
+        }
 
         [HttpPost]
         public IActionResult Create(ActivityCreateInputModel createInputModel)
@@ -32,6 +42,7 @@
 
         public IActionResult Edit(int id)
         {
+            this.ViewData["Locations"] = this.SelectAllLocations();
             var activityToEdit = this.activitiesService.GetViewModelAsync<ActivityToEditViewModel>(id)
                 .GetAwaiter()
                 .GetResult();
@@ -86,6 +97,18 @@
                 .GetAwaiter()
                 .GetResult();
             return this.RedirectToAction("All", "Activities", new { area = "" });
+        }
+
+        private IEnumerable<SelectListItem> SelectAllLocations()
+        {
+            return this.locationsService.GetAllLocationsAsync()
+                .GetAwaiter()
+                .GetResult()
+                .Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name,
+                });
         }
     }
 }
