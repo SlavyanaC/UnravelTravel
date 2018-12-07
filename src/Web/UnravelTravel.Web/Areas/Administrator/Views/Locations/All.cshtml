@@ -1,0 +1,26 @@
+﻿@model IEnumerable<UnravelTravel.Services.Data.Models.Locations.LocationViewModel>
+
+@{
+    ViewData["Title"] = "All Locations";
+}
+
+<div class="container-fluid text-center">
+    <h1>All locations</h1>
+</div>
+<div class="card-deck container-fluid">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@item.Name</h5>
+                    <div class="card-body">
+                        <p>@item.Address</p>
+                        <p>@item.Type</p>
+                        <p>@item.DestinationName</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
