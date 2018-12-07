@@ -1,4 +1,4 @@
-﻿namespace UnravelTravel.Web.InputModels.Restaurants
+﻿namespace UnravelTravel.Web.Areas.Administrator.InputModels.Restaurants
 {
     using System.ComponentModel.DataAnnotations;
 

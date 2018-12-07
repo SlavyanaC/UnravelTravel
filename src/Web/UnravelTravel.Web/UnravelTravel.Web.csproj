@@ -34,46 +34,55 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Shared\_AdminDropdownPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Administrator\Views\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Administrator\Views\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Activities\All.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Activities\Delete.cshtml">
+    <Content Update="Areas\Administrator\Views\Activities\Delete.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Activities\Edit.cshtml">
+    <Content Update="Areas\Administrator\Views\Activities\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Activities\Create.cshtml">
+    <Content Update="Areas\Administrator\Views\Activities\Create.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Activities\Details.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Destinations\Delete.cshtml">
+    <Content Update="Areas\Administrator\Views\Destinations\Delete.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Destinations\Edit.cshtml">
+    <Content Update="Areas\Administrator\Views\Destinations\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Destinations\Details.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Destinations\Create.cshtml">
+    <Content Update="Areas\Administrator\Views\Destinations\Create.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Restaurants\All.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Restaurants\Create.cshtml">
+    <Content Update="Areas\Administrator\Views\Restaurants\Create.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Restaurants\Delete.cshtml">
+    <Content Update="Areas\Administrator\Views\Restaurants\Delete.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Restaurants\Details.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Restaurants\Edit.cshtml">
+    <Content Update="Areas\Administrator\Views\Restaurants\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

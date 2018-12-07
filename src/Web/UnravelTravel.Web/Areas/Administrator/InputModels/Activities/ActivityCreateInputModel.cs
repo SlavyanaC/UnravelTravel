@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace UnravelTravel.Web.InputModels.Activities
+﻿namespace UnravelTravel.Web.Areas.Administrator.InputModels.Activities
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+    using System.ComponentModel.DataAnnotations;
 
     public class ActivityCreateInputModel
     {

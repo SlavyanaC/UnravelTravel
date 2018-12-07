@@ -18,9 +18,6 @@
         [Display(Name = "Country")]
         public int CountryId { get; set; }
 
-        [Required]
-        [RegularExpression("^[A-Za-z]+$", ErrorMessage = "Destination name cannot contain digits")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Country name must be between 3 and 50 symbols")]
         public string CountryName { get; set; }
 
         [Required]

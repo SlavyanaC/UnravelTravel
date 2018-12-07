@@ -20,8 +20,8 @@
                     @if (this.User.IsInRole("Administrator"))
                     {
                         <div calss="row">
-                            <a class=" btn btn-secondary" asp-controller="Activities" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                            <a class=" btn btn-secondary" asp-controller="Activities" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a class=" btn btn-secondary" asp-area="Administrator" asp-controller="Activities" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class=" btn btn-secondary" asp-area="Administrator" asp-controller="Activities" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </div>
                     }
                 </div>

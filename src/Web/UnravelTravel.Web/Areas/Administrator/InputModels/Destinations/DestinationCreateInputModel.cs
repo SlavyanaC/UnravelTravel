@@ -1,8 +1,8 @@
-﻿namespace UnravelTravel.Web.InputModels.Destinations
+﻿namespace UnravelTravel.Web.Areas.Administrator.InputModels.Destinations
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class DestinationCreateInputModel 
+    public class DestinationCreateInputModel
     {
         [Required]
         [RegularExpression("^[A-Z]\\D+[a-z]$")]

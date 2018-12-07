@@ -1,36 +1,35 @@
-﻿@model UnravelTravel.Web.InputModels.Destinations.DestinationCreateInputModel
+﻿@model UnravelTravel.Services.Data.Models.Destinations.DestinationEditViewModel
 @{
-    this.ViewData["Title"] = "CreateAsync Destination";
-    var countries = this.ViewData["Countries"] as IEnumerable<SelectListItem>;
+    this.ViewData["Title"] = "Edit Destination";
+    var countries = this.ViewData["countries"] as IEnumerable<SelectListItem>;
 }
-
 <div class="row justify-content-center">
-    <form asp-controller="Destinations" asp-action="Create" method="post" class="text-center col-md-6">
-        <h4>Create new destination</h4>
+    <form asp-area="Administrator" asp-controller="Destinations" asp-action="Edit" method="post" class="text-center col-md-6">
+        <h4>Edit destination</h4>
         <hr />
         <div class="form-group">
             <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control col-md-12" />
+            <input asp-for="Name" class="form-control col-md-12" value="@Model.Name" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="CountryId"></label>
             <select asp-for="CountryId" asp-items="countries" class="form-control col-md-12">
-                <option selected="" disabled="">--Select country--</option>
+                <option selected="">@Model.CountryName</option>
             </select>
             <span asp-validation-for="CountryId" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="ImageUrl"></label>
-            <input asp-for="ImageUrl" class="form-control col-md-12" />
+            <input asp-for="ImageUrl" class="form-control col-md-12" value="@Model.ImageUrl" />
             <span asp-validation-for="ImageUrl" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Information"></label>
-            <textarea asp-for="Information" class="form-control col-md-12" rows="7"></textarea>
+            <textarea class="form-control col-md-12" rows="7" asp-for="Information" value="@Model.Information"></textarea>
             <span asp-validation-for="Information" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-default">Create destination</button>
+        <button type="submit" class="btn btn-default">Edit destination</button>
     </form>
 </div>
 
