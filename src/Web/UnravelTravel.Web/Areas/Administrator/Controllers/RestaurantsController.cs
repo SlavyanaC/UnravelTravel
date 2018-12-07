@@ -22,7 +22,7 @@
 
         public IActionResult Create()
         {
-            this.ViewData["Restaurants"] = this.SelectAllDestinations();
+            this.ViewData["Destinations"] = this.SelectAllDestinations();
             return this.View();
         }
 
@@ -49,7 +49,7 @@
 
         public IActionResult Edit(int id)
         {
-            this.ViewData["Restaurants"] = this.SelectAllDestinations();
+            this.ViewData["Destinations"] = this.SelectAllDestinations();
 
             var restaurantToEdit = this.restaurantsService.GetViewModelAsync<RestaurantEditViewModel>(id)
                 .GetAwaiter()

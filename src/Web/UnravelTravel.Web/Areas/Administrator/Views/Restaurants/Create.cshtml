@@ -2,7 +2,7 @@
 @model UnravelTravel.Web.Areas.Administrator.InputModels.Restaurants.RestaurantCreateInputModel
 @{
     this.ViewData["Title"] = "Create Restaurant";
-    var countries = this.ViewData["Restaurants"] as IEnumerable<SelectListItem>;
+    var destinations = this.ViewData["Destinations"] as IEnumerable<SelectListItem>;
 }
 
 <div class="row justify-content-center">
@@ -16,7 +16,7 @@
         </div>
         <div class="form-group">
             <label asp-for="DestinationId"></label>
-            <select asp-for="DestinationId" asp-items="countries" class="form-control col-md-12">
+            <select asp-for="DestinationId" asp-items="destinations" class="form-control col-md-12">
                 <option selected="" disabled="">--Select destination--</option>
             </select>
             <span asp-validation-for="DestinationId" class="text-danger"></span>
