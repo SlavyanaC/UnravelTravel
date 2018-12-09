@@ -1,0 +1,39 @@
+﻿@model UnravelTravel.Services.Data.Models.Tickets.TicketDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+       <dt>
+            @Html.DisplayNameFor(model => model.UserFullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserFullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ActivityName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ActivityDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityLocationName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ActivityLocationName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-area="" asp-controller="Tickets" asp-action="All">Back to All</a>
+</div>
