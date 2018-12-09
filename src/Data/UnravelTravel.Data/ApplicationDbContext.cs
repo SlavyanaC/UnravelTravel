@@ -65,8 +65,8 @@
             builder.Entity<Reservation>()
                 .HasKey(e => new { e.UserId, e.RestaurantId });
 
-            builder.Entity<Ticket>()
-                .HasKey(e => new { e.UserId, e.ActivityId });
+            //builder.Entity<Ticket>()
+            //    .HasKey(e => new { e.UserId, e.ActivityId });
 
             // Needed for Identity models configuration
             base.OnModelCreating(builder);

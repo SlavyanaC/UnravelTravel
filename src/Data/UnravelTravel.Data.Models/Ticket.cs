@@ -1,9 +1,10 @@
 ﻿namespace UnravelTravel.Data.Models
 {
     using System;
+
     using UnravelTravel.Data.Common.Models;
 
-    public class Ticket : IDeletableEntity
+    public class Ticket : BaseModel<int>, IDeletableEntity
     {
         public string UserId { get; set; }
 
