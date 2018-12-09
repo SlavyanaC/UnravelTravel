@@ -1,4 +1,4 @@
-﻿namespace UnravelTravel.Common.Mapping
+﻿namespace UnravelTravel.Services.Mapping
 {
     using System;
     using System.Linq;

@@ -1,7 +1,7 @@
 ﻿namespace UnravelTravel.Services.Data.Models.Locations
 {
-    using UnravelTravel.Common.Mapping;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Services.Mapping;
 
     public class LocationViewModel : IMapFrom<Location>
     {

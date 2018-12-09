@@ -1,10 +1,11 @@
-﻿namespace UnravelTravel.Services.Data
+﻿using UnravelTravel.Services.Mapping;
+
+namespace UnravelTravel.Services.Data
 {
     using System;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
-    using UnravelTravel.Common.Mapping;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;

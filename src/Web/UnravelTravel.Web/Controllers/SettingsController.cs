@@ -5,10 +5,9 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
-
-    using UnravelTravel.Common.Mapping;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Services.Mapping;
     using UnravelTravel.Web.ViewModels.Settings;
 
     public class SettingsController : BaseController

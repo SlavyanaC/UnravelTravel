@@ -1,7 +1,7 @@
 ﻿namespace UnravelTravel.Web.ViewModels.Settings
 {
-    using UnravelTravel.Common.Mapping;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Services.Mapping;
 
     public class SettingViewModel : IMapFrom<Setting>
     {

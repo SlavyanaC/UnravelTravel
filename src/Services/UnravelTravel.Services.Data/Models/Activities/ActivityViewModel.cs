@@ -2,8 +2,8 @@
 {
     using System;
 
-    using UnravelTravel.Common.Mapping;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Services.Mapping;
 
     public class ActivityViewModel : IMapFrom<Activity>
     {

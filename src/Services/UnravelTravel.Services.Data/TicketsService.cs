@@ -1,18 +1,14 @@
-﻿using System.Linq;
-using UnravelTravel.Common.Mapping;
-using UnravelTravel.Services.Data.Models.Tickets;
-
-namespace UnravelTravel.Services.Data
+﻿namespace UnravelTravel.Services.Data
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Services.Data.Models.Tickets;
+    using UnravelTravel.Services.Mapping;
 
     public class TicketsService : ITicketsService
     {

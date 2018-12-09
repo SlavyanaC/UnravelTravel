@@ -12,7 +12,6 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using UnravelTravel.Common.Mapping;
     using UnravelTravel.Data;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
@@ -20,6 +19,7 @@
     using UnravelTravel.Data.Seeding;
     using UnravelTravel.Services.Data;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Services.Mapping;
     using UnravelTravel.Services.Messaging;
     using UnravelTravel.Web.InputModels.Account;
 

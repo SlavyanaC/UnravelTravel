@@ -3,8 +3,8 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using UnravelTravel.Common.Mapping;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Services.Mapping;
 
     public class ActivityToEditViewModel : IMapFrom<Activity>
     {

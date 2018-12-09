@@ -1,7 +1,7 @@
 ﻿namespace UnravelTravel.Services.Data.Models.Restaurants
 {
-    using UnravelTravel.Common.Mapping;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Services.Mapping;
 
     public class RestaurantDetailsViewModel : IMapFrom<Restaurant>
     {

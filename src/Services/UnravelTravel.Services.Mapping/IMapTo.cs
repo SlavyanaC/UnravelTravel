@@ -1,4 +1,4 @@
-﻿namespace UnravelTravel.Common.Mapping
+﻿namespace UnravelTravel.Services.Mapping
 {
     // ReSharper disable once UnusedTypeParameter
     public interface IMapTo<T>

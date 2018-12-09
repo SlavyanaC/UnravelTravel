@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnravelTravel.Services.Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandBox", "Tests\SandBox\SandBox.csproj", "{089E5B85-429B-4EAB-9F71-DEC3D753C94E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnravelTravel.Services.Mapping", "Services\UnravelTravel.Services.Mapping\UnravelTravel.Services.Mapping.csproj", "{8D42DC21-7B11-4962-8CD6-FF9734E00217}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{089E5B85-429B-4EAB-9F71-DEC3D753C94E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{089E5B85-429B-4EAB-9F71-DEC3D753C94E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{089E5B85-429B-4EAB-9F71-DEC3D753C94E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D42DC21-7B11-4962-8CD6-FF9734E00217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D42DC21-7B11-4962-8CD6-FF9734E00217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D42DC21-7B11-4962-8CD6-FF9734E00217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D42DC21-7B11-4962-8CD6-FF9734E00217}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{7A7A7986-1F5B-4EBD-9B17-8B41F8FABA58} = {E389DEB6-5F90-444B-A054-12A10D39C76F}
 		{4D39C126-3FB5-4B26-B08C-1BF48EFFA23E} = {516E002B-9E6E-4456-B7F6-EAA353966DE6}
 		{089E5B85-429B-4EAB-9F71-DEC3D753C94E} = {7A731632-6714-44E2-A9E4-069EBA9E666C}
+		{8D42DC21-7B11-4962-8CD6-FF9734E00217} = {516E002B-9E6E-4456-B7F6-EAA353966DE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3898FC54-1A39-4671-8B97-5DFDF1E203DA}
