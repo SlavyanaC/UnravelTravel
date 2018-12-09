@@ -38,27 +38,26 @@
             var name = parameters[0].ToString();
             var date = DateTime.Parse(parameters[1].ToString());
             var typeString = parameters[2].ToString();
+            var locationId = int.Parse(parameters[3].ToString());
 
             Enum.TryParse(typeString, true, out ActivityType typeEnum);
 
-            var activity = new Activity
-            {
-                Name = name,
-                Date = date,
-                Type = typeEnum,
-            };
-
-            var locationString = parameters[3].ToString();
             var location = await this.locationsRepository
                 .All()
-                .FirstOrDefaultAsync(l => l.Name == locationString);
+                .FirstOrDefaultAsync(l => l.Id == locationId);
 
             if (location == null)
             {
                 // TODO: Some logic here;
             }
 
-            activity.Location = location;
+            var activity = new Activity
+            {
+                Name = name,
+                Date = date,
+                Type = typeEnum,
+                Location = location,
+            };
 
             this.activitiesRepository.Add(activity);
             await this.activitiesRepository.SaveChangesAsync();
@@ -83,10 +82,9 @@
             var typeString = parameters[1].ToString();
             var date = DateTime.Parse(parameters[2].ToString());
             var locationId = int.Parse(parameters[3].ToString());
-            var locationName = parameters[4].ToString();
 
             var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == id);
-            var location = await this.locationsRepository.All().FirstOrDefaultAsync(l => l.Id == locationId || l.Name == locationName);
+            var location = await this.locationsRepository.All().FirstOrDefaultAsync(l => l.Id == locationId);
 
             Enum.TryParse(typeString, true, out ActivityType typeEnum);
 

@@ -33,7 +33,7 @@
                 createInputModel.Name,
                 createInputModel.Date,
                 createInputModel.Type,
-                createInputModel.Location)
+                createInputModel.LocationId)
                 .GetAwaiter()
                 .GetResult();
 
@@ -68,8 +68,7 @@
                 activityToEditViewModel.Name,
                 activityToEditViewModel.Type,
                 activityToEditViewModel.Date,
-                activityToEditViewModel.LocationId,
-                activityToEditViewModel.LocationName)
+                activityToEditViewModel.LocationId)
                 .GetAwaiter()
                 .GetResult();
 

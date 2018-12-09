@@ -22,9 +22,9 @@
         [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
 
+        [Required]
         public int LocationId { get; set; }
 
-        [Required]
         public string LocationName { get; set; }
     }
 }
