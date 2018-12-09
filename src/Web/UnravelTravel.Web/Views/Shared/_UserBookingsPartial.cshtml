@@ -1,0 +1,5 @@
+﻿@if (this.User.IsInRole("User"))
+{
+        <li><a class="nav-link" asp-area="" asp-controller="Tickets" asp-action="All">My Tickets</a></li>
+        <li><a class="nav-link" asp-area="" asp-controller="Reservations" asp-action="All">My Reservations</a></li>
+}
