@@ -9,6 +9,10 @@
         <li class="text-center">@Model.Type</li>
         <li class="text-center">@Model.Seats</li>
     </ul>
+    <div class="text-center">
+        <a class="btn btn-secondary" asp-controller="Reservations" asp-action="Book" asp-route-id="@Model.Id">Book restaurant</a>
+    </div>
+    <hr/>
     <iframe class="w-100"
             height="450"
             src="https://maps.google.com/maps?q=@Model.Address&t=&z=13&ie=UTF8&iwloc=&output=embed"
