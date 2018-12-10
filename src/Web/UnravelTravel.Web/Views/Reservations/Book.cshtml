@@ -1,0 +1,26 @@
+﻿@model UnravelTravel.Web.InputModels.Reservations.ReservationCreateInputModel
+@{
+    this.ViewData["Title"] = "Book Table";
+}
+
+<div class="row justify-content-center">
+    <form asp-area="" asp-controller="Reservations" asp-action="Book" method="post" class="text-center col-md-6">
+        <h4>Book your table</h4>
+        <hr />
+        <div class="form-group">
+            <label asp-for="Date"></label>
+            <input asp-for="Date" class="form-control col-md-12" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PeopleCount"></label>
+            <input asp-for="PeopleCount" class="form-control col-md-12" />
+            <span asp-validation-for="PeopleCount" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-default">Book table</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
