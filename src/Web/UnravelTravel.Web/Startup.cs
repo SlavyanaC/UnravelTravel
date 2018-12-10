@@ -97,6 +97,7 @@
             services.AddScoped<IActivitiesService, ActivitiesService>();
             services.AddScoped<ILocationsService, LocationsService>();
             services.AddScoped<ITicketsService, TicketsService>();
+            services.AddScoped<IReservationsService, ReservationsService>();
 
             // Identity stores
             services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
