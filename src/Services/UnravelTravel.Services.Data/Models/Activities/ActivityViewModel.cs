@@ -1,8 +1,10 @@
 ﻿namespace UnravelTravel.Services.Data.Models.Activities
 {
     using System;
+    using System.Collections.Generic;
 
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Services.Data.Models.Tickets;
     using UnravelTravel.Services.Mapping;
 
     public class ActivityViewModel : IMapFrom<Activity>
@@ -17,6 +19,8 @@
 
         public int LocationId { get; set; }
 
-        public string Location { get; set; }
+        public string LocationName { get; set; }
+
+        public ICollection<TicketDetailsViewModel> Tickets { get; set; }
     }
 }
