@@ -11,9 +11,9 @@
     @foreach (var item in Model)
     {
         <div class="col-md-4">
-            <div class="card">
+            <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
                 <a asp-controller="Destinations" asp-action="Details" asp-route-id="@item.Id">
-                    <img style="height: 250px" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
+                    <img  style="height: 200px; width: 100%;" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
                 </a>
                 <div class="card-body text-center">
                     <h5 class="card-title">@item.Name</h5>
@@ -21,7 +21,7 @@
                     {
                         <div calss="row">
                             <a class=" btn btn-secondary" asp-area="Administrator" asp-controller="Destinations" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                            <a class=" btn btn-secondary"  asp-area="Administrator" asp-controller="Destinations" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a class=" btn btn-secondary" asp-area="Administrator" asp-controller="Destinations" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </div>
                     }
                 </div>
