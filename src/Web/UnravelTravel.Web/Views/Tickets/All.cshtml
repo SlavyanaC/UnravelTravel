@@ -5,7 +5,7 @@
 
 <h2 class="text-center">All Tickets</h2>
 
-<table class="table table-hover">
+<table class="table table-hover t">
     <thead>
         <tr>
             <th>
@@ -17,24 +17,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.ActivityLocationName)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td display-for="@item.ActivityName"></td>
+                <td display-for="@item.ActivityDate"></td>
+                <td display-for="@item.ActivityLocationName"> </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ActivityName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ActivityDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ActivityLocationName)
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    <a asp-area="" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a>
                 </td>
             </tr>
         }
