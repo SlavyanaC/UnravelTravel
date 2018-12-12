@@ -1,10 +1,9 @@
-﻿using UnravelTravel.Services.Data.Models.Reservations;
-
-namespace UnravelTravel.Services.Data.Models.Restaurants
+﻿namespace UnravelTravel.Services.Data.Models.Restaurants
 {
     using System.Collections.Generic;
 
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Services.Data.Models.Reservations;
     using UnravelTravel.Services.Mapping;
 
     public class RestaurantViewModel : IMapFrom<Restaurant>
