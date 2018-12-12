@@ -31,6 +31,7 @@
         {
             var activityId = this.activitiesService.CreateAsync(
                 createInputModel.Name,
+                createInputModel.ImageUrl,
                 createInputModel.Date,
                 createInputModel.Type,
                 createInputModel.LocationId)
@@ -66,8 +67,9 @@
             this.activitiesService.EditAsync(
                 id,
                 activityToEditViewModel.Name,
-                activityToEditViewModel.Type,
+                activityToEditViewModel.ImageUrl,
                 activityToEditViewModel.Date,
+                activityToEditViewModel.Type,
                 activityToEditViewModel.LocationId)
                 .GetAwaiter()
                 .GetResult();

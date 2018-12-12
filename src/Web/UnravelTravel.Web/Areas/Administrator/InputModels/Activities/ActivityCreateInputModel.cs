@@ -13,6 +13,11 @@
         public string Type { get; set; }
 
         [Required]
+        [Display(Name = "Image Url")]
+        [StringLength(400, MinimumLength = 3, ErrorMessage = "ImageUrl name must be between 3 and 400 symbols")]
+        public string ImageUrl { get; set; }
+
+        [Required]
         [Display(Name = "Date and time of the activity")]
         [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
