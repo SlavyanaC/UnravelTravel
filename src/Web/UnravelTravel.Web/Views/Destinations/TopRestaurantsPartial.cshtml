@@ -1,0 +1,41 @@
+﻿@model IEnumerable<UnravelTravel.Services.Data.Models.Restaurants.RestaurantViewModel>
+
+@if (Model.Any())
+{
+    <div class="card-deck container-fluid">
+        @for (var i = 0; i < 3; i++)
+        {
+            var item = Model.ToArray()[i];
+            <div class="col-md-4">
+                <div class="card">
+                    <a asp-controller="Restaurants" asp-action="Details" asp-route-id="@item.Id">
+                        <img style="height: 150px" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
+                    </a>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Name: "@item.Name"</h5>
+                        <h5 class="card-title">Type: "@item.Type"</h5>
+                        <h5 class="card-title">Destination: @item.DestinationName</h5>
+                        @if (this.User.IsInRole("Administrator"))
+                        {
+                            <div calss="row">
+                                <a class=" btn btn-secondary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                <a class=" btn btn-secondary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="btn btn-secondary" asp-area="" asp-controller="Restaurants" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <h6 class="text-center text-center text-info">Total restaurants: @Model.Count()</h6>
+}
+else
+{
+    <p class="text-center">
+        <em class="text-muted">No restaurants in this destination</em>
+    </p>
+}
