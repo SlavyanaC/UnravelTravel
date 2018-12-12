@@ -6,7 +6,7 @@
 <div class="container">
     <p class="text-center  text-info">@Model.Information</p>
     <h4 class="text-center  text-info">Top activities:</h4>
-    @*@await this.Html.PartialAsync("TopActivitiesPartial", @Model.Activities.OrderByDescending(r => r.Tickets.Count()))*@
+    @await this.Html.PartialAsync("TopActivitiesPartial", @Model.Activities.OrderByDescending(r => r.Tickets.Count()))
     <h4 class="text-center  text-info">Total activities: @Model.TotalActivities</h4>
     <h4 class="text-center text-info">Top Restaurants:</h4>
     @await this.Html.PartialAsync("TopRestaurantsPartial", @Model.Restaurants.OrderByDescending(r => r.Reservations.Count()))
