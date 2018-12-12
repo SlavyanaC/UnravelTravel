@@ -2,15 +2,14 @@
 @{
     this.ViewData["Title"] = "Destination details";
 }
-<h1 class="text-center">@Model.Name</h1>
+<h1 class="text-center text-success">@Model.Name</h1>
 <div class="container">
-    <ul>
-        <li class="text-center">@Model.Information</li>
-        <li class="text-center">Destination total activities count</li>
-        <li class="text-center">Destination top activities</li>
-        <li class="text-center">Destination total restaurants count</li>
-        <li class="text-center">Destination top restaurants</li>
-    </ul>
+    <p class="text-center  text-info">@Model.Information</p>
+    <h4 class="text-center  text-info">Top activities:</h4>
+    @*@await this.Html.PartialAsync("TopActivitiesPartial", @Model.Activities.OrderByDescending(r => r.Tickets.Count()))*@
+    <h4 class="text-center  text-info">Total activities: @Model.TotalActivities</h4>
+    <h4 class="text-center text-info">Top Restaurants:</h4>
+    @await this.Html.PartialAsync("TopRestaurantsPartial", @Model.Restaurants.OrderByDescending(r => r.Reservations.Count()))
     <iframe class="w-100"
             height="450"
             src="https://maps.google.com/maps?q=@Model.Name&t=&z=13&ie=UTF8&iwloc=&output=embed"
