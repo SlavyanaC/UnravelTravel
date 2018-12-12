@@ -1,5 +1,9 @@
-﻿namespace UnravelTravel.Services.Data.Models.Restaurants
+﻿using UnravelTravel.Services.Data.Models.Reservations;
+
+namespace UnravelTravel.Services.Data.Models.Restaurants
 {
+    using System.Collections.Generic;
+
     using UnravelTravel.Data.Models;
     using UnravelTravel.Services.Mapping;
 
@@ -20,5 +24,7 @@
         public int DestinationId { get; set; }
 
         public string DestinationName { get; set; }
+
+        public virtual ICollection<ReservationDetailsViewModel> Reservations { get; set; }
     }
 }
