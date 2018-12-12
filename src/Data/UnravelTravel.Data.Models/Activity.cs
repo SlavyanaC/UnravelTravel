@@ -18,6 +18,8 @@
 
         public ActivityType Type { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public DateTime Date { get; set; }
 
         public int LocationId { get; set; }
