@@ -44,6 +44,9 @@
                 .All()
                 .To<TicketDetailsViewModel>()
                 .FirstOrDefaultAsync(t => t.Id == id);
+
+            ticketDetailsViewModel.ActivityDate = ticketDetailsViewModel.ActivityDate.Substring(0, ticketDetailsViewModel.ActivityDate.LastIndexOf(':'));
+
             return ticketDetailsViewModel;
         }
 
@@ -54,6 +57,11 @@
                 .Where(t => t.User.UserName == username)
                 .To<TicketDetailsViewModel>()
                 .ToArrayAsync();
+
+            foreach (var ticket in ticketsViewModel)
+            {
+                ticket.ActivityDate = ticket.ActivityDate.Substring(0, ticket.ActivityDate.LastIndexOf(':'));
+            }
 
             return ticketsViewModel;
         }
