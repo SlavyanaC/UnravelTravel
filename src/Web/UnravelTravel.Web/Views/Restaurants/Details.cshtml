@@ -1,6 +1,6 @@
 ﻿@model UnravelTravel.Services.Data.Models.Restaurants.RestaurantDetailsViewModel
 @{
-    this.ViewData["Title"] = "Destination details";
+    this.ViewData["Title"] = "Restaurant details";
 }
 <h1 class="text-center">@Model.Name</h1>
 <div class="container">
@@ -9,10 +9,18 @@
         <li class="text-center">@Model.Type</li>
         <li class="text-center">@Model.Seats</li>
     </ul>
-    <div class="text-center">
-        <a class="btn btn-secondary" asp-controller="Reservations" asp-action="Book" asp-route-id="@Model.Id">Book restaurant</a>
+    <div class="text-center d-flex justify-content-around">
+        @if (this.User.IsInRole(GlobalConstants.UserRoleName))
+        {
+            <a class="btn btn-secondary" asp-controller="Reservations" asp-action="Book" asp-route-id="@Model.Id">Book restaurant</a>
+        }
+        else if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+        {
+            <a class="btn btn-secondary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Edit" asp-route-id="@Model.Id">Edit activity</a>
+            <a class="btn btn-secondary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Delete" asp-route-id="@Model.Id">Delete activity</a>
+        }
     </div>
-    <hr/>
+    <hr />
     <iframe class="w-100"
             height="450"
             src="https://maps.google.com/maps?q=@Model.MapsAddress&t=&z=13&ie=UTF8&iwloc=&output=embed"
