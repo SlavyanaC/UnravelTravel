@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
+
     public class RestaurantEditViewModel
     {
         public int Id { get; set; }
@@ -11,10 +13,12 @@
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Restaurant name must be between 3 and 50 symbols")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Image Url")]
-        [StringLength(400, MinimumLength = 3, ErrorMessage = "ImageUrl name must be between 3 and 400 symbols")]
+        [Display(Name = "Current image")]
         public string ImageUrl { get; set; }
+
+        [Display(Name = "New Image")]
+        [DataType(DataType.Upload)]
+        public IFormFile NewImage { get; set; }
 
         [Required]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Address must be between 3 and 50 symbols")]

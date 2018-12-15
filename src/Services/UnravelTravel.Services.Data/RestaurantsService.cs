@@ -4,23 +4,28 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using CloudinaryDotNet;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Models.Restaurants;
+    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
     public class RestaurantsService : IRestaurantsService
     {
         private readonly IRepository<Restaurant> restaurantsRepository;
         private readonly IRepository<Destination> destinationsRepository;
+        private readonly Cloudinary cloudinary;
 
-        public RestaurantsService(IRepository<Restaurant> restaurantsRepository, IRepository<Destination> destinationsRepository)
+        public RestaurantsService(IRepository<Restaurant> restaurantsRepository, IRepository<Destination> destinationsRepository, Cloudinary cloudinary)
         {
             this.restaurantsRepository = restaurantsRepository;
             this.destinationsRepository = destinationsRepository;
+            this.cloudinary = cloudinary;
         }
 
         public async Task<RestaurantViewModel[]> GetAllRestaurantsAsync()
@@ -38,11 +43,13 @@
             var name = parameters[0].ToString();
             var address = parameters[1].ToString();
             var destinationId = int.Parse(parameters[2].ToString());
-            var imageUrl = parameters[3].ToString();
+            var image = parameters[3] as IFormFile;
             var typeString = parameters[4].ToString();
             var seats = int.Parse(parameters[5].ToString());
 
             Enum.TryParse(typeString, true, out RestaurantType typeEnum);
+
+            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, image, name);
 
             var restaurant = new Restaurant()
             {
@@ -76,7 +83,7 @@
             var name = parameters[0].ToString();
             var address = parameters[1].ToString();
             var destinationId = int.Parse(parameters[2].ToString());
-            var imageUrl = parameters[3].ToString();
+            var newImage = parameters[3] as IFormFile;
             var seats = int.Parse(parameters[4].ToString());
             var type = parameters[5].ToString();
 
@@ -85,10 +92,15 @@
             var restaurant = this.restaurantsRepository.All().FirstOrDefault(r => r.Id == id);
             var destination = this.destinationsRepository.All().FirstOrDefault(d => d.Id == destinationId);
 
+            if (newImage != null)
+            {
+                var newImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, newImage, name);
+                destination.ImageUrl = newImageUrl;
+            }
+
             restaurant.Name = name;
             restaurant.Address = address;
             restaurant.DestinationId = destinationId;
-            restaurant.ImageUrl = imageUrl;
             restaurant.Seats = seats;
             restaurant.Type = typeEnum;
             restaurant.Destination = destination;

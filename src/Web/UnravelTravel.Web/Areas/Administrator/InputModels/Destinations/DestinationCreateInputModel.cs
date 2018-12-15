@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
+
     public class DestinationCreateInputModel
     {
         [Required]
@@ -14,9 +16,8 @@
         public int CountryId { get; set; }
 
         [Required]
-        [Display(Name="Image Url")]
-        [StringLength(400, MinimumLength = 3, ErrorMessage = "ImageUrl name must be between 3 and 400 symbols")]
-        public string ImageUrl { get; set; }
+        [DataType(DataType.Upload)]
+        public IFormFile Image { get; set; }
 
         [Required]
         [StringLength(550, MinimumLength = 10, ErrorMessage = "Information must be between 10 and 350 symbols")]

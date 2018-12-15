@@ -2,6 +2,7 @@
 {
     using System.Reflection;
 
+    using CloudinaryDotNet;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -19,6 +20,7 @@
     using UnravelTravel.Data.Seeding;
     using UnravelTravel.Services.Data;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
     using UnravelTravel.Services.Messaging;
     using UnravelTravel.Web.InputModels.Account;
@@ -105,6 +107,12 @@
             // Identity stores
             services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
             services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
+
+            // Cloudinary Setup
+            var cloudinaryAccount = new Account(CloudinaryConfig.CloudName, CloudinaryConfig.ApiKey, CloudinaryConfig.ApiSecret);
+            var cloudinary = new Cloudinary(cloudinaryAccount);
+
+            services.AddSingleton(cloudinary);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

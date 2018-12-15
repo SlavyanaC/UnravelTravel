@@ -8,6 +8,7 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Models.Destinations;
+    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Web.Areas.Administrator.InputModels.Destinations;
 
     public class DestinationsController : AdministratorController
@@ -35,10 +36,16 @@
                 return this.View(destinationCreateInputModel);
             }
 
+            var fileType = destinationCreateInputModel.Image.ContentType.Split('/')[1];
+            if (!this.IsImageTypeValid(fileType))
+            {
+                return this.View(destinationCreateInputModel);
+            }
+
             var destinationId = this.destinationsService.CreateAsync(
                 destinationCreateInputModel.Name,
                 destinationCreateInputModel.CountryId,
-                destinationCreateInputModel.ImageUrl,
+                destinationCreateInputModel.Image,
                 destinationCreateInputModel.Information)
                 .GetAwaiter()
                 .GetResult();
@@ -69,13 +76,22 @@
                 return this.View(destinationEditViewModel);
             }
 
+            if (destinationEditViewModel.NewImage != null)
+            {
+                var fileType = destinationEditViewModel.NewImage.ContentType.Split('/')[1];
+                if (!this.IsImageTypeValid(fileType))
+                {
+                    return this.View(destinationEditViewModel);
+                }
+            }
+
             var id = destinationEditViewModel.Id;
 
             this.destinationsService.EditAsync(
                 id,
                 destinationEditViewModel.Name,
                 destinationEditViewModel.CountryId,
-                destinationEditViewModel.ImageUrl,
+                destinationEditViewModel.NewImage,
                 destinationEditViewModel.Information)
                 .GetAwaiter()
                 .GetResult();

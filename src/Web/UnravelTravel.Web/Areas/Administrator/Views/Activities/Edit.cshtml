@@ -6,7 +6,7 @@
 }
 
 <div class="row justify-content-center">
-    <form asp-area="Administrator" asp-controller="Activities" asp-action="Edit" method="post" class="text-center col-md-6">
+    <form enctype="multipart/form-data" asp-area="Administrator" asp-controller="Activities" asp-action="Edit" method="post" class="text-center col-md-6">
         <h4>Edit activity</h4>
         <hr />
         <div class="form-group">
@@ -14,10 +14,14 @@
             <input asp-for="Name" class="form-control col-md-12" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
+        <div form-group>
+            <label asp-for="@Model.ImageUrl"></label>
+            <img style="height: 200px; width: 100%;" class="card-img-top" src="@Model.ImageUrl" alt="Destination image" />
+        </div>
         <div class="form-group">
-            <label asp-for="ImageUrl"></label>
-            <input asp-for="ImageUrl" class="form-control col-md-12" value="@Model.ImageUrl" />
-            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            <p>New image</p>
+            <input type="file" asp-for="NewImage" name="NewImage" />
+            <span asp-validation-for="NewImage" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Date"></label>

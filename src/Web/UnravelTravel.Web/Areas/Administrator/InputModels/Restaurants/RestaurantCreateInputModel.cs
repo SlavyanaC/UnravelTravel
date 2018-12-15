@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
+
     public class RestaurantCreateInputModel
     {
         [Required]
@@ -10,9 +12,8 @@
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Image Url")]
-        [StringLength(400, MinimumLength = 3, ErrorMessage = "ImageUrl name must be between 3 and 400 symbols")]
-        public string ImageUrl { get; set; }
+        [DataType(DataType.Upload)]
+        public IFormFile Image { get; set; }
 
         [Required]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Address must be between 3 and 50 symbols")]

@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Services.Mapping;
 
@@ -14,10 +15,12 @@
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be between 3 and 50 symbols")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Image Url")]
-        [StringLength(400, MinimumLength = 3, ErrorMessage = "ImageUrl name must be between 3 and 400 symbols")]
+        [Display(Name = "Current image")]
         public string ImageUrl { get; set; }
+
+        [Display(Name = "New Image")]
+        [DataType(DataType.Upload)]
+        public IFormFile NewImage { get; set; }
 
         [Required]
         public string Type { get; set; }

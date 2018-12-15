@@ -34,11 +34,17 @@
                 return this.View(createInputModel);
             }
 
+            var fileType = createInputModel.Image.ContentType.Split('/')[1];
+            if (!this.IsImageTypeValid(fileType))
+            {
+                return this.View(createInputModel);
+            }
+
             var restaurantId = this.restaurantsService.CreateAsync(
                  createInputModel.Name,
                  createInputModel.Address,
                  createInputModel.DestinationId,
-                 createInputModel.ImageUrl,
+                 createInputModel.Image,
                  createInputModel.Type,
                  createInputModel.Seats)
                 .GetAwaiter()
@@ -70,6 +76,15 @@
                 return this.View(restaurantEditView);
             }
 
+            if (restaurantEditView.NewImage != null)
+            {
+                var fileType = restaurantEditView.NewImage.ContentType.Split('/')[1];
+                if (!this.IsImageTypeValid(fileType))
+                {
+                    return this.View(restaurantEditView);
+                }
+            }
+
             var id = restaurantEditView.Id;
 
             this.restaurantsService.EditAsync(
@@ -77,7 +92,7 @@
                 restaurantEditView.Name,
                 restaurantEditView.Address,
                 restaurantEditView.DestinationId,
-                restaurantEditView.ImageUrl,
+                restaurantEditView.NewImage,
                 restaurantEditView.Seats,
                 restaurantEditView.Type)
                 .GetAwaiter()

@@ -17,10 +17,9 @@
                 <input asp-for="CountryName" class="form-control col-md-12" value="@Model.CountryName"/>
                 <span asp-validation-for="CountryId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl"></label>
-                <input asp-for="ImageUrl" class="form-control col-md-12" value="@Model.ImageUrl" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            <div form-group>
+                <label asp-for="@Model.ImageUrl"></label>
+                <img style="height: 200px; width: 100%;" class="card-img-top" src="@Model.ImageUrl" alt="Destination image"/>
             </div>
             <div class="form-group">
                 <label asp-for="Information"></label>

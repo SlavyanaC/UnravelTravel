@@ -29,9 +29,20 @@
         [HttpPost]
         public IActionResult Create(ActivityCreateInputModel createInputModel)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(createInputModel);
+            }
+
+            var fileType = createInputModel.Image.ContentType.Split('/')[1];
+            if (!this.IsImageTypeValid(fileType))
+            {
+                return this.View(createInputModel);
+            }
+
             var activityId = this.activitiesService.CreateAsync(
                 createInputModel.Name,
-                createInputModel.ImageUrl,
+                createInputModel.Image,
                 createInputModel.Date,
                 createInputModel.Type,
                 createInputModel.LocationId)
@@ -63,11 +74,17 @@
                 return this.View(activityToEditViewModel);
             }
 
+            var fileType = activityToEditViewModel.NewImage.ContentType.Split('/')[1];
+            if (!this.IsImageTypeValid(fileType))
+            {
+                return this.View(activityToEditViewModel);
+            }
+
             var id = activityToEditViewModel.Id;
             this.activitiesService.EditAsync(
                 id,
                 activityToEditViewModel.Name,
-                activityToEditViewModel.ImageUrl,
+                activityToEditViewModel.NewImage,
                 activityToEditViewModel.Date,
                 activityToEditViewModel.Type,
                 activityToEditViewModel.LocationId)

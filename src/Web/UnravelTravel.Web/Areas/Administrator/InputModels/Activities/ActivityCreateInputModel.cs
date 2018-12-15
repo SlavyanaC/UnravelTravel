@@ -3,6 +3,8 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
+
     public class ActivityCreateInputModel
     {
         [Required]
@@ -13,18 +15,18 @@
         public string Type { get; set; }
 
         [Required]
-        [Display(Name = "Image Url")]
-        [StringLength(400, MinimumLength = 3, ErrorMessage = "ImageUrl name must be between 3 and 400 symbols")]
-        public string ImageUrl { get; set; }
+        [Display(Name = "Image")]
+        public IFormFile Image { get; set; }
 
         [Required]
         [Display(Name = "Date and time of the activity")]
         [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
 
+        [Required]
+        [Display(Name = "Location")]
         public int LocationId { get; set; }
 
-        [Required]
         public string Location { get; set; }
     }
 }

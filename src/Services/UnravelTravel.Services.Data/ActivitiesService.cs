@@ -4,23 +4,28 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using CloudinaryDotNet;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Models.Activities;
+    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
     public class ActivitiesService : IActivitiesService
     {
         private readonly IRepository<Activity> activitiesRepository;
         private readonly IRepository<Location> locationsRepository;
+        private readonly Cloudinary cloudinary;
 
-        public ActivitiesService(IRepository<Activity> activitiesRepository, IRepository<Location> locationsRepository)
+        public ActivitiesService(IRepository<Activity> activitiesRepository, IRepository<Location> locationsRepository, Cloudinary cloudinary)
         {
             this.activitiesRepository = activitiesRepository;
             this.locationsRepository = locationsRepository;
+            this.cloudinary = cloudinary;
         }
 
         public async Task<ActivityViewModel[]> GetAllActivitiesAsync()
@@ -36,21 +41,18 @@
         public async Task<int> CreateAsync(params object[] parameters)
         {
             var name = parameters[0].ToString();
-            var imageUrl = parameters[1].ToString();
+            var image = parameters[1] as IFormFile;
             var date = DateTime.Parse(parameters[2].ToString());
             var typeString = parameters[3].ToString();
             var locationId = int.Parse(parameters[4].ToString());
+
+            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, image, name);
 
             Enum.TryParse(typeString, true, out ActivityType typeEnum);
 
             var location = await this.locationsRepository
                 .All()
                 .FirstOrDefaultAsync(l => l.Id == locationId);
-
-            if (location == null)
-            {
-                // TODO: Some logic here;
-            }
 
             var activity = new Activity
             {
@@ -81,7 +83,7 @@
         public async Task EditAsync(int id, params object[] parameters)
         {
             var name = parameters[0].ToString();
-            var imageUrl = parameters[1].ToString();
+            var newImage = parameters[1] as IFormFile;
             var date = DateTime.Parse(parameters[2].ToString());
             var typeString = parameters[3].ToString();
             var locationId = int.Parse(parameters[4].ToString());
@@ -91,8 +93,13 @@
 
             Enum.TryParse(typeString, true, out ActivityType typeEnum);
 
+            if (newImage != null)
+            {
+                var newImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, newImage, name);
+                activity.ImageUrl = newImageUrl;
+            }
+
             activity.Name = name;
-            activity.ImageUrl = imageUrl;
             activity.Type = typeEnum;
             activity.Date = date;
             activity.Location = location;
