@@ -104,8 +104,9 @@
         public async Task DeleteAsync(int id)
         {
             var destination = this.activitiesRepository.All().FirstOrDefault(d => d.Id == id);
+            destination.IsDeleted = true;
 
-            this.activitiesRepository.Delete(destination);
+            this.activitiesRepository.Update(destination);
             await this.activitiesRepository.SaveChangesAsync();
         }
     }

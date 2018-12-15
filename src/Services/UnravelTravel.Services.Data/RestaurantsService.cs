@@ -9,7 +9,6 @@
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Destinations;
     using UnravelTravel.Services.Data.Models.Restaurants;
     using UnravelTravel.Services.Mapping;
 
@@ -101,8 +100,9 @@
         public async Task DeleteAsync(int id)
         {
             var restaurant = this.restaurantsRepository.All().FirstOrDefault(d => d.Id == id);
+            restaurant.IsDeleted = true;
 
-            this.restaurantsRepository.Delete(restaurant);
+            this.restaurantsRepository.Update(restaurant);
             await this.restaurantsRepository.SaveChangesAsync();
         }
     }

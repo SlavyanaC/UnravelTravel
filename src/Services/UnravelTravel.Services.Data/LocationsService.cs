@@ -1,6 +1,4 @@
-﻿using UnravelTravel.Services.Mapping;
-
-namespace UnravelTravel.Services.Data
+﻿namespace UnravelTravel.Services.Data
 {
     using System;
     using System.Threading.Tasks;
@@ -11,6 +9,7 @@ namespace UnravelTravel.Services.Data
     using UnravelTravel.Data.Models.Enums;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Models.Locations;
+    using UnravelTravel.Services.Mapping;
 
     public class LocationsService : ILocationsService
     {

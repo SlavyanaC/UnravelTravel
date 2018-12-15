@@ -85,8 +85,9 @@
         public async Task DeleteAsync(int id)
         {
             var destination = this.destinationsRepository.All().FirstOrDefault(d => d.Id == id);
+            destination.IsDeleted = true;
 
-            this.destinationsRepository.Delete(destination);
+            this.destinationsRepository.Update(destination);
             await this.destinationsRepository.SaveChangesAsync();
         }
     }
