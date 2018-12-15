@@ -1,7 +1,10 @@
 ﻿namespace UnravelTravel.Services.Data.Models.Reservations
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
 
+    using UnravelTravel.Common;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Services.Mapping;
 
@@ -19,8 +22,13 @@
         [Display(Name = "Restaurant name")]
         public string RestaurantName { get; set; }
 
+        public DateTime Date { get; set; }
+
         [Display(Name = "Reservation date")]
-        public string Date { get; set; }
+        public string ReservationDateString => this.Date.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture);
+
+        [Display(Name = "Reservation hour")]
+        public string ReservationHourString => this.Date.ToString(GlobalConstants.HourFormat, CultureInfo.InvariantCulture);
 
         [Display(Name = "Table for")]
         public int PeopleCount { get; set; }

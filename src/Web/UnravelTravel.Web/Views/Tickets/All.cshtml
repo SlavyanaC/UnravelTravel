@@ -12,7 +12,10 @@
                 @Html.DisplayNameFor(model => model.ActivityName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ActivityDate)
+                @Html.DisplayNameFor(model => model.ActivityDateString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityHourString)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ActivityLocationName)
@@ -25,7 +28,8 @@
         {
             <tr>
                 <td display-for="@item.ActivityName"></td>
-                <td display-for="@item.ActivityDate"></td>
+                <td display-for="@item.ActivityDateString"></td>
+                <td display-for="@item.ActivityHourString"></td>
                 <td display-for="@item.ActivityLocationName"> </td>
                 <td>
                     <a asp-area="" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a>

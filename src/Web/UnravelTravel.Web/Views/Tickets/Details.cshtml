@@ -8,7 +8,7 @@
 <div>
     <hr />
     <dl class="dl-horizontal">
-       <dt>
+        <dt>
             @Html.DisplayNameFor(model => model.UserFullName)
         </dt>
         <dd>
@@ -21,10 +21,16 @@
             @Html.DisplayFor(model => model.ActivityName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.ActivityDate)
+            @Html.DisplayNameFor(model => model.ActivityDateString)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ActivityDate)
+            @Html.DisplayFor(model => model.ActivityDateString)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ActivityHourString)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ActivityHourString)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ActivityLocationName)

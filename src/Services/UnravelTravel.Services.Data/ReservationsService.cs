@@ -50,9 +50,6 @@
                 .To<ReservationDetailsViewModel>()
                 .FirstOrDefaultAsync(r => r.Id == id);
 
-            reservationDetailsViewModel.Date =
-                reservationDetailsViewModel.Date.Substring(0, reservationDetailsViewModel.Date.LastIndexOf(':'));
-
             return reservationDetailsViewModel;
         }
 
@@ -63,11 +60,6 @@
                 .Where(r => r.User.UserName == username)
                 .To<ReservationDetailsViewModel>()
                 .ToArrayAsync();
-
-            foreach (var reservation in allReservations)
-            {
-                reservation.Date = reservation.Date.Substring(0, reservation.Date.LastIndexOf(':'));
-            }
 
             return allReservations;
         }

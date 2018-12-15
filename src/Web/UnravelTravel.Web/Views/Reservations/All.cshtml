@@ -16,7 +16,10 @@
                 @Html.DisplayNameFor(model => model.RestaurantName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @Html.DisplayNameFor(model => model.ReservationDateString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReservationHourString)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PeopleCount)
@@ -30,7 +33,8 @@
             <tr>
                 <td display-for="@item.UserFullName"></td>
                 <td display-for="@item.RestaurantName"></td>
-                <td display-for="@item.Date"> </td>
+                <td display-for="@item.ReservationDateString"> </td>
+                <td display-for="@item.ReservationHourString"> </td>
                 <td display-for="@item.PeopleCount"> </td>
                 <td>
                     <a asp-area="" asp-controller="Reservations" asp-action="Details" asp-route-id="@item.Id">Details</a>
