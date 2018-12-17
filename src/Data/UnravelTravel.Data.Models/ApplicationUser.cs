@@ -18,6 +18,7 @@ namespace UnravelTravel.Data.Models
 
             this.Tickets = new HashSet<Ticket>();
             this.Reservations = new HashSet<Reservation>();
+            this.Reviews = new HashSet<Review>();
         }
 
         public string FullName { get; set; }
@@ -42,5 +43,7 @@ namespace UnravelTravel.Data.Models
         public virtual ICollection<Ticket> Tickets { get; set; }
 
         public virtual ICollection<Reservation> Reservations { get; set; }
+
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

@@ -4,15 +4,15 @@
 
     using UnravelTravel.Data.Common.Models;
 
-    public class ActivityTag : IDeletableEntity
+    public class ActivityReview : BaseModel<int>, IDeletableEntity
     {
         public int ActivityId { get; set; }
 
         public virtual Activity Activity { get; set; }
 
-        public int TagId { get; set; }
+        public int ReviewId { get; set; }
 
-        public virtual Tag Tag { get; set; }
+        public virtual Review Review { get; set; }
 
         public bool IsDeleted { get; set; }
 

@@ -11,9 +11,8 @@
         public Restaurant()
         {
             this.Reservations = new HashSet<Reservation>();
+            this.Reviews = new HashSet<RestaurantReview>();
         }
-
-        public int Id { get; set; }
 
         public string Name { get; set; }
 
@@ -34,5 +33,7 @@
         public DateTime? DeletedOn { get; set; }
 
         public virtual ICollection<Reservation> Reservations { get; set; }
+
+        public virtual ICollection<RestaurantReview> Reviews { get; set; }
     }
 }

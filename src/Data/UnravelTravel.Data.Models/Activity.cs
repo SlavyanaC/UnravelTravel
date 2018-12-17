@@ -11,7 +11,7 @@
         public Activity()
         {
             this.Tickets = new HashSet<Ticket>();
-            this.ActivityTags = new HashSet<ActivityTag>();
+            this.Reviews = new HashSet<ActivityReview>();
         }
 
         public string Name { get; set; }
@@ -32,6 +32,6 @@
 
         public virtual ICollection<Ticket> Tickets { get; set; }
 
-        public virtual ICollection<ActivityTag> ActivityTags { get; set; }
+        public virtual ICollection<ActivityReview> Reviews { get; set; }
     }
 }

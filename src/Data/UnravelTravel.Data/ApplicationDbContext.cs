@@ -24,7 +24,7 @@
 
         public DbSet<Activity> Activities { get; set; }
 
-        public DbSet<ActivityTag> ActivityTags { get; set; }
+        public DbSet<ActivityReview> ActivityReviews { get; set; }
 
         public DbSet<Country> Countries { get; set; }
 
@@ -36,7 +36,9 @@
 
         public DbSet<Restaurant> Restaurants { get; set; }
 
-        public DbSet<Tag> Tags { get; set; }
+        public DbSet<RestaurantReview> RestaurantReviews { get; set; }
+
+        public DbSet<Review> Reviews { get; set; }
 
         public DbSet<Ticket> Tickets { get; set; }
 
@@ -59,9 +61,6 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<ActivityTag>()
-                .HasKey(e => new { e.ActivityId, e.TagId });
-
             // Needed for Identity models configuration
             base.OnModelCreating(builder);
 
