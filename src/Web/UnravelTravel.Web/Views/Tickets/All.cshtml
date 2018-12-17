@@ -1,4 +1,5 @@
-﻿@model IEnumerable<UnravelTravel.Services.Data.Models.Tickets.TicketDetailsViewModel>
+﻿@using Microsoft.Extensions.Logging
+@model IEnumerable<UnravelTravel.Services.Data.Models.Tickets.TicketDetailsViewModel>
 @{
     ViewData["Title"] = "All Tickets";
 }
@@ -32,7 +33,19 @@
                 <td display-for="@item.ActivityHourString"></td>
                 <td display-for="@item.ActivityLocationName"> </td>
                 <td>
-                    <a asp-area="" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-secondary" asp-area="" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;
+                    @if (item.HasPassed)
+                    {
+                        var isRated = item.IsRated;
+                        if (isRated)
+                        {
+                            <button class="btn btn-secondary" asp-area="" asp-controller="Activities" asp-action="Review" disabled="">Reviewed</button>
+                        }
+                        else
+                        {
+                            <a class="btn btn-secondary" asp-area="" asp-controller="Activities" asp-action="Review" asp-route-id="@item.ActivityId">Review</a>
+                        }
+                    }
                 </td>
             </tr>
         }

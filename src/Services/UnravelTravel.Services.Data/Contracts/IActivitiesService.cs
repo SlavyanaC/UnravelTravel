@@ -7,5 +7,7 @@
     public interface IActivitiesService : ICrudDataService
     {
         Task<ActivityViewModel[]> GetAllActivitiesAsync();
+
+        Task Review(int id, string username, params object[] parameters);
     }
 }

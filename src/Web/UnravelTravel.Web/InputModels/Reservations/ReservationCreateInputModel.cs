@@ -5,11 +5,6 @@
 
     public class ReservationCreateInputModel
     {
-        // TODO: User FullName in the Reservation Entity
-        //[Required]
-        //[Display(Name = "Full name")]
-        //public string FullName { get; set; }
-
         [Required]
         [DataType(DataType.DateTime)]
         [Display(Name = "Reservation date and time")]

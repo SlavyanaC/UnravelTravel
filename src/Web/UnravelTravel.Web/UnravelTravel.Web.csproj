@@ -40,6 +40,9 @@
     <Content Update="Areas\Administrator\Views\Locations\Create.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Activities\Review.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Destinations\TopRestaurantsPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

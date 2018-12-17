@@ -19,13 +19,19 @@
     {
         private readonly IRepository<Activity> activitiesRepository;
         private readonly IRepository<Location> locationsRepository;
+        private readonly IRepository<Review> reviewsRepository;
+        private readonly IRepository<ActivityReview> activityReviewsRepository;
+        private readonly IRepository<ApplicationUser> usersRepository;
         private readonly Cloudinary cloudinary;
 
-        public ActivitiesService(IRepository<Activity> activitiesRepository, IRepository<Location> locationsRepository, Cloudinary cloudinary)
+        public ActivitiesService(IRepository<Activity> activitiesRepository, IRepository<Location> locationsRepository, Cloudinary cloudinary, IRepository<Review> reviewsRepository, IRepository<ActivityReview> activityReviewsRepository, IRepository<ApplicationUser> usersRepository)
         {
             this.activitiesRepository = activitiesRepository;
             this.locationsRepository = locationsRepository;
             this.cloudinary = cloudinary;
+            this.reviewsRepository = reviewsRepository;
+            this.activityReviewsRepository = activityReviewsRepository;
+            this.usersRepository = usersRepository;
         }
 
         public async Task<ActivityViewModel[]> GetAllActivitiesAsync()
@@ -115,6 +121,35 @@
 
             this.activitiesRepository.Update(destination);
             await this.activitiesRepository.SaveChangesAsync();
+        }
+
+        public async Task Review(int id, string username, params object[] parameters)
+        {
+            var rating = double.Parse(parameters[0].ToString());
+            var content = parameters[1].ToString();
+
+            var user = await this.usersRepository.All().Where(u => u.UserName == username).FirstOrDefaultAsync();
+
+            var review = new Review
+            {
+                Rating = rating,
+                Content = content,
+                User = user,
+            };
+
+            this.reviewsRepository.Add(review);
+            await this.reviewsRepository.SaveChangesAsync();
+
+            var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == id);
+
+            var activityReview = new ActivityReview
+            {
+                Activity = activity,
+                Review = review,
+            };
+
+            this.activityReviewsRepository.Add(activityReview);
+            await this.activityReviewsRepository.SaveChangesAsync();
         }
     }
 }

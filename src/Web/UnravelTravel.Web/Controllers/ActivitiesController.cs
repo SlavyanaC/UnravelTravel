@@ -1,7 +1,9 @@
-﻿namespace UnravelTravel.Web.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
+﻿using UnravelTravel.Web.InputModels.Activities;
 
+namespace UnravelTravel.Web.Controllers
+{
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Models.Activities;
 
@@ -33,6 +35,33 @@
                 .GetAwaiter()
                 .GetResult();
             return this.View(detailsViewModel);
+        }
+
+        [Authorize]
+        public IActionResult Review(int id)
+        {
+            var activity = this.activitiesService.GetViewModelAsync<ActivityReviewInputModel>(id)
+                .GetAwaiter()
+                .GetResult();
+            return this.View(activity);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Review(int id, ActivityReviewInputModel addReviewInputModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(addReviewInputModel);
+            }
+
+            var username = this.User.Identity.Name;
+
+            this.activitiesService.Review(id, username, addReviewInputModel.Rating, addReviewInputModel.Content)
+                .GetAwaiter()
+                .GetResult();
+
+            return this.RedirectToAction("Details", new { id = id });
         }
     }
 }
