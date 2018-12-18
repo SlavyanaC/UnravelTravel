@@ -23,7 +23,7 @@
         public ICollection<ActivityViewModel> Activities =>
             this.Locations.SelectMany(l => l.Activities).AsQueryable().To<ActivityViewModel>().ToList();
 
-        public ICollection<ActivityViewModel> TopActivities => 
+        public ICollection<ActivityViewModel> TopActivities =>
             this.Activities.OrderByDescending(a => a.AverageRating).Take(3).ToList();
 
         public int TotalActivities => this.Activities.Count();

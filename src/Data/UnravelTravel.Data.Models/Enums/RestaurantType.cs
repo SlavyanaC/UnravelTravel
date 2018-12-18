@@ -5,6 +5,7 @@
         FastFood = 1,
         Italian = 2,
         Chinese = 3,
-        //TODO: Additional
+
+        // TODO: Additional
     }
 }
