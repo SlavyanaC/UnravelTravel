@@ -18,6 +18,17 @@
         }
         <li class="text-center">Date: @Model.Date</li>
         <li class="text-center">Activity type: @Model.Type</li>
+        <li class="text-center">
+            Activity rating:
+            @if (Model.AverageRating != 0.0)
+            {
+                @Model.AverageRating.ToString("F2")
+            }
+            else
+            {
+                <span class="text-muted">No reviews yet</span>
+            }
+        </li>
     </ul>
     <div class="row d-flex justify-content-around">
         @if (this.User.IsInRole(GlobalConstants.UserRoleName))

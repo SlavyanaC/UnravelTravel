@@ -24,6 +24,8 @@
 
         public string DestinationName { get; set; }
 
+        public double AverageRating { get; set; }
+
         public virtual ICollection<ReservationDetailsViewModel> Reservations { get; set; }
     }
 }

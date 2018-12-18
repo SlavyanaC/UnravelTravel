@@ -23,6 +23,8 @@
 
         public string LocationName { get; set; }
 
+        public double AverageRating { get; set; }
+
         public ICollection<TicketDetailsViewModel> Tickets { get; set; }
     }
 }

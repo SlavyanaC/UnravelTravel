@@ -21,6 +21,8 @@
 
         public string DestinationName { get; set; }
 
+        public double AverageRating { get; set; }
+
         public string MapsAddress => $"{this.Address}+{this.DestinationName}";
     }
 }

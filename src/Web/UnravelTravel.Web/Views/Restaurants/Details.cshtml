@@ -5,9 +5,19 @@
 <h1 class="text-center">@Model.Name</h1>
 <div class="container">
     <ul>
-        <li class="text-center">@Model.DestinationName</li>
-        <li class="text-center">@Model.Type</li>
-        <li class="text-center">@Model.Seats</li>
+        <li class="text-center">Destination: @Model.DestinationName</li>
+        <li class="text-center">Restaurant type: @Model.Type</li>
+        <li class="text-center">Total seats: @Model.Seats</li>
+        <li class="text-center">Restaurant rating: 
+            @if (Model.AverageRating != 0.0)
+            {
+                @Model.AverageRating.ToString("F2")
+            }
+            else
+            {
+                <span class="text-muted">No reviews yet</span>
+            }
+        </li>
     </ul>
     <div class="text-center d-flex justify-content-around">
         @if (this.User.IsInRole(GlobalConstants.UserRoleName))
