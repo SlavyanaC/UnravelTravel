@@ -1,5 +1,4 @@
-﻿@using UnravelTravel.Data.Models.Enums
-@model UnravelTravel.Services.Data.Models.Restaurants.RestaurantEditViewModel
+﻿@model UnravelTravel.Services.Data.Models.Restaurants.RestaurantEditViewModel
 @{
     this.ViewData["Title"] = "Edit Restaurant";
     var destinations = this.ViewData["Destinations"] as IEnumerable<SelectListItem>;
@@ -10,19 +9,17 @@
         <hr />
         <div class="form-group">
             <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control col-md-12" placeholder="@Model.Name"/>
+            <input asp-for="Name" class="form-control col-md-12" placeholder="@Model.Name" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="DestinationId"></label>
-            <select asp-for="DestinationId" asp-items="destinations.Where(d => d.Value != @Model.DestinationName)" class="form-control col-md-12">
-                <option selected="" >@Model.DestinationName</option>
-            </select>
+            <select asp-for="DestinationId" asp-items="destinations" class="form-control col-md-12"></select>
             <span asp-validation-for="DestinationId" class="text-danger"></span>
         </div>
         <div form-group>
             <label asp-for="@Model.ImageUrl"></label>
-            <img style="height: 200px; width: 100%;" class="card-img-top" src="@Model.ImageUrl" alt="Destination image"/>
+            <img style="height: 200px; width: 100%;" class="card-img-top" src="@Model.ImageUrl" alt="Destination image" />
         </div>
         <div class="form-group">
             <p>New image</p>
@@ -36,18 +33,18 @@
         </div>
         <div class="form-group">
             <label asp-for="Seats"></label>
-            <input asp-for="Seats" class="form-control col-md-12" placeholder="@Model.Seats"/>
+            <input asp-for="Seats" class="form-control col-md-12" placeholder="@Model.Seats" />
             <span asp-validation-for="Seats" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Type"></label>
             <select class="form-control col-md-12" asp-for="Type"
                     asp-items="@(Html.GetEnumSelectList<RestaurantType>())">
-                <option selected="" >@Model.Type</option>
+                <option selected="" disabled="">--Current: @Model.Type--</option>
             </select>
             <span asp-validation-for="Type" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-default">Edit Restaurant</button>
+        <button type="submit" class="btn btn-outline-primary">Edit Restaurant</button>
     </form>
 </div>
 

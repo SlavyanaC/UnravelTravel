@@ -17,7 +17,7 @@
             <li class="text-center">Location: @Model.LocationName</li>
         }
         <li class="text-center">Date: @Model.Date</li>
-        <li class="text-center">Activity type: @Model.Type</li>
+        <li class="text-center">Activity type: @Model.SplitWordsType</li>
         <li class="text-center">
             Activity rating:
             @if (Model.AverageRating != 0.0)
@@ -40,7 +40,7 @@
         else if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
             <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Activities" asp-action="Edit" asp-route-id="@Model.Id">Edit activity</a>
-            <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Activities" asp-action="Delete" asp-route-id="@Model.Id">Delete activity</a>
+            <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Activities" asp-action="Delete" asp-route-id="@Model.Id">Delete activity</a>
         }
     </div>
 </div>

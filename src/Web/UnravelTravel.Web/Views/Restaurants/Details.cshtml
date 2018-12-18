@@ -6,7 +6,7 @@
 <div class="container">
     <ul>
         <li class="text-center">Destination: @Model.DestinationName</li>
-        <li class="text-center">Restaurant type: @Model.Type</li>
+        <li class="text-center">Restaurant type: @Model.SplitWordsType</li>
         <li class="text-center">Total seats: @Model.Seats</li>
         <li class="text-center">Restaurant rating: 
             @if (Model.AverageRating != 0.0)
@@ -26,8 +26,8 @@
         }
         else if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
-            <a class="btn btn-secondary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Edit" asp-route-id="@Model.Id">Edit activity</a>
-            <a class="btn btn-secondary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Delete" asp-route-id="@Model.Id">Delete activity</a>
+            <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Edit" asp-route-id="@Model.Id">Edit restaurant</a>
+            <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Restaurants" asp-action="Delete" asp-route-id="@Model.Id">Delete restaurant</a>
         }
     </div>
     <hr />

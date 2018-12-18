@@ -1,5 +1,4 @@
-﻿@using UnravelTravel.Data.Models.Enums
-@model UnravelTravel.Web.Areas.Administrator.InputModels.Activities.ActivityCreateInputModel
+﻿@model UnravelTravel.Web.Areas.Administrator.InputModels.Activities.ActivityCreateInputModel
 @{
     this.ViewData["Title"] = "Create Activity";
     var locations = this.ViewData["Locations"] as IEnumerable<SelectListItem>;
@@ -40,7 +39,7 @@
             </select>
             <span asp-validation-for="Type" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-default">Create activity</button>
+        <button type="submit" class="btn btn-outline-success">Create activity</button>
     </form>
 </div>
 

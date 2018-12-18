@@ -74,10 +74,13 @@
                 return this.View(activityToEditViewModel);
             }
 
-            var fileType = activityToEditViewModel.NewImage.ContentType.Split('/')[1];
-            if (!this.IsImageTypeValid(fileType))
+            if (activityToEditViewModel.NewImage != null)
             {
-                return this.View(activityToEditViewModel);
+                var fileType = activityToEditViewModel.NewImage.ContentType.Split('/')[1];
+                if (!this.IsImageTypeValid(fileType))
+                {
+                    return this.View(activityToEditViewModel);
+                }
             }
 
             var id = activityToEditViewModel.Id;

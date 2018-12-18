@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
 
+    using UnravelTravel.Common.Extensions;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Services.Data.Models.Reservations;
     using UnravelTravel.Services.Mapping;
@@ -13,6 +14,8 @@
         public string Name { get; set; }
 
         public string Type { get; set; }
+
+        public string SplitWordsType => this.Type.SplitWords();
 
         public string ImageUrl { get; set; }
 

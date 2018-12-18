@@ -20,8 +20,8 @@
                     @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                     {
                         <div calss="row">
-                            <a class=" btn btn-outline-info" asp-area="Administrator" asp-controller="Destinations" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                            <a class=" btn btn-outline-info" asp-area="Administrator" asp-controller="Destinations" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a class=" btn btn-outline-primary" asp-area="Administrator" asp-controller="Destinations" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class=" btn btn-outline-warning" asp-area="Administrator" asp-controller="Destinations" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </div>
                     }
                 </div>
