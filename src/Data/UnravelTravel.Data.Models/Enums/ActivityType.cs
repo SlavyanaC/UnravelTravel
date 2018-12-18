@@ -5,6 +5,7 @@
         Sport = 1,
         Culture = 2,
         Concert = 3,
-        //TODO: Additional
+
+        // TODO: Additional
     }
 }

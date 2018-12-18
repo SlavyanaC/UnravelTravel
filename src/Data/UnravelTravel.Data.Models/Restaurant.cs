@@ -28,6 +28,8 @@
 
         public virtual Destination Destination { get; set; }
 
+        public double AverageRating { get; set; }
+
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
