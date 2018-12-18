@@ -6,7 +6,7 @@
 
 <h2 class="text-center">All Reservations</h2>
 
-<table class="table table-hover text-center">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>
@@ -37,7 +37,18 @@
                 <td display-for="@item.ReservationHourString"> </td>
                 <td display-for="@item.PeopleCount"> </td>
                 <td>
-                    <a asp-area="" asp-controller="Reservations" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-outline-primary"asp-area="" asp-controller="Reservations" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (item.HasPassed)
+                    {
+                        if (item.IsRated)
+                        {
+                            <button class="btn btn-outline-primary" asp-area="" asp-controller="Restaurants" asp-action="Review" disabled="">Reviewed</button>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-primary" asp-area="" asp-controller="Restaurants" asp-action="Review" asp-route-id="@item.RestaurantId">Review</a>
+                        }
+                    }
                 </td>
             </tr>
         }

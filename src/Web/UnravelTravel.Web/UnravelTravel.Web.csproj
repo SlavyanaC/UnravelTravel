@@ -49,6 +49,9 @@
     <Content Update="Views\Reservations\Book.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Restaurants\Review.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_AdminDropdownPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

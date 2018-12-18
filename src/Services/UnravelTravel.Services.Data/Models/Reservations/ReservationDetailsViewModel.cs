@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
+    using System.Linq;
 
     using UnravelTravel.Common;
     using UnravelTravel.Data.Models;
@@ -13,6 +14,8 @@
         public int Id { get; set; }
 
         public string UserId { get; set; }
+
+        public ApplicationUser User { get; set; }
 
         [Display(Name = "Full name")]
         public string UserFullName { get; set; }
@@ -32,5 +35,11 @@
 
         [Display(Name = "Table for")]
         public int PeopleCount { get; set; }
+
+        public bool HasPassed => this.Date < DateTime.UtcNow;
+
+        public bool IsRated => this.User.Reservations
+            .Any(t => t.Restaurant.Reviews.Any(rr => rr.RestaurantId == this.RestaurantId &&
+                                                     rr.Review.UserId == this.UserId));
     }
 }

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using UnravelTravel.Common;
-
-namespace UnravelTravel.Web.InputModels.Activities
+﻿namespace UnravelTravel.Web.InputModels.Activities
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
 
+    using UnravelTravel.Common;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Services.Mapping;
 

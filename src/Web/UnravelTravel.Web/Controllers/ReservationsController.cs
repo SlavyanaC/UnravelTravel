@@ -31,7 +31,8 @@
                      reservationCreateInputModel.PeopleCount)
                  .GetAwaiter()
                  .GetResult();
-            return this.RedirectToAction("Details", new { id });
+
+            return this.RedirectToAction("Details", new { id = reservationId });
         }
 
         public IActionResult Details(int id)

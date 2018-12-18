@@ -7,5 +7,7 @@
     public interface IRestaurantsService : ICrudDataService
     {
         Task<RestaurantViewModel[]> GetAllRestaurantsAsync();
+
+        Task Review(int id, string username, params object[] parameters);
     }
 }

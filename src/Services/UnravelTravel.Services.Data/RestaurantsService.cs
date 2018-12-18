@@ -19,12 +19,18 @@
     {
         private readonly IRepository<Restaurant> restaurantsRepository;
         private readonly IRepository<Destination> destinationsRepository;
+        private readonly IRepository<ApplicationUser> usersRepository;
+        private readonly IRepository<Review> reviewsRepository;
+        private readonly IRepository<RestaurantReview> restaurantReviewsRepository;
         private readonly Cloudinary cloudinary;
 
-        public RestaurantsService(IRepository<Restaurant> restaurantsRepository, IRepository<Destination> destinationsRepository, Cloudinary cloudinary)
+        public RestaurantsService(IRepository<Restaurant> restaurantsRepository, IRepository<Destination> destinationsRepository, IRepository<ApplicationUser> usersRepository, IRepository<Review> reviewsRepository, IRepository<RestaurantReview> restaurantReviewsRepository, Cloudinary cloudinary)
         {
             this.restaurantsRepository = restaurantsRepository;
             this.destinationsRepository = destinationsRepository;
+            this.usersRepository = usersRepository;
+            this.reviewsRepository = reviewsRepository;
+            this.restaurantReviewsRepository = restaurantReviewsRepository;
             this.cloudinary = cloudinary;
         }
 
@@ -116,6 +122,35 @@
 
             this.restaurantsRepository.Update(restaurant);
             await this.restaurantsRepository.SaveChangesAsync();
+        }
+
+        public async Task Review(int restaurantId, string username, params object[] parameters)
+        {
+            var rating = double.Parse(parameters[0].ToString());
+            var content = parameters[1].ToString();
+
+            var user = await this.usersRepository.All().Where(u => u.UserName == username).FirstOrDefaultAsync();
+
+            var review = new Review
+            {
+                User = user,
+                Rating = rating,
+                Content = content,
+            };
+
+            this.reviewsRepository.Add(review);
+            await this.restaurantsRepository.SaveChangesAsync();
+
+            var restaurant = await this.restaurantsRepository.All().Where(r => r.Id == restaurantId).FirstOrDefaultAsync();
+
+            var restaurantReview = new RestaurantReview
+            {
+                Restaurant = restaurant,
+                Review = review,
+            };
+
+            this.restaurantReviewsRepository.Add(restaurantReview);
+            await this.restaurantReviewsRepository.SaveChangesAsync();
         }
     }
 }

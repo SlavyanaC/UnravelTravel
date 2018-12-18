@@ -33,17 +33,16 @@
                 <td display-for="@item.ActivityHourString"></td>
                 <td display-for="@item.ActivityLocationName"> </td>
                 <td>
-                    <a class="btn btn-secondary" asp-area="" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;
+                    <a class="btn btn-outline-primary" asp-area="" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;
                     @if (item.HasPassed)
                     {
-                        var isRated = item.IsRated;
-                        if (isRated)
+                        if (item.IsRated)
                         {
-                            <button class="btn btn-secondary" asp-area="" asp-controller="Activities" asp-action="Review" disabled="">Reviewed</button>
+                            <button class="btn btn-outline-primary" asp-area="" asp-controller="Activities" asp-action="Review" disabled="">Reviewed</button>
                         }
                         else
                         {
-                            <a class="btn btn-secondary" asp-area="" asp-controller="Activities" asp-action="Review" asp-route-id="@item.ActivityId">Review</a>
+                            <a class="btn btn-outline-primary" asp-area="" asp-controller="Activities" asp-action="Review" asp-route-id="@item.ActivityId">Review</a>
                         }
                     }
                 </td>

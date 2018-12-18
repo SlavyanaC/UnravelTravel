@@ -1,11 +1,10 @@
-﻿using UnravelTravel.Web.InputModels.Activities;
-
-namespace UnravelTravel.Web.Controllers
+﻿namespace UnravelTravel.Web.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Models.Activities;
+    using UnravelTravel.Web.InputModels.Activities;
 
     public class ActivitiesController : BaseController
     {
@@ -40,10 +39,10 @@ namespace UnravelTravel.Web.Controllers
         [Authorize]
         public IActionResult Review(int id)
         {
-            var activity = this.activitiesService.GetViewModelAsync<ActivityReviewInputModel>(id)
+            var reviewInputModel = this.activitiesService.GetViewModelAsync<ActivityReviewInputModel>(id)
                 .GetAwaiter()
                 .GetResult();
-            return this.View(activity);
+            return this.View(reviewInputModel);
         }
 
         [Authorize]

@@ -23,13 +23,13 @@
         @if (this.User.IsInRole(GlobalConstants.UserRoleName))
         {
             <form class="text-center" method="post" asp-area="" asp-controller="Tickets" asp-action="Book" asp-route-id="@Model.Id">
-                <button type="submit" class="btn btn-secondary">Book ticket</button>
+                <button type="submit" class="btn btn-outline-primary">Book ticket</button>
             </form>
         }
         else if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
-            <a class="btn btn-secondary" asp-area="Administrator" asp-controller="Activities" asp-action="Edit" asp-route-id="@Model.Id">Edit activity</a>
-            <a class="btn btn-secondary" asp-area="Administrator" asp-controller="Activities" asp-action="Delete" asp-route-id="@Model.Id">Delete activity</a>
+            <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Activities" asp-action="Edit" asp-route-id="@Model.Id">Edit activity</a>
+            <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Activities" asp-action="Delete" asp-route-id="@Model.Id">Delete activity</a>
         }
     </div>
 </div>
