@@ -129,7 +129,6 @@
             var content = parameters[1].ToString();
 
             var user = await this.usersRepository.All().Where(u => u.UserName == username).FirstOrDefaultAsync();
-
             var review = new Review
             {
                 Rating = rating,
@@ -150,6 +149,17 @@
 
             this.activityReviewsRepository.Add(activityReview);
             await this.activityReviewsRepository.SaveChangesAsync();
+
+            await this.UpdateActivityAverageRating(activity);
+        }
+
+        private async Task UpdateActivityAverageRating(Activity activity)
+        {
+            var avgRating = activity.Reviews.Average(ar => ar.Review.Rating);
+            activity.AverageRating = avgRating;
+
+            this.activitiesRepository.Update(activity);
+            await this.activitiesRepository.SaveChangesAsync();
         }
     }
 }

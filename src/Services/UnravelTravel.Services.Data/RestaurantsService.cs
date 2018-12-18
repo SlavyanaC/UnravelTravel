@@ -151,6 +151,17 @@
 
             this.restaurantReviewsRepository.Add(restaurantReview);
             await this.restaurantReviewsRepository.SaveChangesAsync();
+
+            await this.UpdateRestaurantAverageRating(restaurant);
+        }
+
+        private async Task UpdateRestaurantAverageRating(Restaurant restaurant)
+        {
+            var avgRating = restaurant.Reviews.Average(ar => ar.Review.Rating);
+            restaurant.AverageRating = avgRating;
+
+            this.restaurantsRepository.Update(restaurant);
+            await this.restaurantsRepository.SaveChangesAsync();
         }
     }
 }
