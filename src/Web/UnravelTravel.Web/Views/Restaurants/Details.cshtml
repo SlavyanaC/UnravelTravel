@@ -22,7 +22,7 @@
     <div class="text-center d-flex justify-content-around">
         @if (this.User.IsInRole(GlobalConstants.UserRoleName))
         {
-            <a class="btn btn-secondary" asp-controller="Reservations" asp-action="Book" asp-route-id="@Model.Id">Book restaurant</a>
+            <a class="btn btn-outline-primary" asp-controller="Reservations" asp-action="Book" asp-route-id="@Model.Id">Book table</a>
         }
         else if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
