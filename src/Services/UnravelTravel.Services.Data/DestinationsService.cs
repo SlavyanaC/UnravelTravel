@@ -31,6 +31,8 @@
             var destinations = await this.destinationsRepository
                 .All()
                 .To<DestinationViewModel>()
+                .OrderBy(d => d.CountryName)
+                .ThenBy(d => d.Name)
                 .ToArrayAsync();
 
             return destinations;

@@ -19,7 +19,7 @@
 
         public IActionResult All()
         {
-            var destinations = this.restaurantsService.GetAllRestaurantsAsync()
+            var destinations = this.restaurantsService.GetAllAsync()
                 .GetAwaiter()
                 .GetResult();
             if (destinations == null)

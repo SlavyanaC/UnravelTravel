@@ -17,7 +17,7 @@
 
         public IActionResult All()
         {
-            var activities = this.activitiesService.GetAllActivitiesAsync()
+            var activities = this.activitiesService.GetAllAsync()
                 .GetAwaiter()
                 .GetResult();
             if (activities == null)

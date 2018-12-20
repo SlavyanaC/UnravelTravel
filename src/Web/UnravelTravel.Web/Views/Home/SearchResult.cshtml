@@ -1,6 +1,6 @@
-﻿@{
+﻿@model UnravelTravel.Services.Data.Models.Home.SearchResultViewModel
+@{
     this.ViewData["Title"] = "Home Page";
-    var destinations = this.ViewData["Destinations"] as IEnumerable<SelectListItem>;
 }
 
 @await this.Html.PartialAsync("CarouselPartial")
@@ -8,7 +8,7 @@
 @await this.Html.PartialAsync("MainEntitiesPartial")
 <br />
 @*<div class="d-flex justify-content-center">*@
-    @await this.Html.PartialAsync("SearchFormPartial")
+@await this.Html.PartialAsync("SearchFormPartial")
 @*</div>*@
 
 @section Scripts {

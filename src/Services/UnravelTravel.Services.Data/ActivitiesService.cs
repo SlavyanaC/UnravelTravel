@@ -34,7 +34,7 @@
             this.usersRepository = usersRepository;
         }
 
-        public async Task<ActivityViewModel[]> GetAllActivitiesAsync()
+        public async Task<ActivityViewModel[]> GetAllAsync()
         {
             var activities = await this.activitiesRepository
                 .All()

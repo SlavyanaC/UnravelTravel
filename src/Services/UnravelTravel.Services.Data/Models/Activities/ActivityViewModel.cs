@@ -21,6 +21,8 @@
 
         public int LocationId { get; set; }
 
+        public Location Location { get; set; }
+
         public string LocationName { get; set; }
 
         public double AverageRating { get; set; }

@@ -34,7 +34,7 @@
             this.cloudinary = cloudinary;
         }
 
-        public async Task<RestaurantViewModel[]> GetAllRestaurantsAsync()
+        public async Task<RestaurantViewModel[]> GetAllAsync()
         {
             var restaurants = await this.restaurantsRepository
                 .All()
