@@ -9,6 +9,12 @@
         <hr />
         <div class="form-group">
             <label asp-for="Date"></label>
+            @*<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @type="text", @class = "form-control datetimepicker-input", id="Date", name="Date", data_target = "#datetimepicker1" } })
+                <input asp-for="Date" type="text" class="form-control datetimepicker-input col-md-12" data-target="#datetimepicker1"/>
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div></div>*@
             <input asp-for="Date" class="form-control col-md-12" />
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
@@ -23,4 +29,10 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    
+    @*<script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+    </script>*@
 }

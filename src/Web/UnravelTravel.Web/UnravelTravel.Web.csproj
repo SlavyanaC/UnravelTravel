@@ -100,5 +100,8 @@
     <Content Update="Areas\Administrator\Views\Restaurants\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="wwwroot\lib\bootstrap\js\moment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Content>
   </ItemGroup>
 </Project>
