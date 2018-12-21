@@ -7,6 +7,7 @@
 <br />
 @await this.Html.PartialAsync("_MainEntitiesPartial")
 <br />
+
 <div class="jumbotron text-center" @*style="padding-top: 30px; padding-bottom: 30px;" *@>
     <h4>Activities</h4>
     @await this.Html.PartialAsync("_DestinationActivitiesPartial", @Model.Activities)

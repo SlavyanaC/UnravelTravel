@@ -1,4 +1,5 @@
-﻿@{
+﻿@model UnravelTravel.Web.InputModels.Home.SearchInputModel
+@{
     this.ViewData["Title"] = "Home Page";
     var destinations = this.ViewData["Destinations"] as IEnumerable<SelectListItem>;
 }
@@ -7,8 +8,9 @@
 <br />
 @await this.Html.PartialAsync("_MainEntitiesPartial")
 <br />
+
 <div class="jumbotron" @*style="padding-top: 30px; padding-bottom: 30px;" *@>
-    @await this.Html.PartialAsync("_SearchFormPartial")
+    @await this.Html.PartialAsync("_SearchFormPartial", @Model)
 </div>
 
 @section Scripts {

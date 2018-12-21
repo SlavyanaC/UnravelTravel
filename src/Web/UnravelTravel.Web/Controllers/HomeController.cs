@@ -17,26 +17,41 @@
             this.destinationsService = destinationsService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(SearchInputModel searchInputModel)
         {
             this.ViewData["Destinations"] = this.SelectAllDestinations();
-            return this.View();
+
+            return searchInputModel.DestinationId != 0 ?
+                this.Search(searchInputModel) :
+                this.View();
         }
 
-        public IActionResult Search(SearchInputModel searchInputModel)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.RedirectToAction("Index", searchInputModel);
-            }
-
-            var searchResultViewModel = this.destinationsService.GetSearchResult(searchInputModel.DestinationId, searchInputModel.StartDate, searchInputModel.EndDate);
-
-            return this.View("SearchResult", searchResultViewModel);
-        }
+        // TODO: Delete this if private method Search works
+        // public IActionResult Search(SearchInputModel searchInputModel)
+        // {
+        //     if (!this.ModelState.IsValid)
+        //     {
+        //         return this.RedirectToAction("Index", searchInputModel);
+        //     }
+        //     var searchResultViewModel = this.destinationsService.GetSearchResult(searchInputModel.DestinationId,  searchInputModel.StartDate, searchInputModel.EndDate);
+        //     return this.View("SearchResult", searchResultViewModel);
+        // }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() => this.View();
+
+        private IActionResult Search(SearchInputModel searchInputModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(searchInputModel);
+            }
+
+            var searchResultViewModel = this.destinationsService.GetSearchResult(searchInputModel.DestinationId,
+                searchInputModel.StartDate, searchInputModel.EndDate);
+
+            return this.View("SearchResult", searchResultViewModel);
+        }
 
         private IEnumerable<SelectListItem> SelectAllDestinations()
         {
