@@ -47,10 +47,12 @@
                 return this.View(searchInputModel);
             }
 
-            var searchResultViewModel = this.destinationsService.GetSearchResult(searchInputModel.DestinationId,
-                searchInputModel.StartDate, searchInputModel.EndDate);
+            var searchResultViewModel = this.destinationsService.GetSearchResult(
+                searchInputModel.DestinationId,
+                searchInputModel.StartDate,
+                searchInputModel.EndDate);
 
-            return this.View("SearchResult", searchResultViewModel);
+            return this.View("IndexWithSearchResult", searchResultViewModel);
         }
 
         private IEnumerable<SelectListItem> SelectAllDestinations()
