@@ -23,6 +23,11 @@
         [HttpPost]
         public IActionResult Book(int id, ReservationCreateInputModel reservationCreateInputModel)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(reservationCreateInputModel);
+            }
+
             var username = this.User.Identity.Name;
             var reservationId = this.reservationsService.BookAsync(
                      id,

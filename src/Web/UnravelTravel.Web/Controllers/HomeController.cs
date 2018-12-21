@@ -1,8 +1,5 @@
-﻿using UnravelTravel.Services.Data.Models.Home;
-
-namespace UnravelTravel.Web.Controllers
+﻿namespace UnravelTravel.Web.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 

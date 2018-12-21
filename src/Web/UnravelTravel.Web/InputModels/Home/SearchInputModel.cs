@@ -1,11 +1,9 @@
-﻿using UnravelTravel.Web.Attributes;
-
-namespace UnravelTravel.Web.InputModels.Home
+﻿namespace UnravelTravel.Web.InputModels.Home
 {
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using UnravelTravel.Data.Models;
+    using UnravelTravel.Common.Attributes;
 
     public class SearchInputModel
     {
@@ -20,7 +18,7 @@ namespace UnravelTravel.Web.InputModels.Home
 
         [Required]
         [DataType(DataType.Date)]
-        [DateAfter("StartDate", ErrorMessage = "End date cannot be before start date")]
+        [GreaterThan("StartDate", ErrorMessage = "End date cannot be before start date")]
         [Display(Name = "To")]
         public DateTime EndDate { get; set; }
     }
