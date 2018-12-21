@@ -13,14 +13,10 @@ namespace UnravelTravel.Web.Controllers
 
     public class HomeController : BaseController
     {
-        private readonly IActivitiesService activitiesService;
-        private readonly IRestaurantsService restaurantsService;
         private readonly IDestinationsService destinationsService;
 
-        public HomeController(IActivitiesService activitiesService, IRestaurantsService restaurantsService, IDestinationsService destinationsService)
+        public HomeController(IDestinationsService destinationsService)
         {
-            this.activitiesService = activitiesService;
-            this.restaurantsService = restaurantsService;
             this.destinationsService = destinationsService;
         }
 
@@ -30,34 +26,14 @@ namespace UnravelTravel.Web.Controllers
             return this.View();
         }
 
-        [HttpPost]
         public IActionResult Search(SearchInputModel searchInputModel)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.RedirectToAction("Index");
+                return this.RedirectToAction("Index", searchInputModel);
             }
 
-            var activities = this.activitiesService.GetAllAsync()
-                .GetAwaiter()
-                .GetResult()
-                .Where(a =>
-                    a.Location.Destination.Name == searchInputModel.DestinationName &&
-                    a.Date >= searchInputModel.StartDate &&
-                    a.Date <= searchInputModel.EndDate)
-                .ToArray();
-
-            var restaurants = this.restaurantsService.GetAllAsync()
-                .GetAwaiter()
-                .GetResult()
-                .Where(r => r.DestinationName == searchInputModel.DestinationName)
-                .ToArray();
-
-            var searchResultViewModel = new SearchResultViewModel
-            {
-                Activities = activities,
-                Restaurants = restaurants,
-            };
+            var searchResultViewModel = this.destinationsService.GetSearchResult(searchInputModel.DestinationId, searchInputModel.StartDate, searchInputModel.EndDate);
 
             return this.View("SearchResult", searchResultViewModel);
         }

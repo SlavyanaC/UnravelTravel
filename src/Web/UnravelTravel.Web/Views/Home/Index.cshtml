@@ -3,13 +3,13 @@
     var destinations = this.ViewData["Destinations"] as IEnumerable<SelectListItem>;
 }
 
-@await this.Html.PartialAsync("CarouselPartial")
+@await this.Html.PartialAsync("_CarouselPartial")
 <br />
-@await this.Html.PartialAsync("MainEntitiesPartial")
+@await this.Html.PartialAsync("_MainEntitiesPartial")
 <br />
-@*<div class="d-flex justify-content-center">*@
-    @await this.Html.PartialAsync("SearchFormPartial")
-@*</div>*@
+<div class="jumbotron" @*style="padding-top: 30px; padding-bottom: 30px;" *@>
+    @await this.Html.PartialAsync("_SearchFormPartial")
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

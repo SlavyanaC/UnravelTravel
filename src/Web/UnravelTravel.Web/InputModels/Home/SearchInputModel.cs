@@ -1,4 +1,6 @@
-﻿namespace UnravelTravel.Web.InputModels.Home
+﻿using UnravelTravel.Web.Attributes;
+
+namespace UnravelTravel.Web.InputModels.Home
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -11,8 +13,6 @@
         [Display(Name = "Destination")]
         public int DestinationId { get; set; }
 
-        public string DestinationName { get; set; }
-
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "From")]
@@ -20,6 +20,7 @@
 
         [Required]
         [DataType(DataType.Date)]
+        [DateAfter("StartDate", ErrorMessage = "End date cannot be before start date")]
         [Display(Name = "To")]
         public DateTime EndDate { get; set; }
     }

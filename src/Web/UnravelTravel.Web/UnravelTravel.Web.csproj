@@ -43,7 +43,7 @@
     <Content Update="Views\Activities\Review.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Destinations\TopRestaurantsPartial.cshtml">
+    <Content Update="Views\Shared\_DestinationRestaurantsPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Reservations\Book.cshtml">

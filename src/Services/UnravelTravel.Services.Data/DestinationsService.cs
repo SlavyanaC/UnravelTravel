@@ -1,5 +1,6 @@
 ﻿namespace UnravelTravel.Services.Data
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@
     using UnravelTravel.Data.Models;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Models.Destinations;
+    using UnravelTravel.Services.Data.Models.Home;
     using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
@@ -17,12 +19,20 @@
     {
         private readonly IRepository<Destination> destinationsRepository;
         private readonly IRepository<Country> countriesRepository;
+
+        private readonly IActivitiesService activitiesService;
+        private readonly IRestaurantsService restaurantsService;
+
         private readonly Cloudinary cloudinary;
 
-        public DestinationsService(IRepository<Destination> destinationsRepository, IRepository<Country> countriesRepository, Cloudinary cloudinary)
+        public DestinationsService(IRepository<Destination> destinationsRepository, IRepository<Country> countriesRepository, IActivitiesService activitiesService, IRestaurantsService restaurantsService, Cloudinary cloudinary)
         {
             this.destinationsRepository = destinationsRepository;
             this.countriesRepository = countriesRepository;
+
+            this.activitiesService = activitiesService;
+            this.restaurantsService = restaurantsService;
+
             this.cloudinary = cloudinary;
         }
 
@@ -103,6 +113,31 @@
 
             this.destinationsRepository.Update(destination);
             await this.destinationsRepository.SaveChangesAsync();
+        }
+
+        public SearchResultViewModel GetSearchResult(int destinationId, DateTime startDate, DateTime endDate)
+        {
+            var activities = this.activitiesService.GetAllAsync()
+                .GetAwaiter()
+                .GetResult()
+                .Where(a => a.Location.Destination.Id == destinationId &&
+                            a.Date >= startDate &&
+                            a.Date <= endDate)
+                .ToArray();
+
+            var restaurants = this.restaurantsService.GetAllAsync()
+                .GetAwaiter()
+                .GetResult()
+                .Where(r => r.DestinationId == destinationId)
+                .ToArray();
+
+            var searchResultViewModel = new SearchResultViewModel
+            {
+                Activities = activities,
+                Restaurants = restaurants,
+            };
+
+            return searchResultViewModel;
         }
     }
 }

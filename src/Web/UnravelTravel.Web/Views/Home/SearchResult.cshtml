@@ -3,14 +3,29 @@
     this.ViewData["Title"] = "Home Page";
 }
 
-@await this.Html.PartialAsync("CarouselPartial")
+@await this.Html.PartialAsync("_CarouselPartial")
 <br />
-@await this.Html.PartialAsync("MainEntitiesPartial")
+@await this.Html.PartialAsync("_MainEntitiesPartial")
 <br />
-@*<div class="d-flex justify-content-center">*@
-@await this.Html.PartialAsync("SearchFormPartial")
-@*</div>*@
-
+<div class="jumbotron text-center" @*style="padding-top: 30px; padding-bottom: 30px;" *@>
+    <h4>Activities</h4>
+    @await this.Html.PartialAsync("_DestinationActivitiesPartial", @Model.Activities)
+    @if (!Model.Activities.Any())
+    {
+        <p class="text-center">
+            <em class="text-muted">No activities for this period</em>
+        </p>
+    }
+    <h4>Restaurants</h4>
+    @await this.Html.PartialAsync("_DestinationRestaurantsPartial", @Model.Restaurants)
+    @if (!Model.Restaurants.Any())
+    {
+        <p class="text-center">
+            <em class="text-muted">No restaurants in this destination</em>
+        </p>
+    }
+    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">New search</a>
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
