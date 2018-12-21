@@ -1,12 +1,14 @@
 ﻿namespace UnravelTravel.Services.Data
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
 
     using CloudinaryDotNet;
     using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
+    using UnravelTravel.Common;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Services.Data.Contracts;
@@ -115,8 +117,16 @@
             await this.destinationsRepository.SaveChangesAsync();
         }
 
-        public SearchResultViewModel GetSearchResult(int destinationId, DateTime startDate, DateTime endDate)
+        public async Task<SearchResultViewModel> GetSearchResult(int destinationId, DateTime startDate, DateTime endDate)
         {
+            var destination = await this.destinationsRepository.All()
+                .FirstOrDefaultAsync(d => d.Id == destinationId);
+
+            if (destination == null)
+            {
+                throw new NullReferenceException($"Destination with id {destinationId} not fund");
+            }
+
             var activities = this.activitiesService.GetAllAsync()
                 .GetAwaiter()
                 .GetResult()
@@ -133,6 +143,9 @@
 
             var searchResultViewModel = new SearchResultViewModel
             {
+                DestinationName = destination.Name,
+                StartDate = startDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture),
+                EndDate = endDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture),
                 Activities = activities,
                 Restaurants = restaurants,
             };

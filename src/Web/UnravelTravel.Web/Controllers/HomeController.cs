@@ -50,7 +50,9 @@
             var searchResultViewModel = this.destinationsService.GetSearchResult(
                 searchInputModel.DestinationId,
                 searchInputModel.StartDate,
-                searchInputModel.EndDate);
+                searchInputModel.EndDate)
+                .GetAwaiter()
+                .GetResult();
 
             return this.View("IndexWithSearchResult", searchResultViewModel);
         }

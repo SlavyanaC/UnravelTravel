@@ -10,6 +10,6 @@
     {
         Task<DestinationViewModel[]> GetAllDestinationsAsync();
 
-        SearchResultViewModel GetSearchResult(int destinationId, DateTime startDate, DateTime endDate);
+        Task<SearchResultViewModel> GetSearchResult(int destinationId, DateTime startDate, DateTime endDate);
     }
 }
