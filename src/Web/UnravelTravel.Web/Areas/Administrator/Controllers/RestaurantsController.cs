@@ -27,28 +27,20 @@
         }
 
         [HttpPost]
-        public IActionResult Create(RestaurantCreateInputModel createInputModel)
+        public IActionResult Create(RestaurantCreateInputModel restaurantCreateInputModel)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(createInputModel);
+                return this.View(restaurantCreateInputModel);
             }
 
-            var fileType = createInputModel.Image.ContentType.Split('/')[1];
+            var fileType = restaurantCreateInputModel.Image.ContentType.Split('/')[1];
             if (!this.IsImageTypeValid(fileType))
             {
-                return this.View(createInputModel);
+                return this.View(restaurantCreateInputModel);
             }
 
-            var restaurantId = this.restaurantsService.CreateAsync(
-                 createInputModel.Name,
-                 createInputModel.Address,
-                 createInputModel.DestinationId,
-                 createInputModel.Image,
-                 createInputModel.Type,
-                 createInputModel.Seats)
-                .GetAwaiter()
-                .GetResult();
+            var restaurantId = this.restaurantsService.CreateAsync(restaurantCreateInputModel).GetAwaiter().GetResult();
 
             return this.RedirectToAction("Details", "Restaurants", new { area = "", id = restaurantId });
         }
@@ -85,18 +77,7 @@
                 }
             }
 
-            var id = restaurantEditView.Id;
-
-            this.restaurantsService.EditAsync(
-                id,
-                restaurantEditView.Name,
-                restaurantEditView.Address,
-                restaurantEditView.DestinationId,
-                restaurantEditView.NewImage,
-                restaurantEditView.Seats,
-                restaurantEditView.Type)
-                .GetAwaiter()
-                .GetResult();
+            this.restaurantsService.EditAsync(restaurantEditView).GetAwaiter().GetResult();
 
             return this.RedirectToAction("All", "Restaurants", new { area = "" });
         }

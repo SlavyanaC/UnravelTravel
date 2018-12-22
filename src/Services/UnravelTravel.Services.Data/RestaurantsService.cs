@@ -5,11 +5,12 @@
     using System.Threading.Tasks;
 
     using CloudinaryDotNet;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
+    using UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants;
+    using UnravelTravel.Models.InputModels.Restaurants;
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Utilities;
@@ -44,27 +45,20 @@
             return restaurants;
         }
 
-        public async Task<int> CreateAsync(params object[] parameters)
+        public async Task<int> CreateAsync(RestaurantCreateInputModel restaurantCreateInputModel)
         {
-            var name = parameters[0].ToString();
-            var address = parameters[1].ToString();
-            var destinationId = int.Parse(parameters[2].ToString());
-            var image = parameters[3] as IFormFile;
-            var typeString = parameters[4].ToString();
-            var seats = int.Parse(parameters[5].ToString());
+            Enum.TryParse(restaurantCreateInputModel.Type, true, out RestaurantType typeEnum);
 
-            Enum.TryParse(typeString, true, out RestaurantType typeEnum);
-
-            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, image, name);
+            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, restaurantCreateInputModel.Image, restaurantCreateInputModel.Name);
 
             var restaurant = new Restaurant()
             {
-                Name = name,
-                Address = address,
-                DestinationId = destinationId,
+                Name = restaurantCreateInputModel.Name,
+                Address = restaurantCreateInputModel.Address,
+                DestinationId = restaurantCreateInputModel.DestinationId,
                 ImageUrl = imageUrl,
                 Type = typeEnum,
-                Seats = seats,
+                Seats = restaurantCreateInputModel.Seats,
             };
 
             this.restaurantsRepository.Add(restaurant);
@@ -84,32 +78,33 @@
             return restaurant;
         }
 
-        public async Task EditAsync(int id, params object[] parameters)
+        public async Task EditAsync(RestaurantEditViewModel restaurantEditViewModel)
         {
-            var name = parameters[0].ToString();
-            var address = parameters[1].ToString();
-            var destinationId = int.Parse(parameters[2].ToString());
-            var newImage = parameters[3] as IFormFile;
-            var seats = int.Parse(parameters[4].ToString());
-            var type = parameters[5].ToString();
+            Enum.TryParse(restaurantEditViewModel.Type, true, out RestaurantType restaurantTypeEnum);
 
-            Enum.TryParse(type, true, out RestaurantType typeEnum);
-
-            var restaurant = this.restaurantsRepository.All().FirstOrDefault(r => r.Id == id);
-            var destination = this.destinationsRepository.All().FirstOrDefault(d => d.Id == destinationId);
-
-            if (newImage != null)
+            var restaurant = this.restaurantsRepository.All().FirstOrDefault(r => r.Id == restaurantEditViewModel.Id);
+            if (restaurant == null)
             {
-                var newImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, newImage, name);
+                throw new NullReferenceException($"Restaurant with id {restaurantEditViewModel.Id} not found.");
+            }
+
+            var destination = this.destinationsRepository.All().FirstOrDefault(d => d.Id == restaurantEditViewModel.DestinationId);
+            if (destination == null)
+            {
+                throw new NullReferenceException($"Destination with id {restaurantEditViewModel.DestinationId} not found.");
+            }
+
+            if (restaurantEditViewModel.NewImage != null)
+            {
+                var newImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, restaurantEditViewModel.NewImage, restaurantEditViewModel.Name);
                 destination.ImageUrl = newImageUrl;
             }
 
-            restaurant.Name = name;
-            restaurant.Address = address;
-            restaurant.DestinationId = destinationId;
-            restaurant.Seats = seats;
-            restaurant.Type = typeEnum;
+            restaurant.Name = restaurantEditViewModel.Name;
+            restaurant.Address = restaurantEditViewModel.Address;
             restaurant.Destination = destination;
+            restaurant.Seats = restaurantEditViewModel.Seats;
+            restaurant.Type = restaurantTypeEnum;
 
             this.restaurantsRepository.Update(restaurant);
             await this.restaurantsRepository.SaveChangesAsync();
@@ -118,30 +113,40 @@
         public async Task DeleteByIdAsync(int id)
         {
             var restaurant = this.restaurantsRepository.All().FirstOrDefault(d => d.Id == id);
+            if (restaurant == null)
+            {
+                throw new NullReferenceException($"Restaurant with id {id} not found");
+            }
+
             restaurant.IsDeleted = true;
 
             this.restaurantsRepository.Update(restaurant);
             await this.restaurantsRepository.SaveChangesAsync();
         }
 
-        public async Task Review(int restaurantId, string username, params object[] parameters)
+        public async Task Review(int restaurantId, string username, RestaurantReviewInputModel restaurantReviewInputModel)
         {
-            var rating = double.Parse(parameters[0].ToString());
-            var content = parameters[1].ToString();
-
             var user = await this.usersRepository.All().Where(u => u.UserName == username).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                throw new NullReferenceException($"User with username {username} not found.");
+            }
+
+            var restaurant = await this.restaurantsRepository.All().Where(r => r.Id == restaurantId).FirstOrDefaultAsync();
+            if (restaurant == null)
+            {
+                throw new NullReferenceException($"Restaurant with id {restaurantId} not found.");
+            }
 
             var review = new Review
             {
                 User = user,
-                Rating = rating,
-                Content = content,
+                Rating = restaurantReviewInputModel.Rating,
+                Content = restaurantReviewInputModel.Content,
             };
 
             this.reviewsRepository.Add(review);
             await this.restaurantsRepository.SaveChangesAsync();
-
-            var restaurant = await this.restaurantsRepository.All().Where(r => r.Id == restaurantId).FirstOrDefaultAsync();
 
             var restaurantReview = new RestaurantReview
             {

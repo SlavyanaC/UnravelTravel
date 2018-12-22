@@ -17,9 +17,7 @@
 
         public IActionResult All()
         {
-            var destinations = this.restaurantsService.GetAllAsync()
-                .GetAwaiter()
-                .GetResult();
+            var destinations = this.restaurantsService.GetAllAsync().GetAwaiter().GetResult();
             if (destinations == null)
             {
                 return this.Redirect("/");
@@ -50,14 +48,7 @@
         public IActionResult Review(int id, RestaurantReviewInputModel restaurantReviewInputModel)
         {
             var username = this.User.Identity.Name;
-            this.restaurantsService.Review(
-                id,
-                username,
-                restaurantReviewInputModel.Rating,
-                restaurantReviewInputModel.Content)
-                .GetAwaiter()
-                .GetResult();
-
+            this.restaurantsService.Review(id, username, restaurantReviewInputModel).GetAwaiter().GetResult();
             return this.RedirectToAction("Details", new { id });
         }
     }
