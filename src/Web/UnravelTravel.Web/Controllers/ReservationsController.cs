@@ -2,8 +2,8 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using UnravelTravel.Models.InputModels.Reservations;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Web.InputModels.Reservations;
 
     [Authorize(Roles = "User")]
     public class ReservationsController : BaseController

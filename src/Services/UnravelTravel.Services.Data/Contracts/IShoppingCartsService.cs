@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    using UnravelTravel.Services.Data.Models.ShoppingCart;
+    using UnravelTravel.Models.ViewModels.ShoppingCart;
 
     public interface IShoppingCartsService
     {

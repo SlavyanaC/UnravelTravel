@@ -5,8 +5,8 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using UnravelTravel.Models.InputModels.Home;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Web.InputModels.Home;
 
     public class HomeController : BaseController
     {

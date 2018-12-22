@@ -6,8 +6,8 @@
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.ViewModels.Countries;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Countries;
     using UnravelTravel.Services.Mapping;
 
     public class CountriesService : ICountriesService

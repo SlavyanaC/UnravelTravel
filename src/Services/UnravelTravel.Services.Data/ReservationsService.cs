@@ -7,8 +7,8 @@
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.ViewModels.Reservations;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Reservations;
     using UnravelTravel.Services.Mapping;
 
     public class ReservationsService : IReservationsService

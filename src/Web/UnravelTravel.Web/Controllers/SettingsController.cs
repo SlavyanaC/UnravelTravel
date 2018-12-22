@@ -7,8 +7,8 @@
     using Microsoft.AspNetCore.Mvc;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.InputModels.Settings;
     using UnravelTravel.Services.Mapping;
-    using UnravelTravel.Web.ViewModels.Settings;
 
     public class SettingsController : BaseController
     {

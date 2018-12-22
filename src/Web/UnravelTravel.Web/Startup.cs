@@ -18,12 +18,12 @@
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Repositories;
     using UnravelTravel.Data.Seeding;
+    using UnravelTravel.Models.InputModels.Account;
     using UnravelTravel.Services.Data;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
     using UnravelTravel.Services.Messaging;
-    using UnravelTravel.Web.InputModels.Account;
 
     public class Startup
     {

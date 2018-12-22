@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    using UnravelTravel.Services.Data.Models.Activities;
+    using UnravelTravel.Models.ViewModels.Activities;
 
     public interface IActivitiesService : ICrudDataService
     {

@@ -1,12 +1,10 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
-    using System;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using UnravelTravel.Models.InputModels.Restaurants;
+    using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Restaurants;
-    using UnravelTravel.Web.InputModels.Restaurants;
 
     public class RestaurantsController : BaseController
     {

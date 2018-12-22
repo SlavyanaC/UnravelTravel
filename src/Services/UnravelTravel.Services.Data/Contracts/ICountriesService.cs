@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    using UnravelTravel.Services.Data.Models.Countries;
+    using UnravelTravel.Models.ViewModels.Countries;
 
     public interface ICountriesService
     {

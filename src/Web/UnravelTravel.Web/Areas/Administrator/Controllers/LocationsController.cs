@@ -5,8 +5,8 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using UnravelTravel.Models.InputModels.AdministratorInputModels.Locations;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Web.Areas.Administrator.InputModels.Locations;
 
     public class LocationsController : AdministratorController
     {

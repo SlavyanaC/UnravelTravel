@@ -2,9 +2,9 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using UnravelTravel.Models.InputModels.Activities;
+    using UnravelTravel.Models.ViewModels.Activities;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Activities;
-    using UnravelTravel.Web.InputModels.Activities;
 
     public class ActivitiesController : BaseController
     {

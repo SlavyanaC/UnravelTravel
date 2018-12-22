@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    using UnravelTravel.Services.Data.Models.Locations;
+    using UnravelTravel.Models.ViewModels.Locations;
 
     public interface ILocationsService
     {

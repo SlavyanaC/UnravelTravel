@@ -5,9 +5,9 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants;
+    using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Restaurants;
-    using UnravelTravel.Web.Areas.Administrator.InputModels.Restaurants;
 
     public class RestaurantsController : AdministratorController
     {

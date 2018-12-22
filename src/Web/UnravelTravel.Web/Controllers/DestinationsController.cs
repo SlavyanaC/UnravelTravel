@@ -1,8 +1,8 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using UnravelTravel.Models.ViewModels.Destinations;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Destinations;
 
     public class DestinationsController : BaseController
     {

@@ -2,7 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    using UnravelTravel.Services.Data.Models.Restaurants;
+    using UnravelTravel.Models.ViewModels.Restaurants;
 
     public interface IRestaurantsService : ICrudDataService
     {

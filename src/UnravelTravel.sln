@@ -31,7 +31,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnravelTravel.Services.Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandBox", "Tests\SandBox\SandBox.csproj", "{089E5B85-429B-4EAB-9F71-DEC3D753C94E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnravelTravel.Services.Mapping", "Services\UnravelTravel.Services.Mapping\UnravelTravel.Services.Mapping.csproj", "{8D42DC21-7B11-4962-8CD6-FF9734E00217}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnravelTravel.Services.Mapping", "Services\UnravelTravel.Services.Mapping\UnravelTravel.Services.Mapping.csproj", "{8D42DC21-7B11-4962-8CD6-FF9734E00217}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{67F64FD0-3D77-4287-91BE-F0D569C24829}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnravelTravel.Models.ViewModels", "Models\UnravelTravel.Models.ViewModels\UnravelTravel.Models.ViewModels.csproj", "{AEC8C6E4-5EE3-4D00-9C37-9A5281A35204}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnravelTravel.Models.InputModels", "Models\UnravelTravel.Models.InputModels\UnravelTravel.Models.InputModels.csproj", "{4764BD87-F002-4FB6-B20B-1003C74B03AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +89,14 @@ Global
 		{8D42DC21-7B11-4962-8CD6-FF9734E00217}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D42DC21-7B11-4962-8CD6-FF9734E00217}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D42DC21-7B11-4962-8CD6-FF9734E00217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEC8C6E4-5EE3-4D00-9C37-9A5281A35204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEC8C6E4-5EE3-4D00-9C37-9A5281A35204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEC8C6E4-5EE3-4D00-9C37-9A5281A35204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEC8C6E4-5EE3-4D00-9C37-9A5281A35204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4764BD87-F002-4FB6-B20B-1003C74B03AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4764BD87-F002-4FB6-B20B-1003C74B03AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4764BD87-F002-4FB6-B20B-1003C74B03AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4764BD87-F002-4FB6-B20B-1003C74B03AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +112,8 @@ Global
 		{4D39C126-3FB5-4B26-B08C-1BF48EFFA23E} = {516E002B-9E6E-4456-B7F6-EAA353966DE6}
 		{089E5B85-429B-4EAB-9F71-DEC3D753C94E} = {7A731632-6714-44E2-A9E4-069EBA9E666C}
 		{8D42DC21-7B11-4962-8CD6-FF9734E00217} = {516E002B-9E6E-4456-B7F6-EAA353966DE6}
+		{AEC8C6E4-5EE3-4D00-9C37-9A5281A35204} = {67F64FD0-3D77-4287-91BE-F0D569C24829}
+		{4764BD87-F002-4FB6-B20B-1003C74B03AF} = {67F64FD0-3D77-4287-91BE-F0D569C24829}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3898FC54-1A39-4671-8B97-5DFDF1E203DA}

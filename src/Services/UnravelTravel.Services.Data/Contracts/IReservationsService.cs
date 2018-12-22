@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
 
-    using UnravelTravel.Services.Data.Models.Reservations;
+    using UnravelTravel.Models.ViewModels.Reservations;
 
     public interface IReservationsService
     {

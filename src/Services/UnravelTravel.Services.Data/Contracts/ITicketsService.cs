@@ -2,8 +2,8 @@
 {
     using System.Threading.Tasks;
 
-    using UnravelTravel.Services.Data.Models.ShoppingCart;
-    using UnravelTravel.Services.Data.Models.Tickets;
+    using UnravelTravel.Models.ViewModels.ShoppingCart;
+    using UnravelTravel.Models.ViewModels.Tickets;
 
     public interface ITicketsService
     {

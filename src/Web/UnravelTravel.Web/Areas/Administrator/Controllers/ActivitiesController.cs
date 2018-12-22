@@ -5,9 +5,9 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using UnravelTravel.Models.InputModels.AdministratorInputModels.Activities;
+    using UnravelTravel.Models.ViewModels.Activities;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Activities;
-    using UnravelTravel.Web.Areas.Administrator.InputModels.Activities;
 
     public class ActivitiesController : AdministratorController
     {

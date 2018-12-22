@@ -3,8 +3,8 @@
     using System;
     using System.Threading.Tasks;
 
-    using UnravelTravel.Services.Data.Models.Destinations;
-    using UnravelTravel.Services.Data.Models.Home;
+    using UnravelTravel.Models.ViewModels.Destinations;
+    using UnravelTravel.Models.ViewModels.Home;
 
     public interface IDestinationsService : ICrudDataService
     {

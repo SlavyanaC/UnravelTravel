@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\UnravelTravel.Data.Models\UnravelTravel.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\UnravelTravel.Data\UnravelTravel.Data.csproj" />
+    <ProjectReference Include="..\..\Models\UnravelTravel.Models.InputModels\UnravelTravel.Models.InputModels.csproj" />
     <ProjectReference Include="..\..\Services\UnravelTravel.Services.Data\UnravelTravel.Services.Data.csproj" />
     <ProjectReference Include="..\..\Services\UnravelTravel.Services.Messaging\UnravelTravel.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\UnravelTravel.Services\UnravelTravel.Services.csproj" />

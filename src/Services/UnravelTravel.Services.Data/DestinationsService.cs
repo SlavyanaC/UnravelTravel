@@ -11,9 +11,9 @@
     using UnravelTravel.Common;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.ViewModels.Destinations;
+    using UnravelTravel.Models.ViewModels.Home;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Destinations;
-    using UnravelTravel.Services.Data.Models.Home;
     using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 

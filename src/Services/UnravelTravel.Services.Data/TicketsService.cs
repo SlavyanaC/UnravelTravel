@@ -7,9 +7,9 @@
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.ViewModels.ShoppingCart;
+    using UnravelTravel.Models.ViewModels.Tickets;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.ShoppingCart;
-    using UnravelTravel.Services.Data.Models.Tickets;
     using UnravelTravel.Services.Mapping;
 
     public class TicketsService : ITicketsService

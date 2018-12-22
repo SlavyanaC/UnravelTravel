@@ -6,10 +6,10 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using UnravelTravel.Models.InputModels.AdministratorInputModels.Destinations;
+    using UnravelTravel.Models.ViewModels.Destinations;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Destinations;
     using UnravelTravel.Services.Data.Utilities;
-    using UnravelTravel.Web.Areas.Administrator.InputModels.Destinations;
 
     public class DestinationsController : AdministratorController
     {

@@ -13,7 +13,6 @@
     using Microsoft.Extensions.Logging;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.ShoppingCart;
     using UnravelTravel.Web.Areas.Identity.Pages.Account.InputModels;
     using UnravelTravel.Web.Helpers;
 

@@ -10,8 +10,8 @@
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
+    using UnravelTravel.Models.ViewModels.Activities;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Models.Activities;
     using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
