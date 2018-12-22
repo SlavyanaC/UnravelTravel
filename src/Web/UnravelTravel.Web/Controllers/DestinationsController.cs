@@ -28,7 +28,7 @@
 
         public IActionResult Details(int id)
         {
-            var destination = this.destinationsService.GetViewModelAsync<DestinationDetailsViewModel>(id)
+            var destination = this.destinationsService.GetViewModelByIdAsync<DestinationDetailsViewModel>(id)
                 .GetAwaiter()
                 .GetResult();
             if (destination == null)

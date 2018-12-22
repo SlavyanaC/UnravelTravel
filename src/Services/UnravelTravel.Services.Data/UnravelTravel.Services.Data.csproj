@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\UnravelTravel.Data.Models\UnravelTravel.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Models\UnravelTravel.Models.InputModels\UnravelTravel.Models.InputModels.csproj" />
     <ProjectReference Include="..\..\Models\UnravelTravel.Models.ViewModels\UnravelTravel.Models.ViewModels.csproj" />
     <ProjectReference Include="..\..\UnravelTravel.Common\UnravelTravel.Common.csproj" />
     <ProjectReference Include="..\UnravelTravel.Services.Mapping\UnravelTravel.Services.Mapping.csproj" />

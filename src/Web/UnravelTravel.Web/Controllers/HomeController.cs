@@ -33,7 +33,7 @@
         //     {
         //         return this.RedirectToAction("Index", searchInputModel);
         //     }
-        //     var searchResultViewModel = this.destinationsService.GetSearchResult(searchInputModel.DestinationId,  searchInputModel.StartDate, searchInputModel.EndDate);
+        //     var searchResultViewModel = this.destinationsService.GetSearchResultAsync(searchInputModel.DestinationId,  searchInputModel.StartDate, searchInputModel.EndDate);
         //     return this.View("SearchResult", searchResultViewModel);
         // }
 
@@ -47,7 +47,7 @@
                 return this.View(searchInputModel);
             }
 
-            var searchResultViewModel = this.destinationsService.GetSearchResult(
+            var searchResultViewModel = this.destinationsService.GetSearchResultAsync(
                 searchInputModel.DestinationId,
                 searchInputModel.StartDate,
                 searchInputModel.EndDate)

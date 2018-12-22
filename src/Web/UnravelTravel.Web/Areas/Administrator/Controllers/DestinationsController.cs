@@ -42,11 +42,7 @@
                 return this.View(destinationCreateInputModel);
             }
 
-            var destinationId = this.destinationsService.CreateAsync(
-                destinationCreateInputModel.Name,
-                destinationCreateInputModel.CountryId,
-                destinationCreateInputModel.Image,
-                destinationCreateInputModel.Information)
+            var destinationId = this.destinationsService.CreateAsync(destinationCreateInputModel)
                 .GetAwaiter()
                 .GetResult();
 
@@ -57,7 +53,7 @@
         {
             this.ViewData["countries"] = this.SelectAllCounties();
 
-            var destinationToEdit = this.destinationsService.GetViewModelAsync<DestinationEditViewModel>(id)
+            var destinationToEdit = this.destinationsService.GetViewModelByIdAsync<DestinationEditViewModel>(id)
                 .GetAwaiter()
                 .GetResult();
             if (destinationToEdit == null)
@@ -85,16 +81,7 @@
                 }
             }
 
-            var id = destinationEditViewModel.Id;
-
-            this.destinationsService.EditAsync(
-                id,
-                destinationEditViewModel.Name,
-                destinationEditViewModel.CountryId,
-                destinationEditViewModel.NewImage,
-                destinationEditViewModel.Information)
-                .GetAwaiter()
-                .GetResult();
+            this.destinationsService.EditAsync(destinationEditViewModel).GetAwaiter().GetResult();
 
             return this.RedirectToAction("All", "Destinations", new { area = "" });
         }
@@ -102,7 +89,7 @@
         [Authorize]
         public IActionResult Delete(int id)
         {
-            var destinationToDelete = this.destinationsService.GetViewModelAsync<DestinationEditViewModel>(id)
+            var destinationToDelete = this.destinationsService.GetViewModelByIdAsync<DestinationEditViewModel>(id)
                 .GetAwaiter()
                 .GetResult();
             if (destinationToDelete == null)
@@ -117,7 +104,7 @@
         public IActionResult Delete(DestinationEditViewModel destinationEditViewModel)
         {
             var id = destinationEditViewModel.Id;
-            this.destinationsService.DeleteAsync(id).GetAwaiter().GetResult();
+            this.destinationsService.DeleteByIdAsync(id).GetAwaiter().GetResult();
             return this.RedirectToAction("All", "Destinations", new { area = "" });
         }
 

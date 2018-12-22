@@ -11,6 +11,7 @@
     using UnravelTravel.Common;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.InputModels.AdministratorInputModels.Destinations;
     using UnravelTravel.Models.ViewModels.Destinations;
     using UnravelTravel.Models.ViewModels.Home;
     using UnravelTravel.Services.Data.Contracts;
@@ -50,21 +51,16 @@
             return destinations;
         }
 
-        public async Task<int> CreateAsync(params object[] parameters)
+        public async Task<int> CreateAsync(DestinationCreateInputModel destinationCreateInputModel)
         {
-            var name = parameters[0].ToString();
-            var countryId = int.Parse(parameters[1].ToString());
-            var image = parameters[2] as IFormFile;
-            var information = parameters[3].ToString();
-
-            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, image, name);
+            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, destinationCreateInputModel.Image, destinationCreateInputModel.Name);
 
             var destination = new Destination
             {
-                Name = name,
-                CountryId = countryId,
+                Name = destinationCreateInputModel.Name,
+                CountryId = destinationCreateInputModel.CountryId,
                 ImageUrl = imageUrl,
-                Information = information,
+                Information = destinationCreateInputModel.Information,
             };
 
             this.destinationsRepository.Add(destination);
@@ -73,7 +69,7 @@
             return destination.Id;
         }
 
-        public async Task<TViewModel> GetViewModelAsync<TViewModel>(int id)
+        public async Task<TViewModel> GetViewModelByIdAsync<TViewModel>(int id)
         {
             var destination = await this.destinationsRepository
                 .All()
@@ -84,40 +80,52 @@
             return destination;
         }
 
-        public async Task EditAsync(int id, params object[] parameters)
+        public async Task EditAsync(DestinationEditViewModel destinationEditViewModel)
         {
-            var name = parameters[0].ToString();
-            var countryId = int.Parse(parameters[1].ToString());
-            var newImage = parameters[2] as IFormFile;
-            var information = parameters[3].ToString();
-
-            var destination = this.destinationsRepository.All().FirstOrDefault(d => d.Id == id);
-            var country = this.countriesRepository.All().FirstOrDefault(c => c.Id == countryId);
-
-            if (newImage != null)
+            var destination = this.destinationsRepository.All()
+                .FirstOrDefault(d => d.Id == destinationEditViewModel.Id);
+            if (destination == null)
             {
-                var newImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, newImage, name);
+                throw new NullReferenceException($"Destination with id {destinationEditViewModel.Id} not found.");
+            }
+
+            var country = this.countriesRepository.All()
+                .FirstOrDefault(c => c.Id == destinationEditViewModel.CountryId);
+            if (country == null)
+            {
+                throw new NullReferenceException($"Country with id {destinationEditViewModel.CountryId} not found.");
+            }
+
+            if (destinationEditViewModel.NewImage != null)
+            {
+                var newImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, destinationEditViewModel.NewImage, destinationEditViewModel.Name);
                 destination.ImageUrl = newImageUrl;
             }
 
-            destination.Name = name;
+            destination.Name = destinationEditViewModel.Name;
             destination.Country = country;
-            destination.Information = information;
+            destination.Information = destinationEditViewModel.Information;
 
             this.destinationsRepository.Update(destination);
             await this.destinationsRepository.SaveChangesAsync();
+
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var destination = this.destinationsRepository.All().FirstOrDefault(d => d.Id == id);
+            if (destination == null)
+            {
+                throw new NullReferenceException($"Destination with id {id} not found");
+            }
+
             destination.IsDeleted = true;
 
             this.destinationsRepository.Update(destination);
             await this.destinationsRepository.SaveChangesAsync();
         }
 
-        public async Task<SearchResultViewModel> GetSearchResult(int destinationId, DateTime startDate, DateTime endDate)
+        public async Task<SearchResultViewModel> GetSearchResultAsync(int destinationId, DateTime startDate, DateTime endDate)
         {
             var destination = await this.destinationsRepository.All()
                 .FirstOrDefaultAsync(d => d.Id == destinationId);
