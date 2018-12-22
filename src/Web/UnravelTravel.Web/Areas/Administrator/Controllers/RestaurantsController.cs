@@ -57,7 +57,7 @@
         {
             this.ViewData["Destinations"] = this.SelectAllDestinations();
 
-            var restaurantToEdit = this.restaurantsService.GetViewModelAsync<RestaurantEditViewModel>(id)
+            var restaurantToEdit = this.restaurantsService.GetViewModelByIdAsync<RestaurantEditViewModel>(id)
                 .GetAwaiter()
                 .GetResult();
             if (restaurantToEdit == null)
@@ -103,7 +103,7 @@
 
         public IActionResult Delete(int id)
         {
-            var restaurantToDelete = this.restaurantsService.GetViewModelAsync<RestaurantEditViewModel>(id)
+            var restaurantToDelete = this.restaurantsService.GetViewModelByIdAsync<RestaurantEditViewModel>(id)
                 .GetAwaiter()
                 .GetResult();
             if (restaurantToDelete == null)
@@ -118,7 +118,7 @@
         public IActionResult Delete(RestaurantEditViewModel destinationEditViewModel)
         {
             var id = destinationEditViewModel.Id;
-            this.restaurantsService.DeleteAsync(id).GetAwaiter().GetResult();
+            this.restaurantsService.DeleteByIdAsync(id).GetAwaiter().GetResult();
             return this.RedirectToAction("All", "Restaurants", new { area = "" });
         }
 

@@ -77,7 +77,7 @@
             return activity.Id;
         }
 
-        public async Task<TViewModel> GetViewModelAsync<TViewModel>(int id)
+        public async Task<TViewModel> GetViewModelByIdAsync<TViewModel>(int id)
         {
             var activity = await this.activitiesRepository
                 .All()
@@ -116,7 +116,7 @@
             await this.activitiesRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var destination = this.activitiesRepository.All().FirstOrDefault(d => d.Id == id);
             destination.IsDeleted = true;

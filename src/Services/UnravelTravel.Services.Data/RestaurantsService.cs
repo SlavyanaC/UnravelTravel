@@ -73,7 +73,7 @@
             return restaurant.Id;
         }
 
-        public async Task<TViewModel> GetViewModelAsync<TViewModel>(int id)
+        public async Task<TViewModel> GetViewModelByIdAsync<TViewModel>(int id)
         {
             var restaurant = await this.restaurantsRepository
                 .All()
@@ -115,7 +115,7 @@
             await this.restaurantsRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var restaurant = this.restaurantsRepository.All().FirstOrDefault(d => d.Id == id);
             restaurant.IsDeleted = true;

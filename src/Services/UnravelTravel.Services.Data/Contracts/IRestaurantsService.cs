@@ -4,7 +4,7 @@
 
     using UnravelTravel.Models.ViewModels.Restaurants;
 
-    public interface IRestaurantsService : ICrudDataService
+    public interface IRestaurantsService : IBaseDataService
     {
         Task<RestaurantViewModel[]> GetAllAsync();
 

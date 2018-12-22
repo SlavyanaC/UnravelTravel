@@ -30,7 +30,7 @@
 
         public IActionResult Details(int id)
         {
-            var detailsViewModel = this.activitiesService.GetViewModelAsync<ActivityDetailsViewModel>(id)
+            var detailsViewModel = this.activitiesService.GetViewModelByIdAsync<ActivityDetailsViewModel>(id)
                 .GetAwaiter()
                 .GetResult();
             return this.View(detailsViewModel);
@@ -39,7 +39,7 @@
         [Authorize]
         public IActionResult Review(int id)
         {
-            var reviewInputModel = this.activitiesService.GetViewModelAsync<ActivityReviewInputModel>(id)
+            var reviewInputModel = this.activitiesService.GetViewModelByIdAsync<ActivityReviewInputModel>(id)
                 .GetAwaiter()
                 .GetResult();
             return this.View(reviewInputModel);

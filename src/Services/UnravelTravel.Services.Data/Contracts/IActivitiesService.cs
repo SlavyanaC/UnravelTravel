@@ -4,7 +4,7 @@
 
     using UnravelTravel.Models.ViewModels.Activities;
 
-    public interface IActivitiesService : ICrudDataService
+    public interface IActivitiesService : IBaseDataService
     {
         Task<ActivityViewModel[]> GetAllAsync();
 

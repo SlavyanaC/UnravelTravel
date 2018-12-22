@@ -56,7 +56,7 @@
         public IActionResult Edit(int id)
         {
             this.ViewData["Locations"] = this.SelectAllLocations();
-            var activityToEdit = this.activitiesService.GetViewModelAsync<ActivityToEditViewModel>(id)
+            var activityToEdit = this.activitiesService.GetViewModelByIdAsync<ActivityToEditViewModel>(id)
                 .GetAwaiter()
                 .GetResult();
             if (activityToEdit == null)
@@ -100,7 +100,7 @@
 
         public IActionResult Delete(int id)
         {
-            var activityToDelete = this.activitiesService.GetViewModelAsync<ActivityToEditViewModel>(id)
+            var activityToDelete = this.activitiesService.GetViewModelByIdAsync<ActivityToEditViewModel>(id)
                 .GetAwaiter()
                 .GetResult();
             if (activityToDelete == null)
@@ -115,7 +115,7 @@
         public IActionResult Delete(ActivityToEditViewModel activityToEditViewModel)
         {
             var id = activityToEditViewModel.Id;
-            this.activitiesService.DeleteAsync(id)
+            this.activitiesService.DeleteByIdAsync(id)
                 .GetAwaiter()
                 .GetResult();
             return this.RedirectToAction("All", "Activities", new { area = "" });
