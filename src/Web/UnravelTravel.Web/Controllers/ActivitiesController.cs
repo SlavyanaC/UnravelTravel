@@ -17,9 +17,7 @@
 
         public IActionResult All()
         {
-            var activities = this.activitiesService.GetAllAsync()
-                .GetAwaiter()
-                .GetResult();
+            var activities = this.activitiesService.GetAllAsync().GetAwaiter().GetResult();
             if (activities == null)
             {
                 return this.Redirect("/");
@@ -47,19 +45,16 @@
 
         [Authorize]
         [HttpPost]
-        public IActionResult Review(int id, ActivityReviewInputModel addReviewInputModel)
+        public IActionResult Review(int id, ActivityReviewInputModel activityReviewInputModel)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(addReviewInputModel);
+                return this.View(activityReviewInputModel);
             }
 
             var username = this.User.Identity.Name;
 
-            this.activitiesService.Review(id, username, addReviewInputModel.Rating, addReviewInputModel.Content)
-                .GetAwaiter()
-                .GetResult();
-
+            this.activitiesService.Review(id, username, activityReviewInputModel).GetAwaiter().GetResult();
             return this.RedirectToAction("Details", new { id = id });
         }
     }

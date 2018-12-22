@@ -27,28 +27,20 @@
         }
 
         [HttpPost]
-        public IActionResult Create(ActivityCreateInputModel createInputModel)
+        public IActionResult Create(ActivityCreateInputModel activityCreateInputModel)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(createInputModel);
+                return this.View(activityCreateInputModel);
             }
 
-            var fileType = createInputModel.Image.ContentType.Split('/')[1];
+            var fileType = activityCreateInputModel.Image.ContentType.Split('/')[1];
             if (!this.IsImageTypeValid(fileType))
             {
-                return this.View(createInputModel);
+                return this.View(activityCreateInputModel);
             }
 
-            var activityId = this.activitiesService.CreateAsync(
-                createInputModel.Name,
-                createInputModel.Image,
-                createInputModel.Date,
-                createInputModel.Type,
-                createInputModel.LocationId,
-                createInputModel.Price)
-                .GetAwaiter()
-                .GetResult();
+            var activityId = this.activitiesService.CreateAsync(activityCreateInputModel).GetAwaiter().GetResult();
 
             return this.RedirectToAction("Details", "Activities", new { area = "", id = activityId });
         }
@@ -84,16 +76,7 @@
                 }
             }
 
-            var id = activityToEditViewModel.Id;
-            this.activitiesService.EditAsync(
-                id,
-                activityToEditViewModel.Name,
-                activityToEditViewModel.NewImage,
-                activityToEditViewModel.Date,
-                activityToEditViewModel.Type,
-                activityToEditViewModel.LocationId)
-                .GetAwaiter()
-                .GetResult();
+            this.activitiesService.EditAsync(activityToEditViewModel).GetAwaiter().GetResult();
 
             return this.RedirectToAction("All", "Activities", new { area = "" });
         }

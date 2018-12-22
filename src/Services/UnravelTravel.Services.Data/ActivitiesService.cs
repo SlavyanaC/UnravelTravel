@@ -10,6 +10,8 @@
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
+    using UnravelTravel.Models.InputModels.Activities;
+    using UnravelTravel.Models.InputModels.AdministratorInputModels.Activities;
     using UnravelTravel.Models.ViewModels.Activities;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Utilities;
@@ -44,31 +46,26 @@
             return activities;
         }
 
-        public async Task<int> CreateAsync(params object[] parameters)
+        public async Task<int> CreateAsync(ActivityCreateInputModel activityCreateInputModel)
         {
-            var name = parameters[0].ToString();
-            var image = parameters[1] as IFormFile;
-            var date = DateTime.Parse(parameters[2].ToString());
-            var typeString = parameters[3].ToString();
-            var locationId = int.Parse(parameters[4].ToString());
-            var price = decimal.Parse(parameters[5].ToString());
+            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, activityCreateInputModel.Image, activityCreateInputModel.Name);
 
-            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, image, name);
+            Enum.TryParse(activityCreateInputModel.Type, true, out ActivityType activityTypeEnum);
 
-            Enum.TryParse(typeString, true, out ActivityType typeEnum);
-
-            var location = await this.locationsRepository
-                .All()
-                .FirstOrDefaultAsync(l => l.Id == locationId);
+            var location = await this.locationsRepository.All().FirstOrDefaultAsync(l => l.Id == activityCreateInputModel.LocationId);
+            if (location == null)
+            {
+                throw new NullReferenceException($"Location with id {activityCreateInputModel.LocationId} not found");
+            }
 
             var activity = new Activity
             {
-                Name = name,
+                Name = activityCreateInputModel.Name,
                 ImageUrl = imageUrl,
-                Date = date,
-                Type = typeEnum,
+                Date = activityCreateInputModel.Date,
+                Type = activityTypeEnum,
                 Location = location,
-                Price = price,
+                Price = activityCreateInputModel.Price,
             };
 
             this.activitiesRepository.Add(activity);
@@ -88,28 +85,31 @@
             return activity;
         }
 
-        public async Task EditAsync(int id, params object[] parameters)
+        public async Task EditAsync(ActivityToEditViewModel activityToEditViewModel)
         {
-            var name = parameters[0].ToString();
-            var newImage = parameters[1] as IFormFile;
-            var date = DateTime.Parse(parameters[2].ToString());
-            var typeString = parameters[3].ToString();
-            var locationId = int.Parse(parameters[4].ToString());
-
-            var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == id);
-            var location = await this.locationsRepository.All().FirstOrDefaultAsync(l => l.Id == locationId);
-
-            Enum.TryParse(typeString, true, out ActivityType typeEnum);
-
-            if (newImage != null)
+            var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == activityToEditViewModel.Id);
+            if (activity == null)
             {
-                var newImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, newImage, name);
+                throw new NullReferenceException($"Activity with id {activityToEditViewModel.Id} not found.");
+            }
+
+            var location = await this.locationsRepository.All().FirstOrDefaultAsync(l => l.Id == activityToEditViewModel.LocationId);
+            if (location == null)
+            {
+                throw new NullReferenceException($"Location with id {activityToEditViewModel.LocationId} not found.");
+            }
+
+            Enum.TryParse(activityToEditViewModel.Type, true, out ActivityType activityTypeEnum);
+
+            if (activityToEditViewModel.NewImage != null)
+            {
+                var newImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, activityToEditViewModel.NewImage, activityToEditViewModel.Name);
                 activity.ImageUrl = newImageUrl;
             }
 
-            activity.Name = name;
-            activity.Type = typeEnum;
-            activity.Date = date;
+            activity.Name = activityToEditViewModel.Name;
+            activity.Type = activityTypeEnum;
+            activity.Date = activityToEditViewModel.Date;
             activity.Location = location;
 
             this.activitiesRepository.Update(activity);
@@ -118,30 +118,41 @@
 
         public async Task DeleteByIdAsync(int id)
         {
-            var destination = this.activitiesRepository.All().FirstOrDefault(d => d.Id == id);
-            destination.IsDeleted = true;
+            var activity = this.activitiesRepository.All().FirstOrDefault(d => d.Id == id);
+            if (activity == null)
+            {
+                throw new NullReferenceException($"Activity with id {id} not found");
+            }
 
-            this.activitiesRepository.Update(destination);
+            activity.IsDeleted = true;
+
+            this.activitiesRepository.Update(activity);
             await this.activitiesRepository.SaveChangesAsync();
         }
 
-        public async Task Review(int id, string username, params object[] parameters)
+        public async Task Review(int activityId, string username, ActivityReviewInputModel activityReviewInputModel)
         {
-            var rating = double.Parse(parameters[0].ToString());
-            var content = parameters[1].ToString();
-
             var user = await this.usersRepository.All().Where(u => u.UserName == username).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                throw new NullReferenceException($"User with username {username} not found");
+            }
+
+            var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == activityId);
+            if (activity == null)
+            {
+                throw new NullReferenceException($"Activity with id {activityReviewInputModel.Id} not found.");
+            }
+
             var review = new Review
             {
-                Rating = rating,
-                Content = content,
                 User = user,
+                Rating = activityReviewInputModel.Rating,
+                Content = activityReviewInputModel.Content,
             };
 
             this.reviewsRepository.Add(review);
             await this.reviewsRepository.SaveChangesAsync();
-
-            var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == id);
 
             var activityReview = new ActivityReview
             {
