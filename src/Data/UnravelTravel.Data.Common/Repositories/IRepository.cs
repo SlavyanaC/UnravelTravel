@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Data.Common.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@
         void Add(TEntity entity);
 
         void Update(TEntity entity);
+
+        void UpdateRange(ICollection<TEntity> entities);
 
         void Delete(TEntity entity);
 

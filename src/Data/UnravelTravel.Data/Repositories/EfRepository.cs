@@ -1,4 +1,6 @@
-﻿namespace UnravelTravel.Data.Repositories
+﻿using System.Collections.Generic;
+
+namespace UnravelTravel.Data.Repositories
 {
     using System;
     using System.Linq;
@@ -40,6 +42,20 @@
             }
 
             entry.State = EntityState.Modified;
+        }
+
+        public void UpdateRange(ICollection<TEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                var entry = this.Context.Entry(entity);
+                if (entry.State == EntityState.Detached)
+                {
+                    this.DbSet.Attach(entity);
+                }
+
+                entry.State = EntityState.Modified;
+            }
         }
 
         public virtual void Delete(TEntity entity)
