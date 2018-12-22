@@ -40,6 +40,10 @@
 
         public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
+        public DbSet<ShoppingCartActivity> ShoppingCartActivities { get; set; }
+
         public DbSet<Ticket> Tickets { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
@@ -61,6 +65,12 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ShoppingCart>()
+                .HasOne(sc => sc.User)
+                .WithOne(u => u.ShoppingCart)
+                .HasForeignKey<ApplicationUser>(u => u.ShoppingCartId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Needed for Identity models configuration
             base.OnModelCreating(builder);
 

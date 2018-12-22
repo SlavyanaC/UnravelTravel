@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using UnravelTravel.Data.Common.Models;
     using UnravelTravel.Data.Models.Enums;
@@ -22,6 +21,8 @@
         public string ImageUrl { get; set; }
 
         public DateTime Date { get; set; }
+
+        public decimal? Price { get; set; }
 
         public int LocationId { get; set; }
 

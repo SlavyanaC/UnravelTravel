@@ -10,7 +10,7 @@ using UnravelTravel.Data;
 namespace UnravelTravel.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181217143506_InitialCreate")]
+    [Migration("20181222110952_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,6 +113,8 @@ namespace UnravelTravel.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<double>("AverageRating");
+
                     b.Property<DateTime>("CreatedOn");
 
                     b.Property<DateTime>("Date");
@@ -128,6 +130,8 @@ namespace UnravelTravel.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn");
 
                     b.Property<string>("Name");
+
+                    b.Property<decimal?>("Price");
 
                     b.Property<int>("Type");
 
@@ -246,6 +250,8 @@ namespace UnravelTravel.Data.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<int>("ShoppingCartId");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -262,6 +268,9 @@ namespace UnravelTravel.Data.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("ShoppingCartId")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers");
                 });
@@ -386,6 +395,8 @@ namespace UnravelTravel.Data.Migrations
 
                     b.Property<string>("Address");
 
+                    b.Property<double>("AverageRating");
+
                     b.Property<DateTime>("CreatedOn");
 
                     b.Property<DateTime?>("DeletedOn");
@@ -496,6 +507,48 @@ namespace UnravelTravel.Data.Migrations
                     b.ToTable("Settings");
                 });
 
+            modelBuilder.Entity("UnravelTravel.Data.Models.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShoppingCarts");
+                });
+
+            modelBuilder.Entity("UnravelTravel.Data.Models.ShoppingCartActivity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ActivityId");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int>("ShoppingCartId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
+
+                    b.HasIndex("ShoppingCartId");
+
+                    b.ToTable("ShoppingCartActivities");
+                });
+
             modelBuilder.Entity("UnravelTravel.Data.Models.Ticket", b =>
                 {
                     b.Property<int>("Id")
@@ -591,6 +644,14 @@ namespace UnravelTravel.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            modelBuilder.Entity("UnravelTravel.Data.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("UnravelTravel.Data.Models.ShoppingCart", "ShoppingCart")
+                        .WithOne("User")
+                        .HasForeignKey("UnravelTravel.Data.Models.ApplicationUser", "ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("UnravelTravel.Data.Models.Destination", b =>
                 {
                     b.HasOne("UnravelTravel.Data.Models.Country", "Country")
@@ -645,6 +706,19 @@ namespace UnravelTravel.Data.Migrations
                     b.HasOne("UnravelTravel.Data.Models.ApplicationUser", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("UnravelTravel.Data.Models.ShoppingCartActivity", b =>
+                {
+                    b.HasOne("UnravelTravel.Data.Models.Activity", "Activity")
+                        .WithMany()
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UnravelTravel.Data.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany("ShoppingCartActivities")
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("UnravelTravel.Data.Models.Ticket", b =>

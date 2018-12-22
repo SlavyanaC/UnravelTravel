@@ -23,6 +23,10 @@ namespace UnravelTravel.Data.Models
 
         public string FullName { get; set; }
 
+        public int ShoppingCartId { get; set; }
+
+        public virtual ShoppingCart ShoppingCart { get; set; }
+
         // Audit info
         public DateTime CreatedOn { get; set; }
 
