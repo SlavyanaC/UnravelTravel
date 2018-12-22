@@ -18,6 +18,7 @@
         }
         <li class="text-center">Date: @Model.Date</li>
         <li class="text-center">Activity type: @Model.SplitWordsType</li>
+        <li class="text-center">Price: @Model.Price</li>
         <li class="text-center">
             Activity rating:
             @if (Model.AverageRating != 0.0)
@@ -33,8 +34,12 @@
     <div class="row d-flex justify-content-around">
         @if (this.User.IsInRole(GlobalConstants.UserRoleName))
         {
-            <form class="text-center" method="post" asp-area="" asp-controller="Tickets" asp-action="Book" asp-route-id="@Model.Id">
-                <button type="submit" class="btn btn-outline-primary">Book ticket</button>
+            <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
+                <div class="row form-group justify-content-center">
+                    <label>Quantity: </label>&nbsp;
+                    <input type="number" id="quantity" name="quantity" class="form-control form-control-sm col-md-3"/>
+                </div>
+                    <button type="submit" class="btn btn-outline-primary">Add to cart</button>
             </form>
         }
         else if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))

@@ -45,7 +45,8 @@
                 createInputModel.Image,
                 createInputModel.Date,
                 createInputModel.Type,
-                createInputModel.LocationId)
+                createInputModel.LocationId,
+                createInputModel.Price)
                 .GetAwaiter()
                 .GetResult();
 

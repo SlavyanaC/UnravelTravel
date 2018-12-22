@@ -51,6 +51,7 @@
             var date = DateTime.Parse(parameters[2].ToString());
             var typeString = parameters[3].ToString();
             var locationId = int.Parse(parameters[4].ToString());
+            var price = decimal.Parse(parameters[5].ToString());
 
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, image, name);
 
@@ -67,6 +68,7 @@
                 Date = date,
                 Type = typeEnum,
                 Location = location,
+                Price = price,
             };
 
             this.activitiesRepository.Add(activity);

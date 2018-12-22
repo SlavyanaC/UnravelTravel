@@ -1,0 +1,76 @@
+﻿@model IEnumerable<UnravelTravel.Services.Data.Models.ShoppingCart.ShoppingCartActivityViewModel>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<h2 class="text-center">Shopping Cart</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityHourString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityLocationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateString)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityHourString)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityLocationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityPrice)$
+                </td>
+                <td>
+                    <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Edit" asp-route-id="@item.Id" asp-route-newQuantity="newQuantity">
+                        <div class="row">
+                            <input type="number" id="newQuantity" name="newQuantity" class="form-control form-control-sm col-md-3" value="@item.Quantity" />
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Edit</button>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="">
+    <div class="text-center">
+        <h5>Total sum: @Model.Sum(x => x.ShoppingCartActivityTotalPrice) $</h5>
+        <form class="text-center" method="post" asp-area="" asp-controller="Tickets" asp-action="Book">
+            <button type="submit" class="btn btn-lg btn-outline-success">Proceed</button>
+        </form>
+    </div>
+</div>

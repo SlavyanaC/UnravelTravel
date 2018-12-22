@@ -8,20 +8,21 @@
     public class TicketsController : BaseController
     {
         private readonly ITicketsService ticketsService;
+        private readonly IShoppingCartsService shoppingCartsService;
 
-        public TicketsController(ITicketsService ticketsService)
+        public TicketsController(ITicketsService ticketsService, IShoppingCartsService shoppingCartsService)
         {
             this.ticketsService = ticketsService;
+            this.shoppingCartsService = shoppingCartsService;
         }
 
         [HttpPost]
-        public IActionResult Book(int id)
+        public IActionResult Book()
         {
             var username = this.User.Identity.Name;
-            var ticketId = this.ticketsService.BookAsync(username, id)
-                 .GetAwaiter()
-                 .GetResult();
-            return this.RedirectToAction("Details", new { id = ticketId });
+            var shoppingCartActivities = this.shoppingCartsService.GetAllTickets(username).GetAwaiter().GetResult();
+            this.ticketsService.BookAllAsync(username, shoppingCartActivities).GetAwaiter().GetResult();
+            return this.RedirectToAction("All");
         }
 
         public IActionResult Details(int id)

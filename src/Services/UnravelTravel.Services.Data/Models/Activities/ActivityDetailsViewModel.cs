@@ -23,5 +23,7 @@
         public string LocationName { get; set; }
 
         public double AverageRating { get; set; }
+
+        public decimal? Price { get; set; }
     }
 }
