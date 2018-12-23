@@ -10,6 +10,7 @@
     using UnravelTravel.Models.ViewModels.ShoppingCart;
     using UnravelTravel.Models.ViewModels.Tickets;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
     public class TicketsService : ITicketsService
@@ -34,7 +35,7 @@
             var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == username);
             if (user == null)
             {
-                throw new NullReferenceException($"User with username {username} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, username));
             }
 
             foreach (var shoppingCartActivity in shoppingCartActivities)
@@ -43,14 +44,13 @@
                     .FirstOrDefaultAsync(sca => sca.Id == shoppingCartActivity.Id);
                 if (shoppingCartActivityDb == null)
                 {
-                    throw new NullReferenceException($"Shopping cart activity with id {shoppingCartActivity.Id} not found.");
+                    throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceShoppingCartActivityId, shoppingCartActivity.Id));
                 }
 
-                var activityId = shoppingCartActivity.ActivityId;
-                var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == activityId);
+                var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == shoppingCartActivity.ActivityId);
                 if (activity == null)
                 {
-                    throw new NullReferenceException($"Activity with id {activityId} not found.");
+                    throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, shoppingCartActivity.ActivityId));
                 }
 
                 await this.BookAsync(user, activity);

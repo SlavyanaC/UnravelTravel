@@ -85,13 +85,13 @@
             var restaurant = this.restaurantsRepository.All().FirstOrDefault(r => r.Id == restaurantEditViewModel.Id);
             if (restaurant == null)
             {
-                throw new NullReferenceException($"Restaurant with id {restaurantEditViewModel.Id} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceRestaurantId, restaurantEditViewModel.Id));
             }
 
             var destination = this.destinationsRepository.All().FirstOrDefault(d => d.Id == restaurantEditViewModel.DestinationId);
             if (destination == null)
             {
-                throw new NullReferenceException($"Destination with id {restaurantEditViewModel.DestinationId} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, restaurantEditViewModel.DestinationId));
             }
 
             if (restaurantEditViewModel.NewImage != null)
@@ -115,7 +115,7 @@
             var restaurant = this.restaurantsRepository.All().FirstOrDefault(d => d.Id == id);
             if (restaurant == null)
             {
-                throw new NullReferenceException($"Restaurant with id {id} not found");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceRestaurantId, id));
             }
 
             restaurant.IsDeleted = true;
@@ -129,13 +129,13 @@
             var user = await this.usersRepository.All().Where(u => u.UserName == username).FirstOrDefaultAsync();
             if (user == null)
             {
-                throw new NullReferenceException($"User with username {username} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, username));
             }
 
             var restaurant = await this.restaurantsRepository.All().Where(r => r.Id == restaurantId).FirstOrDefaultAsync();
             if (restaurant == null)
             {
-                throw new NullReferenceException($"Restaurant with id {restaurantId} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceRestaurantId, restaurantId));
             }
 
             var review = new Review

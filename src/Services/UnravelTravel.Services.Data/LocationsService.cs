@@ -9,6 +9,7 @@
     using UnravelTravel.Data.Models.Enums;
     using UnravelTravel.Models.ViewModels.Locations;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
     public class LocationsService : ILocationsService
@@ -29,6 +30,10 @@
 
             var destinationId = int.Parse(parameters[2].ToString());
             var destination = await this.destinationsRepository.All().FirstOrDefaultAsync(d => d.Id == destinationId);
+            if (destination == null)
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, destinationId));
+            }
 
             var typeString = parameters[3].ToString();
             Enum.TryParse(typeString, true, out LocationType typeEnum);

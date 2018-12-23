@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
 
     using CloudinaryDotNet;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Common;
     using UnravelTravel.Data.Common.Repositories;
@@ -41,8 +40,7 @@
 
         public async Task<DestinationViewModel[]> GetAllDestinationsAsync()
         {
-            var destinations = await this.destinationsRepository
-                .All()
+            var destinations = await this.destinationsRepository.All()
                 .To<DestinationViewModel>()
                 .OrderBy(d => d.CountryName)
                 .ThenBy(d => d.Name)
@@ -71,8 +69,7 @@
 
         public async Task<TViewModel> GetViewModelByIdAsync<TViewModel>(int id)
         {
-            var destination = await this.destinationsRepository
-                .All()
+            var destination = await this.destinationsRepository.All()
                 .Where(d => d.Id == id)
                 .To<TViewModel>()
                 .FirstOrDefaultAsync();
@@ -86,14 +83,14 @@
                 .FirstOrDefault(d => d.Id == destinationEditViewModel.Id);
             if (destination == null)
             {
-                throw new NullReferenceException($"Destination with id {destinationEditViewModel.Id} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, destinationEditViewModel.Id));
             }
 
             var country = this.countriesRepository.All()
                 .FirstOrDefault(c => c.Id == destinationEditViewModel.CountryId);
             if (country == null)
             {
-                throw new NullReferenceException($"Country with id {destinationEditViewModel.CountryId} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceCountryId, destinationEditViewModel.CountryId));
             }
 
             if (destinationEditViewModel.NewImage != null)
@@ -116,7 +113,7 @@
             var destination = this.destinationsRepository.All().FirstOrDefault(d => d.Id == id);
             if (destination == null)
             {
-                throw new NullReferenceException($"Destination with id {id} not found");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, id));
             }
 
             destination.IsDeleted = true;
@@ -132,7 +129,7 @@
 
             if (destination == null)
             {
-                throw new NullReferenceException($"Destination with id {destinationId} not fund");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, destinationId));
             }
 
             var activities = this.activitiesService.GetAllAsync()

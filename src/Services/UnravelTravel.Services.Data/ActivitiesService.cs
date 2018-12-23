@@ -5,7 +5,6 @@
     using System.Threading.Tasks;
 
     using CloudinaryDotNet;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
@@ -55,7 +54,7 @@
             var location = await this.locationsRepository.All().FirstOrDefaultAsync(l => l.Id == activityCreateInputModel.LocationId);
             if (location == null)
             {
-                throw new NullReferenceException($"Location with id {activityCreateInputModel.LocationId} not found");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceLocationId, activityCreateInputModel.LocationId));
             }
 
             var activity = new Activity
@@ -90,13 +89,13 @@
             var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == activityToEditViewModel.Id);
             if (activity == null)
             {
-                throw new NullReferenceException($"Activity with id {activityToEditViewModel.Id} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, activityToEditViewModel.Id));
             }
 
             var location = await this.locationsRepository.All().FirstOrDefaultAsync(l => l.Id == activityToEditViewModel.LocationId);
             if (location == null)
             {
-                throw new NullReferenceException($"Location with id {activityToEditViewModel.LocationId} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceLocationId, activityToEditViewModel.LocationId));
             }
 
             Enum.TryParse(activityToEditViewModel.Type, true, out ActivityType activityTypeEnum);
@@ -121,7 +120,7 @@
             var activity = this.activitiesRepository.All().FirstOrDefault(d => d.Id == id);
             if (activity == null)
             {
-                throw new NullReferenceException($"Activity with id {id} not found");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, id));
             }
 
             activity.IsDeleted = true;
@@ -135,13 +134,13 @@
             var user = await this.usersRepository.All().Where(u => u.UserName == username).FirstOrDefaultAsync();
             if (user == null)
             {
-                throw new NullReferenceException($"User with username {username} not found");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, username));
             }
 
             var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == activityId);
             if (activity == null)
             {
-                throw new NullReferenceException($"Activity with id {activityReviewInputModel.Id} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, activityReviewInputModel.Id));
             }
 
             var review = new Review

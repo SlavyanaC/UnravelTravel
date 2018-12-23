@@ -21,8 +21,7 @@
 
         Task<CountryViewModel[]> ICountriesService.GetAllAsync()
         {
-            var countries = this.countriesRepository
-                .All()
+            var countries = this.countriesRepository.All()
                 .OrderBy(c => c.Name)
                 .To<CountryViewModel>()
                 .ToArrayAsync();

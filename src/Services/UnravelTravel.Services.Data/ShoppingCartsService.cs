@@ -9,6 +9,7 @@
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.ViewModels.ShoppingCart;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
     public class ShoppingCartsService : IShoppingCartsService
@@ -29,7 +30,7 @@
             var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == username);
             if (user == null)
             {
-                throw new NullReferenceException($"User with username {username} not found!");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, username));
             }
 
             var shoppingCartTickets = await this.shoppingCartActivitiesRepository
@@ -46,18 +47,18 @@
             var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == activityId);
             if (activity == null)
             {
-                throw new NullReferenceException($"Activity with id {activityId} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, activityId));
             }
 
             var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == username);
             if (user == null)
             {
-                throw new NullReferenceException($"User with username {username} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, username));
             }
 
             if (quantity <= 0)
             {
-                throw new ArgumentException($"Quantity cannot be negative or zero");
+                throw new ArgumentException(ServicesDataConstants.ZeroOrNegativeQuantity);
             }
 
             var shoppingCartActivity = new ShoppingCartActivity
@@ -77,13 +78,13 @@
                 .FirstOrDefaultAsync(sca => sca.Id == shoppingCartActivityId);
             if (shoppingCartActivity == null)
             {
-                throw new NullReferenceException($"Shopping cart activity with id {shoppingCartActivityId} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceShoppingCartActivityId, shoppingCartActivityId));
             }
 
             var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == username);
             if (user == null)
             {
-                throw new NullReferenceException($"User with username {username} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, username));
             }
 
             shoppingCartActivity.IsDeleted = true;
@@ -98,18 +99,18 @@
                 .FirstOrDefaultAsync(sca => sca.Id == shoppingCartActivityId);
             if (shoppingCartActivity == null)
             {
-                throw new NullReferenceException($"Shopping cart activity with id {shoppingCartActivityId} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceShoppingCartActivityId, shoppingCartActivityId));
             }
 
             var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == username);
             if (user == null)
             {
-                throw new NullReferenceException($"User with username {username} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, username));
             }
 
             if (newQuantity <= 0)
             {
-                throw new ArgumentException("Quantity cannot be negative or zero");
+                throw new ArgumentException(ServicesDataConstants.ZeroOrNegativeQuantity);
             }
 
             shoppingCartActivity.Quantity = newQuantity;
@@ -122,7 +123,7 @@
             var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == username);
             if (user == null)
             {
-                throw new NullReferenceException($"User with username {username} not found.");
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, username));
             }
 
             var shoppingCartActivities = this.shoppingCartActivitiesRepository
