@@ -119,14 +119,14 @@
                     ShoppingCart = new ShoppingCart(),
                 };
 
-                await this.userManager.AddToRoleAsync(user, "User");
-
                 var result = await this.userManager.CreateAsync(user);
+
                 if (result.Succeeded)
                 {
                     result = await this.userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
+                        await this.userManager.AddToRoleAsync(user, "User");
                         await this.signInManager.SignInAsync(user, isPersistent: false);
                         this.logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                         return this.LocalRedirect(returnUrl);
