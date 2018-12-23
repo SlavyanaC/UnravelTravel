@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
+<PropertyGroup>
+    <UserSecretsId>aspnet-UnravelTravel-d8051de4-43bb-451a-afa1-545d6b25fa34</UserSecretsId>
+</PropertyGroup>
+
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
