@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
-
+﻿// ReSharper disable once CheckNamespace
 namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants
 {
+    using System.ComponentModel.DataAnnotations;
+    using Microsoft.AspNetCore.Http;
+
     public class RestaurantCreateInputModel
     {
         [Required]
-        [RegularExpression("^[A-Z]\\D+[a-z]$")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Restaurant name must be between 3 and 50 symbols")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = AdminInputModelsConstants.NameError)]
         public string Name { get; set; }
 
         [Required]
@@ -15,7 +15,7 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants
         public IFormFile Image { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Address must be between 3 and 50 symbols")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = AdminInputModelsConstants.AddressError)]
         public string Address { get; set; }
 
         [Required]
@@ -26,7 +26,9 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants
         public string Type { get; set; }
 
         [Required]
-        [Display(Name = "Destination")]
+        [Display(Name = nameof(Destination))]
         public int DestinationId { get; set; }
+
+        public string Destination { get; set; }
     }
 }

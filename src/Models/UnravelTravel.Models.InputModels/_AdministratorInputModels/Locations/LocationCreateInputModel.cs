@@ -1,16 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿// ReSharper disable once CheckNamespace
 namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Locations
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class LocationCreateInputModel
     {
         [Required]
-        [RegularExpression("^[A-Z]\\D+[a-z]$")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Location name must be between 3 and 50 symbols")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = AdminInputModelsConstants.NameError)]
+        [RegularExpression(AdminInputModelsConstants.NameRegex, ErrorMessage = AdminInputModelsConstants.NameRegexError)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Location address must be between 3 and 50 symbols")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = AdminInputModelsConstants.AddressError)]
         public string Address { get; set; }
 
         [Required]
