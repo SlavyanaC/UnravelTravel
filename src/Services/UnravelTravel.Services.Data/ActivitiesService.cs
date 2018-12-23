@@ -9,8 +9,8 @@
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
-    using UnravelTravel.Models.InputModels.Activities;
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Activities;
+    using UnravelTravel.Models.InputModels.Reviews;
     using UnravelTravel.Models.ViewModels.Activities;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Utilities;

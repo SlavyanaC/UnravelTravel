@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
 
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants;
-    using UnravelTravel.Models.InputModels.Restaurants;
+    using UnravelTravel.Models.InputModels.Reviews;
     using UnravelTravel.Models.ViewModels.Restaurants;
 
     public interface IRestaurantsService : IBaseDataService

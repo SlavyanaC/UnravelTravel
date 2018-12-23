@@ -6,17 +6,17 @@
 
     public class ReservationCreateInputModel
     {
-        public DateTime Time { get; set; } = DateTime.Now;
+        public DateTime Now { get; set; } = DateTime.Now.AddMinutes(30);
 
         [Required]
         [DataType(DataType.DateTime)]
-        [GreaterThan("Time", ErrorMessage = "Reservation time must be at least 30 minutes from now")]
-        [Display(Name = "Reservation date and time")]
+        [GreaterThan(nameof(Now), ErrorMessage = InputModelsConstants.Reservation.HourError)]
+        [Display(Name = InputModelsConstants.Reservation.DateDisplay)]
         public DateTime Date { get; set; }
 
         [Required]
         [Range(1, int.MaxValue)]
-        [Display(Name = "Table for...")]
+        [Display(Name = InputModelsConstants.Reservation.PeopleCountDisplay)]
         public int PeopleCount { get; set; }
     }
 }

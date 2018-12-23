@@ -1,10 +1,9 @@
-﻿using UnravelTravel.Common;
-
-namespace UnravelTravel.Models.InputModels.Activities
+﻿namespace UnravelTravel.Models.InputModels.Reviews
 {
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
+    using UnravelTravel.Common;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Services.Mapping;
 
@@ -12,7 +11,7 @@ namespace UnravelTravel.Models.InputModels.Activities
     {
         [Required]
         [DataType(DataType.MultilineText)]
-        [StringLength(500, MinimumLength = 5, ErrorMessage = "Content must be between 5 and 500 symbols")]
+        [StringLength(500, MinimumLength = 5, ErrorMessage = InputModelsConstants.ReviewContentError)]
         public string Content { get; set; }
 
         [Required]

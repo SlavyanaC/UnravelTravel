@@ -1,4 +1,4 @@
-﻿namespace UnravelTravel.Models.InputModels.Restaurants
+﻿namespace UnravelTravel.Models.InputModels.Reviews
 {
     using System.ComponentModel.DataAnnotations;
     using UnravelTravel.Data.Models;
@@ -13,7 +13,7 @@
 
         [Required]
         [DataType(DataType.MultilineText)]
-        [StringLength(500, MinimumLength = 5, ErrorMessage = "Content must be between 5 and 500 symbols")]
+        [StringLength(500, MinimumLength = 5, ErrorMessage = InputModelsConstants.ReviewContentError)]
         public string Content { get; set; }
 
         public int Id { get; set; }

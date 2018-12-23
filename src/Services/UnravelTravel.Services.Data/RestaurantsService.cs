@@ -10,7 +10,7 @@
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants;
-    using UnravelTravel.Models.InputModels.Restaurants;
+    using UnravelTravel.Models.InputModels.Reviews;
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Utilities;
