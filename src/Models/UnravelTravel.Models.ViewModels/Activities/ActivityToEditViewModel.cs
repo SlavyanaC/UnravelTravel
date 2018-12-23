@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.Common;
     using UnravelTravel.Services.Mapping;
 
     public class ActivityToEditViewModel : IMapFrom<Activity>
@@ -11,13 +12,13 @@
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be between 3 and 50 symbols")]
+        [StringLength(ModelConstants.Activity.NameMaxLength, MinimumLength = ModelConstants.Activity.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
         public string Name { get; set; }
 
-        [Display(Name = "Current image")]
+        [Display(Name = ModelConstants.ImageUrlDisplay)]
         public string ImageUrl { get; set; }
 
-        [Display(Name = "New Image")]
+        [Display(Name = ModelConstants.NewImageDisplay)]
         [DataType(DataType.Upload)]
         public IFormFile NewImage { get; set; }
 
@@ -25,7 +26,7 @@
         public string Type { get; set; }
 
         [Required]
-        [Display(Name = "Date and time of the activity")]
+        [Display(Name = ModelConstants.Activity.AdminDateDisplay)]
         [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
 

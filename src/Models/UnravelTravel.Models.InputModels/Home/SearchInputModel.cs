@@ -3,22 +3,24 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using UnravelTravel.Common.Attributes;
+    using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.Common;
 
     public class SearchInputModel
     {
         [Required]
-        [Display(Name = "Destination")]
+        [Display(Name = nameof(Destination))]
         public int DestinationId { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
-        [Display(Name = "From")]
+        [Display(Name = ModelConstants.Search.StartDateDisplay)]
         public DateTime StartDate { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
-        [GreaterThan("StartDate", ErrorMessage = "End date cannot be before start date")]
-        [Display(Name = "To")]
+        [GreaterThan(nameof(StartDate), ErrorMessage = ModelConstants.Search.EndDateError)]
+        [Display(Name = ModelConstants.Search.EndDateDisplay)]
         public DateTime EndDate { get; set; }
     }
 }

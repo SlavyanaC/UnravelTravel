@@ -2,25 +2,27 @@
 {
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
+    using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.Common;
+    using UnravelTravel.Services.Mapping;
 
-    public class RestaurantEditViewModel
+    public class RestaurantEditViewModel : IMapFrom<Restaurant>
     {
         public int Id { get; set; }
 
         [Required]
-        [RegularExpression("^[A-Z]\\D+[a-z]$")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Restaurant name must be between 3 and 50 symbols")]
+        [StringLength(ModelConstants.Restaurant.NameMaxLength, MinimumLength = ModelConstants.Restaurant.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
         public string Name { get; set; }
 
-        [Display(Name = "Current image")]
+        [Display(Name = ModelConstants.ImageUrlDisplay)]
         public string ImageUrl { get; set; }
 
-        [Display(Name = "New Image")]
+        [Display(Name = ModelConstants.NewImageDisplay)]
         [DataType(DataType.Upload)]
         public IFormFile NewImage { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Address must be between 3 and 50 symbols")]
+        [StringLength(ModelConstants.AddressMaxLength, MinimumLength = ModelConstants.AddressMinLength, ErrorMessage = ModelConstants.AddressLengthError)]
         public string Address { get; set; }
 
         [Required]
@@ -31,7 +33,7 @@
         public string Type { get; set; }
 
         [Required]
-        [Display(Name = "Destination")]
+        [Display(Name = nameof(Destination))]
         public int DestinationId { get; set; }
 
         public string DestinationName { get; set; }

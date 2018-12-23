@@ -5,12 +5,13 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Activities
     using System;
     using System.ComponentModel.DataAnnotations;
     using UnravelTravel.Common.Attributes;
-    using UnravelTravel.Models.InputModels.AdministratorInputModels;
+    using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.Common;
 
     public class ActivityCreateInputModel
     {
         [Required]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = AdminInputModelsConstants.NameError)]
+        [StringLength(ModelConstants.Activity.NameMaxLength, MinimumLength = ModelConstants.Activity.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
         public string Name { get; set; }
 
         [Required]
@@ -19,19 +20,17 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Activities
         [Required]
         public IFormFile Image { get; set; }
 
-        public DateTime Now => DateTime.Now.AddMinutes(15);
+        public DateTime Now => DateTime.Now.AddMinutes(ModelConstants.Activity.MinMinutesTillStart);
 
         [Required]
-        [Display(Name = AdminInputModelsConstants.Activity.DateDisplayName)]
+        [Display(Name = ModelConstants.Activity.AdminDateDisplay)]
         [DataType(DataType.DateTime)]
-        [GreaterThan(nameof(Now), ErrorMessage = AdminInputModelsConstants.Activity.StartingHourError)]
+        [GreaterThan(nameof(Now), ErrorMessage = ModelConstants.Activity.StartingHourError)]
         public DateTime Date { get; set; }
 
         [Required]
         [Display(Name = nameof(Location))]
         public int LocationId { get; set; }
-
-        public string Location { get; set; }
 
         public decimal? Price { get; set; }
     }

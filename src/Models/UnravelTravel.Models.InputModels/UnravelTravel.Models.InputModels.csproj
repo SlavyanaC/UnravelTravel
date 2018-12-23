@@ -8,6 +8,7 @@
     <ProjectReference Include="..\..\Data\UnravelTravel.Data.Models\UnravelTravel.Data.Models.csproj" />
     <ProjectReference Include="..\..\Services\UnravelTravel.Services.Mapping\UnravelTravel.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\UnravelTravel.Common\UnravelTravel.Common.csproj" />
+    <ProjectReference Include="..\UnravelTravel.Models.Common\UnravelTravel.Models.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,6 @@
-﻿namespace UnravelTravel.Models.ViewModels.Destinations
+﻿using UnravelTravel.Models.Common;
+
+namespace UnravelTravel.Models.ViewModels.Destinations
 {
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
@@ -10,25 +12,25 @@
         public int Id { get; set; }
 
         [Required]
-        [RegularExpression("^[A-Z]\\D+[a-z]$", ErrorMessage = "Destination name cannot contain digits")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Destination name must be between 3 and 50 symbols")]
+        [RegularExpression(ModelConstants.NameRegex, ErrorMessage = ModelConstants.NameRegexError)]
+        [StringLength(ModelConstants.Destination.NameMaxLength, MinimumLength = ModelConstants.Destination.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Country")]
+        [Display(Name = nameof(Country))]
         public int CountryId { get; set; }
 
         public string CountryName { get; set; }
 
-        [Display(Name = "Current image")]
+        [Display(Name = ModelConstants.ImageUrlDisplay)]
         public string ImageUrl { get; set; }
 
-        [Display(Name = "New Image")]
+        [Display(Name = ModelConstants.NewImageDisplay)]
         [DataType(DataType.Upload)]
         public IFormFile NewImage { get; set; }
 
         [Required]
-        [StringLength(550, MinimumLength = 10, ErrorMessage = "Information must be between 10 and 350 symbols")]
+        [StringLength(ModelConstants.Destination.InformationMaxLength, MinimumLength = ModelConstants.Destination.InformationMinLength, ErrorMessage = ModelConstants.Destination.InformationError)]
         public string Information { get; set; }
     }
 }

@@ -6,6 +6,7 @@
     using System.Linq;
     using UnravelTravel.Common;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.Common;
     using UnravelTravel.Services.Mapping;
 
     public class TicketDetailsViewModel : IMapFrom<ApplicationUser>
@@ -16,25 +17,25 @@
 
         public ApplicationUser User { get; set; }
 
-        [Display(Name = "Full name")]
+        [Display(Name = ModelConstants.UserFullNameDisplay)]
         public string UserFullName { get; set; }
 
         public int ActivityId { get; set; }
 
         public Activity Activity { get; set; }
 
-        [Display(Name = "Activity name")]
+        [Display(Name = ModelConstants.Activity.NameDisplay)]
         public string ActivityName { get; set; }
 
         public DateTime ActivityDate { get; set; }
 
-        [Display(Name = "Activity date")]
+        [Display(Name = ModelConstants.Activity.DateDisplay)]
         public string ActivityDateString => this.ActivityDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture);
 
-        [Display(Name = "Activity starting hour")]
+        [Display(Name = ModelConstants.Activity.StartingHourDisplay)]
         public string ActivityHourString => this.ActivityDate.ToString(GlobalConstants.HourFormat, CultureInfo.InvariantCulture);
 
-        [Display(Name = "Location")]
+        [Display(Name = nameof(Location))]
         public string ActivityLocationName { get; set; }
 
         public bool HasPassed => this.ActivityDate <= DateTime.UtcNow;

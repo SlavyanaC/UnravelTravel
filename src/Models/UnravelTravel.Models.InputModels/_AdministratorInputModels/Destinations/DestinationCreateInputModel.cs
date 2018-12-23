@@ -3,26 +3,26 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Destinations
 {
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
+    using UnravelTravel.Models.Common;
+    using UnravelTravel.Data.Models;
 
     public class DestinationCreateInputModel
     {
         [Required]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = AdminInputModelsConstants.NameError)]
-        [RegularExpression(AdminInputModelsConstants.NameRegex, ErrorMessage = AdminInputModelsConstants.NameRegexError)]
+        [StringLength(ModelConstants.Destination.NameMaxLength, MinimumLength = ModelConstants.Destination.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
+        [RegularExpression(ModelConstants.NameRegex, ErrorMessage = ModelConstants.NameRegexError)]
         public string Name { get; set; }
 
         [Required]
         [Display(Name = nameof(Country))]
         public int CountryId { get; set; }
 
-        public string Country { get; set; }
-
         [Required]
         [DataType(DataType.Upload)]
         public IFormFile Image { get; set; }
 
         [Required]
-        [StringLength(550, MinimumLength = 10, ErrorMessage = AdminInputModelsConstants.Destination.InformationError)]
+        [StringLength(ModelConstants.Destination.InformationMaxLength, MinimumLength = ModelConstants.Destination.InformationMinLength, ErrorMessage = ModelConstants.Destination.InformationError)]
         public string Information { get; set; }
     }
 }

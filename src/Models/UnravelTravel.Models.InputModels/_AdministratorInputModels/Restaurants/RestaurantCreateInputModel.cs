@@ -3,11 +3,13 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants
 {
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
+    using UnravelTravel.Models.Common;
+    using UnravelTravel.Data.Models;
 
     public class RestaurantCreateInputModel
     {
         [Required]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = AdminInputModelsConstants.NameError)]
+        [StringLength(ModelConstants.Restaurant.NameMaxLength, MinimumLength = ModelConstants.Restaurant.NameMinLength, ErrorMessage = ModelConstants.NameLengthError)]
         public string Name { get; set; }
 
         [Required]
@@ -15,7 +17,7 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants
         public IFormFile Image { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = AdminInputModelsConstants.AddressError)]
+        [StringLength(ModelConstants.AddressMaxLength, MinimumLength = ModelConstants.AddressMinLength, ErrorMessage = ModelConstants.AddressLengthError)]
         public string Address { get; set; }
 
         [Required]
@@ -28,7 +30,5 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants
         [Required]
         [Display(Name = nameof(Destination))]
         public int DestinationId { get; set; }
-
-        public string Destination { get; set; }
     }
 }
