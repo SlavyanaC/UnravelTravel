@@ -13,6 +13,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Stripe;
     using UnravelTravel.Data;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
@@ -110,10 +111,13 @@
             services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
 
             // Cloudinary Setup
-            var cloudinaryAccount = new Account(CloudinaryConfig.CloudName, CloudinaryConfig.ApiKey, CloudinaryConfig.ApiSecret);
+            var cloudinaryAccount = new CloudinaryDotNet.Account(CloudinaryConfig.CloudName, CloudinaryConfig.ApiKey, CloudinaryConfig.ApiSecret);
             var cloudinary = new Cloudinary(cloudinaryAccount);
 
             services.AddSingleton(cloudinary);
+
+            // Stripe Setup
+            services.Configure<StripeSettings>(this.configuration.GetSection("Stripe"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -136,6 +140,9 @@
 
             loggerFactory.AddConsole(this.configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            // Configure Stripe ApiKeys
+            StripeConfiguration.SetApiKey(this.configuration.GetSection("Stripe")["SecretKey"]);
 
             if (env.IsDevelopment())
             {

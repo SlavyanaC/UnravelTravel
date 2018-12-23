@@ -16,6 +16,8 @@
             this.shoppingCartsService = shoppingCartsService;
         }
 
+        public IActionResult BookGet() => this.Book();
+
         [HttpPost]
         public IActionResult Book()
         {

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<UnravelTravel.Models.ViewModels.ShoppingCart.ShoppingCartActivityViewModel>
-
+﻿@inject IOptions<StripeSettings> Stripe
+@model IEnumerable<UnravelTravel.Models.ViewModels.ShoppingCart.ShoppingCartActivityViewModel>
 @{
     ViewData["Title"] = "Shopping Cart";
 }
@@ -69,8 +69,20 @@
 <div class="">
     <div class="text-center">
         <h5>Total sum: @Model.Sum(x => x.ShoppingCartActivityTotalPrice) $</h5>
-        <form class="text-center" method="post" asp-area="" asp-controller="Tickets" asp-action="Book">
-            <button type="submit" class="btn btn-lg btn-outline-success">Proceed</button>
-        </form>
+        <div class="row d-flex justify-content-around">
+            <form class="text-center" method="post" asp-area="" asp-controller="Tickets" asp-action="Book">
+                <button type="submit" class="stripe-button-el" style="visibility: visible;">
+                    <span style="display: block; min-height: 30px;">Pay when you get there</span>
+                </button>
+            </form>
+            <form asp-controller="ShoppingCart" , asp-action="Charge" method="POST">
+                <script src="//checkout.stripe.com/v2/checkout.js"
+                        class="stripe-button"
+                        data-key="@Stripe.Value.PublishableKey"
+                        data-description="Pay for your tickets now"
+                        data-amount="@(Model.Sum(x => x.ShoppingCartActivityTotalPrice) * 100)">
+                </script>
+            </form>
+        </div>
     </div>
 </div>

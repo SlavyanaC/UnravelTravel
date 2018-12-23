@@ -26,17 +26,6 @@
                 this.View();
         }
 
-        // TODO: Delete this if private method Search works
-        // public IActionResult Search(SearchInputModel searchInputModel)
-        // {
-        //     if (!this.ModelState.IsValid)
-        //     {
-        //         return this.RedirectToAction("Index", searchInputModel);
-        //     }
-        //     var searchResultViewModel = this.destinationsService.GetSearchResultAsync(searchInputModel.DestinationId,  searchInputModel.StartDate, searchInputModel.EndDate);
-        //     return this.View("SearchResult", searchResultViewModel);
-        // }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() => this.View();
 
