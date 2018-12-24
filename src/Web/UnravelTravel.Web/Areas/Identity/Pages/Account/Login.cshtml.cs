@@ -11,7 +11,11 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.ViewModels.ShoppingCart;
+    using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Areas.Identity.Pages.Account.InputModels;
+    using UnravelTravel.Web.Common;
+    using UnravelTravel.Web.Helpers;
 
     [AllowAnonymous]
 #pragma warning disable SA1649 // File name should match first type name
@@ -20,11 +24,13 @@
     {
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LoginModel> logger;
+        private readonly IShoppingCartsService shoppingCartsService;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IShoppingCartsService shoppingCartsService)
         {
             this.signInManager = signInManager;
             this.logger = logger;
+            this.shoppingCartsService = shoppingCartsService;
         }
 
         [BindProperty]
@@ -66,6 +72,20 @@
                 if (result.Succeeded)
                 {
                     this.logger.LogInformation("User logged in.");
+
+                    var shoppingCartActivities = this.HttpContext.Session
+                                                     .GetObjectFromJson<ShoppingCartActivityViewModel[]>(WebConstants.ShoppingCartSessionKey) ??
+                                                 new List<ShoppingCartActivityViewModel>().ToArray();
+                    if (shoppingCartActivities != null)
+                    {
+                        foreach (var activity in shoppingCartActivities)
+                        {
+                            await this.shoppingCartsService.AddActivityToShoppingCart(activity.ActivityId, this.Input.UserName, activity.Quantity);
+                        }
+
+                        this.HttpContext.Session.Remove(WebConstants.ShoppingCartSessionKey);
+                    }
+
                     return this.LocalRedirect(returnUrl);
                 }
 

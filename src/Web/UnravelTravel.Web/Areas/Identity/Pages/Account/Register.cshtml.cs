@@ -12,8 +12,10 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.ViewModels.ShoppingCart;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Areas.Identity.Pages.Account.InputModels;
+    using UnravelTravel.Web.Common;
     using UnravelTravel.Web.Helpers;
 
     [AllowAnonymous]
@@ -25,17 +27,20 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
+        private readonly IShoppingCartsService shoppingCartsService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, 
+            IShoppingCartsService shoppingCartsService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
             this.emailSender = emailSender;
+            this.shoppingCartsService = shoppingCartsService;
         }
 
         [BindProperty]
@@ -90,6 +95,20 @@
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await this.signInManager.SignInAsync(user, isPersistent: false);
+
+                    var shoppingCartActivities = this.HttpContext.Session
+                               .GetObjectFromJson<ShoppingCartActivityViewModel[]>(WebConstants.ShoppingCartSessionKey) ??
+                               new List<ShoppingCartActivityViewModel>().ToArray();
+                    if (shoppingCartActivities != null)
+                    {
+                        foreach (var activity in shoppingCartActivities)
+                        {
+                          await this.shoppingCartsService.AddActivityToShoppingCart(activity.ActivityId, this.Input.UserName, activity.Quantity);
+                        }
+
+                        this.HttpContext.Session.Remove(WebConstants.ShoppingCartSessionKey);
+                    }
+
                     return this.LocalRedirect(returnUrl);
                 }
 

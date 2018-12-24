@@ -1,5 +1,6 @@
 ﻿namespace UnravelTravel.Web.Areas.Identity.Pages.Account
 {
+    using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -9,7 +10,11 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.ViewModels.ShoppingCart;
+    using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Areas.Identity.Pages.Account.InputModels;
+    using UnravelTravel.Web.Common;
+    using UnravelTravel.Web.Helpers;
 
     [AllowAnonymous]
 #pragma warning disable SA1649 // File name should match first type name
@@ -19,15 +24,18 @@
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<ExternalLoginModel> logger;
+        private readonly IShoppingCartsService shoppingCartsService;
 
         public ExternalLoginModel(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            ILogger<ExternalLoginModel> logger)
+            ILogger<ExternalLoginModel> logger,
+            IShoppingCartsService shoppingCartsService)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.logger = logger;
+            this.shoppingCartsService = shoppingCartsService;
         }
 
         [BindProperty]
@@ -74,6 +82,7 @@
             if (result.Succeeded)
             {
                 this.logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
+                await this.StoreGuestShoppingCartIfAny(info.Principal.Identity.Name);
                 return this.LocalRedirect(returnUrl);
             }
 
@@ -114,7 +123,7 @@
             {
                 var user = new ApplicationUser
                 {
-                    UserName = this.Input.Email,
+                    UserName = info.Principal.Identity.Name,
                     Email = this.Input.Email,
                     ShoppingCart = new ShoppingCart(),
                 };
@@ -129,6 +138,8 @@
                         await this.userManager.AddToRoleAsync(user, "User");
                         await this.signInManager.SignInAsync(user, isPersistent: false);
                         this.logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+
+                        await this.StoreGuestShoppingCartIfAny(info.Principal.Identity.Name);
                         return this.LocalRedirect(returnUrl);
                     }
                 }
@@ -142,6 +153,23 @@
             this.LoginProvider = info.LoginProvider;
             this.ReturnUrl = returnUrl;
             return this.Page();
+        }
+
+        private async Task StoreGuestShoppingCartIfAny(string identityName)
+        {
+            var shoppingCartActivities = this.HttpContext.Session
+                .GetObjectFromJson<ShoppingCartActivityViewModel[]>(WebConstants.ShoppingCartSessionKey) ??
+                new List<ShoppingCartActivityViewModel>().ToArray();
+
+            if (shoppingCartActivities != null)
+            {
+                foreach (var activity in shoppingCartActivities)
+                {
+                    await this.shoppingCartsService.AddActivityToShoppingCart(activity.ActivityId, identityName, activity.Quantity);
+                }
+
+                this.HttpContext.Session.Remove(WebConstants.ShoppingCartSessionKey);
+            }
         }
     }
 }
