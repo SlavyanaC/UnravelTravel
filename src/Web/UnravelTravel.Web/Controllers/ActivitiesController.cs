@@ -8,6 +8,7 @@
     using UnravelTravel.Models.InputModels.Reviews;
     using UnravelTravel.Models.ViewModels.Activities;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Common;
 
     public class ActivitiesController : BaseController
     {
@@ -22,11 +23,12 @@
 
         public IActionResult All()
         {
-            if (!this.memoryCache.TryGetValue("AllActivitiesCache", out ActivityViewModel[] cacheEntry))
+            if (!this.memoryCache.TryGetValue(WebConstants.AllActivitiesCacheKey, out ActivityViewModel[] cacheEntry))
             {
                 cacheEntry = this.activitiesService.GetAllAsync().GetAwaiter().GetResult();
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
-                this.memoryCache.Set("AllActivitiesCache", cacheEntry, cacheEntryOptions);
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
+                this.memoryCache.Set(WebConstants.AllActivitiesCacheKey, cacheEntry, cacheEntryOptions);
             }
 
             return this.View(cacheEntry);

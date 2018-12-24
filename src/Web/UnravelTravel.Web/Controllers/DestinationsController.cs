@@ -6,6 +6,7 @@
     using Microsoft.Extensions.Caching.Memory;
     using UnravelTravel.Models.ViewModels.Destinations;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Common;
 
     public class DestinationsController : BaseController
     {
@@ -20,16 +21,16 @@
 
         public IActionResult All()
         {
-            if (!this.memoryCache.TryGetValue("AllDestinationsCache", out DestinationViewModel[] cacheEntry))
+            if (!this.memoryCache.TryGetValue(WebConstants.AllDestinationsCacheKey, out DestinationViewModel[] cacheEntry))
             {
                 cacheEntry = this.destinationsService.GetAllDestinationsAsync()
                     .GetAwaiter()
                     .GetResult();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
 
-                this.memoryCache.Set("AllDestinationsCache", cacheEntry, cacheEntryOptions);
+                this.memoryCache.Set(WebConstants.AllDestinationsCacheKey, cacheEntry, cacheEntryOptions);
             }
 
             return this.View(cacheEntry);

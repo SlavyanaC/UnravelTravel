@@ -1,13 +1,14 @@
-﻿using System;
-using Microsoft.Extensions.Caching.Memory;
-
-namespace UnravelTravel.Web.Controllers
+﻿namespace UnravelTravel.Web.Controllers
 {
+    using System;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
     using UnravelTravel.Models.InputModels.Reviews;
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Common;
 
     public class RestaurantsController : BaseController
     {
@@ -22,11 +23,12 @@ namespace UnravelTravel.Web.Controllers
 
         public IActionResult All()
         {
-            if (!this.memoryCache.TryGetValue("AllRestaurantsCache", out RestaurantViewModel[] cacheEntry))
+            if (!this.memoryCache.TryGetValue(WebConstants.AllRestaurantsCacheKey, out RestaurantViewModel[] cacheEntry))
             {
                 cacheEntry = this.restaurantsService.GetAllAsync().GetAwaiter().GetResult();
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
-                this.memoryCache.Set("AllRestaurantsCache", cacheEntry, cacheEntryOptions);
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
+                this.memoryCache.Set(WebConstants.AllRestaurantsCacheKey, cacheEntry, cacheEntryOptions);
             }
 
             return this.View(cacheEntry);
