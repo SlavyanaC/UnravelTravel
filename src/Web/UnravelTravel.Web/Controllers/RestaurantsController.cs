@@ -1,4 +1,7 @@
-﻿namespace UnravelTravel.Web.Controllers
+﻿using System;
+using Microsoft.Extensions.Caching.Memory;
+
+namespace UnravelTravel.Web.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -9,21 +12,24 @@
     public class RestaurantsController : BaseController
     {
         private readonly IRestaurantsService restaurantsService;
+        private readonly IMemoryCache memoryCache;
 
-        public RestaurantsController(IRestaurantsService restaurantsService)
+        public RestaurantsController(IRestaurantsService restaurantsService, IMemoryCache memoryCache)
         {
             this.restaurantsService = restaurantsService;
+            this.memoryCache = memoryCache;
         }
 
         public IActionResult All()
         {
-            var destinations = this.restaurantsService.GetAllAsync().GetAwaiter().GetResult();
-            if (destinations == null)
+            if (!this.memoryCache.TryGetValue("AllRestaurantsCache", out RestaurantViewModel[] cacheEntry))
             {
-                return this.Redirect("/");
+                cacheEntry = this.restaurantsService.GetAllAsync().GetAwaiter().GetResult();
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
+                this.memoryCache.Set("AllRestaurantsCache", cacheEntry, cacheEntryOptions);
             }
 
-            return this.View(destinations);
+            return this.View(cacheEntry);
         }
 
         public IActionResult Details(int id)

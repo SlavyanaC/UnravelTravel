@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using UnravelTravel.Models.InputModels.Home;
@@ -19,6 +20,7 @@
 
         public IActionResult Index(SearchInputModel searchInputModel)
         {
+            this.HttpContext.Session.SetString("SessionsTest", "Test");
             this.ViewData["Destinations"] = this.SelectAllDestinations();
 
             return searchInputModel.DestinationId != 0 ?

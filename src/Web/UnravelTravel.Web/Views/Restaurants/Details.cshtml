@@ -8,7 +8,8 @@
         <li class="text-center">Destination: @Model.DestinationName</li>
         <li class="text-center">Restaurant type: @Model.SplitWordsType</li>
         <li class="text-center">Total seats: @Model.Seats</li>
-        <li class="text-center">Restaurant rating: 
+        <li class="text-center">
+            Restaurant rating:
             @if (Model.AverageRating != 0.0)
             {
                 @Model.AverageRating.ToString("F2")
@@ -31,9 +32,11 @@
         }
     </div>
     <hr />
-    <iframe class="w-100"
-            height="450"
-            src="https://maps.google.com/maps?q=@Model.MapsAddress&t=&z=13&ie=UTF8&iwloc=&output=embed"
-            style="border: 0"
-            allowfullscreen></iframe>
+    <cache expires-after="@TimeSpan.FromHours(1)" vary-by="@Model.Id">
+        <iframe class="w-100"
+                height="450"
+                src="https://maps.google.com/maps?q=@Model.MapsAddress&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                style="border: 0"
+                allowfullscreen></iframe>
+    </cache>
 </div>

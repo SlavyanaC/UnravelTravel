@@ -70,19 +70,21 @@
     <div class="text-center">
         <h5>Total sum: @Model.Sum(x => x.ShoppingCartActivityTotalPrice) $</h5>
         <div class="row d-flex justify-content-around">
-            <form class="text-center" method="post" asp-area="" asp-controller="Tickets" asp-action="Book">
-                <button type="submit" class="stripe-button-el" style="visibility: visible;">
-                    <span style="display: block; min-height: 30px;">Pay when you get there</span>
-                </button>
-            </form>
-            <form asp-controller="ShoppingCart" , asp-action="Charge" method="POST">
-                <script src="//checkout.stripe.com/v2/checkout.js"
-                        class="stripe-button"
-                        data-key="@Stripe.Value.PublishableKey"
-                        data-description="Pay for your tickets now"
-                        data-amount="@(Model.Sum(x => x.ShoppingCartActivityTotalPrice) * 100)">
-                </script>
-            </form>
+            <cache>
+                <form asp-controller="ShoppingCart" , asp-action="Charge" method="POST">
+                    <script src="//checkout.stripe.com/v2/checkout.js"
+                            class="stripe-button"
+                            data-key="@Stripe.Value.PublishableKey"
+                            data-description="Pay for your tickets now"
+                            data-amount="@(Model.Sum(x => x.ShoppingCartActivityTotalPrice) * 100)">
+                    </script>
+                </form>
+                <form class="text-center" method="post" asp-area="" asp-controller="Tickets" asp-action="Book">
+                    <button type="submit" class="stripe-button-el">
+                        <span style="display: block; min-height: 30px;">Pay when you get there</span>
+                    </button>
+                </form>
+            </cache>
         </div>
     </div>
 </div>

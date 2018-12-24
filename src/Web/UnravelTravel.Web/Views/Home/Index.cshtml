@@ -4,9 +4,11 @@
     var destinations = this.ViewData["Destinations"] as IEnumerable<SelectListItem>;
 }
 
-@await this.Html.PartialAsync("_CarouselPartial")
-<br />
-@await this.Html.PartialAsync("_MainEntitiesPartial")
+<cache expires-after="@TimeSpan.FromHours(4)">
+    @await this.Html.PartialAsync("_CarouselPartial")
+    <br />
+    @await this.Html.PartialAsync("_MainEntitiesPartial")
+</cache>
 <br />
 
 <div class="jumbotron" style="padding-top: 30px; padding-bottom: 30px;">

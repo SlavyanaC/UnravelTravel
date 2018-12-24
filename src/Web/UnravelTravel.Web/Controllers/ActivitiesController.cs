@@ -1,7 +1,10 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
+    using System;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
     using UnravelTravel.Models.InputModels.Reviews;
     using UnravelTravel.Models.ViewModels.Activities;
     using UnravelTravel.Services.Data.Contracts;
@@ -9,21 +12,24 @@
     public class ActivitiesController : BaseController
     {
         private readonly IActivitiesService activitiesService;
+        private readonly IMemoryCache memoryCache;
 
-        public ActivitiesController(IActivitiesService activitiesService)
+        public ActivitiesController(IActivitiesService activitiesService, IMemoryCache memoryCache)
         {
             this.activitiesService = activitiesService;
+            this.memoryCache = memoryCache;
         }
 
         public IActionResult All()
         {
-            var activities = this.activitiesService.GetAllAsync().GetAwaiter().GetResult();
-            if (activities == null)
+            if (!this.memoryCache.TryGetValue("AllActivitiesCache", out ActivityViewModel[] cacheEntry))
             {
-                return this.Redirect("/");
+                cacheEntry = this.activitiesService.GetAllAsync().GetAwaiter().GetResult();
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
+                this.memoryCache.Set("AllActivitiesCache", cacheEntry, cacheEntryOptions);
             }
 
-            return this.View(activities);
+            return this.View(cacheEntry);
         }
 
         public IActionResult Details(int id)

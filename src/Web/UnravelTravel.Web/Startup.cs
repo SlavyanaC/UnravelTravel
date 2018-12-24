@@ -1,5 +1,6 @@
 ﻿namespace UnravelTravel.Web
 {
+    using System;
     using System.Reflection;
 
     using CloudinaryDotNet;
@@ -46,6 +47,20 @@
                 options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddDistributedSqlServerCache(
+                options =>
+                {
+                    options.ConnectionString = this.configuration.GetConnectionString("DefaultConnection");
+                    options.SchemaName = "dbo";
+                    options.TableName = "CacheData";
+                });
+
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.IdleTimeout = new TimeSpan(0, 4, 0, 0);
+            });
+
             services
                 .AddIdentity<ApplicationUser, ApplicationRole>(options =>
                 {
@@ -88,6 +103,10 @@
                 });
 
             services.AddSingleton(this.configuration);
+
+            // services.AddDistributedRedisCache()
+            services.AddSession();
+
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -162,11 +181,9 @@
             }
 
             app.UseStaticFiles();
-
             app.UseCookiePolicy();
-
             app.UseAuthentication();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
