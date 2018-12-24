@@ -36,10 +36,7 @@
                 @await this.Html.PartialAsync("_UserBookingsPartial")
                 @await this.Html.PartialAsync("_AdminDropdownPartial")
             </ul>
-            @if (this.User.IsInRole(GlobalConstants.UserRoleName))
-            {
-                @await Component.InvokeAsync(typeof(ShoppingCartComponent))
-            }
+            @await Component.InvokeAsync(typeof(ShoppingCartComponent))
             @await this.Html.PartialAsync("_LoginPartial")
         </div>
     </nav>

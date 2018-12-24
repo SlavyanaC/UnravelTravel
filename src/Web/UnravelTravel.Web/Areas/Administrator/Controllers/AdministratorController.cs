@@ -2,7 +2,7 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using UnravelTravel.Services.Data.Utilities;
+    using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Web.Controllers;
 
     [Area("Administrator")]

@@ -1,7 +1,13 @@
 ﻿namespace UnravelTravel.Web.Components
 {
+    using System.Collections.Generic;
+
     using Microsoft.AspNetCore.Mvc;
+    using UnravelTravel.Common;
+    using UnravelTravel.Models.ViewModels.ShoppingCart;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Common;
+    using UnravelTravel.Web.Helpers;
 
     public class ShoppingCartComponent : ViewComponent
     {
@@ -14,12 +20,21 @@
 
         public IViewComponentResult Invoke()
         {
-            var username = this.User.Identity.Name;
-            var shoppingCartTickets = this.shoppingCartsService.GetAllTickets(username)
-                .GetAwaiter()
-                .GetResult();
+            if (this.User.IsInRole(GlobalConstants.UserRoleName))
+            {
+                var username = this.User.Identity.Name;
+                var shoppingCartTickets = this.shoppingCartsService.GetAllTickets(username)
+                    .GetAwaiter()
+                    .GetResult();
 
-            return this.View(shoppingCartTickets);
+                return this.View(shoppingCartTickets);
+            }
+
+            var cart = this.HttpContext.Session
+                       .GetObjectFromJson<ShoppingCartActivityViewModel[]>(WebConstants.ShoppingCartSessionKey) ??
+                       new List<ShoppingCartActivityViewModel>().ToArray();
+
+            return this.View(cart);
         }
     }
 }

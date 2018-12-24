@@ -1,4 +1,4 @@
-﻿namespace UnravelTravel.Services.Data.Utilities
+﻿namespace UnravelTravel.Services.Data.Common
 {
     public class ServicesDataConstants
     {
@@ -23,5 +23,7 @@
         public const string ZeroOrNegativeQuantity = "Quantity cannot be negative or zero";
 
         public const string NullReferenceShoppingCartActivityId = "Shopping cart activity with id {0} not found.";
+
+        public const string NullReferenceGuestShoppingCartActivityId = "Session does not contain shopping cart activity with id {0}.";
     }
 }

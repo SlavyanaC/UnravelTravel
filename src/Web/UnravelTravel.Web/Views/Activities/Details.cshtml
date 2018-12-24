@@ -32,17 +32,14 @@
         </li>
     </ul>
     <div class="row d-flex justify-content-around">
-        @if (this.User.IsInRole(GlobalConstants.UserRoleName))
-        {
-            <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
-                <div class="row form-group justify-content-center">
-                    <label>Quantity: </label>&nbsp;
-                    <input type="number" id="quantity" name="quantity" class="form-control form-control-sm col-md-3"/>
-                </div>
-                    <button type="submit" class="btn btn-outline-primary">Add to cart</button>
-            </form>
-        }
-        else if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+        <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
+            <div class="row form-group justify-content-center">
+                <label>Quantity: </label>&nbsp;
+                <input type="number" id="quantity" name="quantity" class="form-control form-control-sm col-md-3" />
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Add to cart</button>
+        </form>
+        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
             <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Activities" asp-action="Edit" asp-route-id="@Model.Id">Edit activity</a>
             <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Activities" asp-action="Delete" asp-route-id="@Model.Id">Delete activity</a>

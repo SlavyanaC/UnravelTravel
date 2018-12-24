@@ -19,11 +19,7 @@
         [Display(Name = ModelConstants.UserFullNameDisplay)]
         public string ShoppingCartUserFullName { get; set; }
 
-        public decimal? ActivityPrice { get; set; }
-
         public int ActivityId { get; set; }
-
-        public Activity Activity { get; set; }
 
         public string ActivityImageUrl { get; set; }
 
@@ -31,6 +27,8 @@
         public string ActivityName { get; set; }
 
         public DateTime ActivityDate { get; set; }
+
+        public decimal? ActivityPrice { get; set; }
 
         public string DateString => this.ActivityDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture);
 
@@ -43,6 +41,6 @@
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
 
-        public decimal ShoppingCartActivityTotalPrice => this.Activity.Price.Value * this.Quantity;
+        public decimal? ShoppingCartActivityTotalPrice => this.ActivityPrice * this.Quantity;
     }
 }

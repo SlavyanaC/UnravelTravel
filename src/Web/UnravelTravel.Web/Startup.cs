@@ -22,8 +22,8 @@
     using UnravelTravel.Data.Seeding;
     using UnravelTravel.Models.InputModels.Account;
     using UnravelTravel.Services.Data;
+    using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
     using UnravelTravel.Services.Messaging;
 

@@ -8,8 +8,8 @@
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.ViewModels.ShoppingCart;
+    using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
     public class ShoppingCartsService : IShoppingCartsService
@@ -40,6 +40,34 @@
                 .ToArrayAsync();
 
             return shoppingCartTickets;
+        }
+
+        public async Task<ShoppingCartActivityViewModel> GetGuestShoppingCartActivityToAdd(int activityId, int quantity)
+        {
+            var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == activityId);
+            if (activity == null)
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, activityId));
+            }
+
+            if (quantity <= 0)
+            {
+                throw new ArgumentException(ServicesDataConstants.ZeroOrNegativeQuantity);
+            }
+
+            // TODO: AutoMapper?
+            var shoppingCartActivity = new ShoppingCartActivityViewModel
+            {
+                ActivityId = activity.Id,
+                ActivityName = activity.Name,
+                ActivityDate = activity.Date,
+                ActivityLocationName = activity.Location.Name,
+                ActivityImageUrl = activity.ImageUrl,
+                ActivityPrice = activity.Price,
+                Quantity = quantity,
+            };
+
+            return shoppingCartActivity;
         }
 
         public async Task AddActivityToShoppingCart(int activityId, string username, int quantity)
@@ -93,6 +121,22 @@
             await this.shoppingCartActivitiesRepository.SaveChangesAsync();
         }
 
+        public ShoppingCartActivityViewModel[] DeleteActivityFromGuestShoppingCart(int activityId, ShoppingCartActivityViewModel[] cart)
+        {
+            if (cart.All(sca => sca.ActivityId != activityId))
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceGuestShoppingCartActivityId, activityId));
+            }
+
+            var shoppingCartActivityViewModel = cart.First(sca => sca.ActivityId == activityId);
+
+            // TODO: use List<ShoppingCartActivityViewModel>
+            var cartAsList = cart.ToList();
+            cartAsList.Remove(shoppingCartActivityViewModel);
+            cart = cartAsList.ToArray();
+            return cart;
+        }
+
         public async Task EditShoppingCartActivity(int shoppingCartActivityId, string username, int newQuantity)
         {
             var shoppingCartActivity = await this.shoppingCartActivitiesRepository.All()
@@ -116,6 +160,32 @@
             shoppingCartActivity.Quantity = newQuantity;
             this.shoppingCartActivitiesRepository.Update(shoppingCartActivity);
             await this.shoppingCartActivitiesRepository.SaveChangesAsync();
+        }
+
+        public ShoppingCartActivityViewModel[] EditGuestShoppingCartActivity(int activityId, ShoppingCartActivityViewModel[] cart, int newQuantity)
+        {
+            if (cart.All(sca => sca.ActivityId != activityId))
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceGuestShoppingCartActivityId, activityId));
+            }
+
+            if (newQuantity <= 0)
+            {
+                throw new ArgumentException(ServicesDataConstants.ZeroOrNegativeQuantity);
+            }
+
+            var shoppingCartActivityViewModel = cart.First(sca => sca.ActivityId == activityId);
+            shoppingCartActivityViewModel.Quantity = newQuantity;
+
+            for (var i = 0; i < cart.Length; i++)
+            {
+                if (cart[i].Id == activityId)
+                {
+                    cart[i] = shoppingCartActivityViewModel;
+                }
+            }
+
+            return cart;
         }
 
         public async Task ClearShoppingCart(string username)

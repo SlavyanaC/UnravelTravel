@@ -1,4 +1,4 @@
-﻿namespace UnravelTravel.Services.Data.Utilities
+﻿namespace UnravelTravel.Services.Data.Common
 {
     using System.IO;
     using System.Threading.Tasks;

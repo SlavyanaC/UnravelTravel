@@ -10,9 +10,15 @@
 
         Task AddActivityToShoppingCart(int activityId, string username, int quantity);
 
-        Task DeleteActivityFromShoppingCart(int shoppingCartActivityId, string username);
+        Task<ShoppingCartActivityViewModel> GetGuestShoppingCartActivityToAdd(int activityId, int quantity);
 
-        Task EditShoppingCartActivity(int shoppingCartActivityId, string username, int newQuantity);
+        Task EditShoppingCartActivity(int activityId, string username, int newQuantity);
+
+        ShoppingCartActivityViewModel[] EditGuestShoppingCartActivity(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart, int newQuantity);
+
+        Task DeleteActivityFromShoppingCart(int activityId, string username);
+
+        ShoppingCartActivityViewModel[] DeleteActivityFromGuestShoppingCart(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart);
 
         Task ClearShoppingCart(string username);
     }

@@ -12,8 +12,8 @@
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants;
     using UnravelTravel.Models.InputModels.Reviews;
     using UnravelTravel.Models.ViewModels.Restaurants;
+    using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
     public class RestaurantsService : IRestaurantsService

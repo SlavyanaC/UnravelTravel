@@ -8,8 +8,8 @@
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
     using UnravelTravel.Models.ViewModels.Locations;
+    using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
     public class LocationsService : ILocationsService

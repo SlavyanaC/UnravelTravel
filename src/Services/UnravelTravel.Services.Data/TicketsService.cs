@@ -9,8 +9,8 @@
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.ViewModels.ShoppingCart;
     using UnravelTravel.Models.ViewModels.Tickets;
+    using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Data.Utilities;
     using UnravelTravel.Services.Mapping;
 
     public class TicketsService : ITicketsService
