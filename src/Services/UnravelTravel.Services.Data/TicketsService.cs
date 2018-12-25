@@ -40,13 +40,13 @@
 
             foreach (var shoppingCartActivity in shoppingCartActivities)
             {
-                var shoppingCartActivityDb = await this.shoppingCartActivitiesRepository.All()
-                    .FirstOrDefaultAsync(sca => sca.Id == shoppingCartActivity.Id);
-                if (shoppingCartActivityDb == null)
-                {
-                    throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceShoppingCartActivityId, shoppingCartActivity.Id));
-                }
-
+                // TODO: Find out why this only works with the first shoppingCartActivity in the ShoppingCart
+                // var shoppingCartActivityDb = await this.shoppingCartActivitiesRepository.All()
+                //     .FirstOrDefaultAsync(sca => sca.Id == shoppingCartActivity.Id);
+                // if (shoppingCartActivityDb == null)
+                // {
+                //     throw new NullReferenceException(string.Format (ServicesDataConstants.NullReferenceShoppingCartActivityId, shoppingCartActivity.Id));
+                // }
                 var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == shoppingCartActivity.ActivityId);
                 if (activity == null)
                 {

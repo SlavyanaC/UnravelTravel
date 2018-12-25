@@ -2,10 +2,13 @@
 {
     using System.Threading.Tasks;
 
+    using UnravelTravel.Data.Models;
     using UnravelTravel.Models.ViewModels.ShoppingCart;
 
     public interface IShoppingCartsService
     {
+        Task AssignShoppingCartsUserId(ApplicationUser user);
+
         Task<ShoppingCartActivityViewModel[]> GetAllTickets(string username);
 
         Task AddActivityToShoppingCart(int activityId, string username, int quantity);

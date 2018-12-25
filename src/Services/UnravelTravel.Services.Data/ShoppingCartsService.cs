@@ -17,12 +17,26 @@
         private readonly IRepository<ApplicationUser> usersRepository;
         private readonly IRepository<Activity> activitiesRepository;
         private readonly IRepository<ShoppingCartActivity> shoppingCartActivitiesRepository;
+        private readonly IRepository<ShoppingCart> shoppingCartsRepository;
 
-        public ShoppingCartsService(IRepository<ApplicationUser> usersRepository, IRepository<Activity> activitiesRepository, IRepository<ShoppingCartActivity> shoppingCartActivitiesRepository)
+        public ShoppingCartsService(
+            IRepository<ApplicationUser> usersRepository,
+            IRepository<Activity> activitiesRepository,
+            IRepository<ShoppingCartActivity> shoppingCartActivitiesRepository,
+            IRepository<ShoppingCart> shoppingCartsRepository)
         {
             this.usersRepository = usersRepository;
             this.activitiesRepository = activitiesRepository;
             this.shoppingCartActivitiesRepository = shoppingCartActivitiesRepository;
+            this.shoppingCartsRepository = shoppingCartsRepository;
+        }
+
+        public async Task AssignShoppingCartsUserId(ApplicationUser user)
+        {
+            var shoppingCart = await this.shoppingCartsRepository.All().FirstOrDefaultAsync(sc => sc.User == user);
+            shoppingCart.UserId = user.Id;
+            this.shoppingCartsRepository.Update(shoppingCart);
+            await this.shoppingCartActivitiesRepository.SaveChangesAsync();
         }
 
         public async Task<ShoppingCartActivityViewModel[]> GetAllTickets(string username)
