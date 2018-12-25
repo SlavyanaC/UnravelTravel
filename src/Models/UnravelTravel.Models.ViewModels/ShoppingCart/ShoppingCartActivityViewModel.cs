@@ -14,11 +14,6 @@
 
         public string ShoppingCartUserId { get; set; }
 
-        public ApplicationUser ShoppingCartUser { get; set; }
-
-        [Display(Name = ModelConstants.UserFullNameDisplay)]
-        public string ShoppingCartUserFullName { get; set; }
-
         public int ActivityId { get; set; }
 
         public string ActivityImageUrl { get; set; }
