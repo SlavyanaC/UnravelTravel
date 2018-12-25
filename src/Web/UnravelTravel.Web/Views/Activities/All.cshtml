@@ -1,4 +1,5 @@
-﻿@model IEnumerable<UnravelTravel.Models.ViewModels.Activities.ActivityViewModel>
+﻿@using System.Globalization
+@model IEnumerable<UnravelTravel.Models.ViewModels.Activities.ActivityViewModel>
 
 @{
     ViewData["Title"] = "All Activities";
@@ -17,6 +18,11 @@
                 </a>
                 <div class="card-body text-center">
                     <h5 class="card-title">@item.Name</h5>
+                    <h5 class="card-title">@item.LocationDestinationName</h5>
+                    <p>
+                        @item.LocationName<br />
+                        @item.DateAsString
+                    </p>
                     @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                     {
                         <div calss="row">

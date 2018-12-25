@@ -2,8 +2,8 @@
 {
     public class ModelConstants
     {
-        public const int AddressMinLength = 50;
-        public const int AddressMaxLength = 3;
+        public const int AddressMinLength = 3;
+        public const int AddressMaxLength = 50;
 
         public const string NameLengthError = "Name must be between {2} and {1} symbols";
         public const string AddressLengthError = "Address must be between {2} and {1} symbols";
