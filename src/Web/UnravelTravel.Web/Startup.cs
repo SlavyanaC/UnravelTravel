@@ -26,6 +26,7 @@
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Mapping;
     using UnravelTravel.Services.Messaging;
+    using UnravelTravel.Web.Middlewares;
 
     public class Startup
     {
@@ -184,6 +185,7 @@
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseSession();
+            app.UseSetAdminMiddleware();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
