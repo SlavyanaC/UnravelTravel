@@ -9,6 +9,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
+    using UnravelTravel.Common;
+    using UnravelTravel.Common.Extensions;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.ViewModels.ShoppingCart;
     using UnravelTravel.Services.Data.Contracts;
@@ -82,7 +84,7 @@
             if (result.Succeeded)
             {
                 this.logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
-                await this.StoreGuestShoppingCartIfAny(info.Principal.Identity.Name);
+                await this.StoreGuestShoppingCartIfAny(info.Principal.Identity.Name.RemoveWhiteSpaces());
                 return this.LocalRedirect(returnUrl);
             }
 
@@ -121,9 +123,10 @@
 
             if (this.ModelState.IsValid)
             {
+                var nameWithoutWhiteSpaces = info.Principal.Identity.Name.RemoveWhiteSpaces();
                 var user = new ApplicationUser
                 {
-                    UserName = info.Principal.Identity.Name,
+                    UserName = nameWithoutWhiteSpaces,
                     Email = this.Input.Email,
                     ShoppingCart = new ShoppingCart(),
                 };
@@ -135,11 +138,13 @@
                     result = await this.userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        await this.userManager.AddToRoleAsync(user, "User");
+                        await this.userManager.AddToRoleAsync(user, GlobalConstants.UserRoleName);
+                        await this.shoppingCartsService.AssignShoppingCartsUserId(user);
+
                         await this.signInManager.SignInAsync(user, isPersistent: false);
                         this.logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
-                        await this.StoreGuestShoppingCartIfAny(info.Principal.Identity.Name);
+                        await this.StoreGuestShoppingCartIfAny(info.Principal.Identity.Name.RemoveWhiteSpaces());
                         return this.LocalRedirect(returnUrl);
                     }
                 }

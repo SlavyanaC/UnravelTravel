@@ -1,4 +1,6 @@
-﻿namespace UnravelTravel.Web.Areas.Identity.Pages.Account
+﻿using UnravelTravel.Common;
+
+namespace UnravelTravel.Web.Areas.Identity.Pages.Account
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -33,7 +35,7 @@
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender, 
+            IEmailSender emailSender,
             IShoppingCartsService shoppingCartsService)
         {
             this.userManager = userManager;
@@ -72,15 +74,8 @@
                 {
                     this.logger.LogInformation("User created a new account with password.");
 
-                    // TODO: You shouldn't be needing this
-                    if (this.userManager.Users.Count() == 1)
-                    {
-                        await this.userManager.AddToRoleAsync(user, "Administrator");
-                    }
-                    else
-                    {
-                        await this.userManager.AddToRoleAsync(user, "User");
-                    }
+                    await this.userManager.AddToRoleAsync(user, GlobalConstants.UserRoleName);
+                    await this.shoppingCartsService.AssignShoppingCartsUserId(user);
 
                     var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = this.Url.Page(
@@ -103,7 +98,7 @@
                     {
                         foreach (var activity in shoppingCartActivities)
                         {
-                          await this.shoppingCartsService.AddActivityToShoppingCart(activity.ActivityId, this.Input.UserName, activity.Quantity);
+                            await this.shoppingCartsService.AddActivityToShoppingCart(activity.ActivityId, this.Input.UserName, activity.Quantity);
                         }
 
                         this.HttpContext.Session.Remove(WebConstants.ShoppingCartSessionKey);

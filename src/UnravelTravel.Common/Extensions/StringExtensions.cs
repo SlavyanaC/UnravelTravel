@@ -24,5 +24,21 @@
 
             return result.ToString();
         }
+
+        public static string RemoveWhiteSpaces(this string text)
+        {
+            var texWithoutWhitespaces = string.Empty;
+            foreach (var ch in text)
+            {
+                if (char.IsWhiteSpace(ch))
+                {
+                    continue;
+                }
+
+                texWithoutWhitespaces = texWithoutWhitespaces + ch;
+            }
+
+            return texWithoutWhitespaces;
+        }
     }
 }
