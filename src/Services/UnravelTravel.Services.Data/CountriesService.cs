@@ -19,9 +19,9 @@
             this.countriesRepository = countriesRepository;
         }
 
-        Task<CountryViewModel[]> ICountriesService.GetAllAsync()
+        public async Task<CountryViewModel[]> GetAllAsync()
         {
-            var countries = this.countriesRepository.All()
+            var countries = await this.countriesRepository.All()
                 .OrderBy(c => c.Name)
                 .To<CountryViewModel>()
                 .ToArrayAsync();
