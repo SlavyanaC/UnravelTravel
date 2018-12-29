@@ -6,7 +6,6 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
-    using AutoMapper;
     using UnravelTravel.Data;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
@@ -17,17 +16,17 @@
 
     public abstract class BaseServiceTests : IDisposable
     {
-        protected IServiceProvider Provider { get; set; }
-
-        protected ApplicationDbContext Context { get; set; }
-
         protected BaseServiceTests()
         {
             var services = this.SetServices();
 
-            this.Provider = services.BuildServiceProvider();
-            this.Context = this.Provider.GetRequiredService<ApplicationDbContext>();
+            this.ServiceProvider = services.BuildServiceProvider();
+            this.DbContext = this.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         }
+
+        protected IServiceProvider ServiceProvider { get; set; }
+
+        protected ApplicationDbContext DbContext { get; set; }
 
         private ServiceCollection SetServices()
         {
@@ -68,8 +67,7 @@
             services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
             services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
 
-            // TODO: AutoMapper doesn't work correctly here
-            Mapper.Reset();
+            // AutoMapper
             AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
 
             var context = new DefaultHttpContext();
@@ -80,7 +78,7 @@
 
         public void Dispose()
         {
-            Context.Database.EnsureDeleted();
+            DbContext.Database.EnsureDeleted();
             this.SetServices();
         }
     }

@@ -1,12 +1,9 @@
 ﻿namespace UnravelTravel.Services.Data.Tests
 {
-    using System.Reflection;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
-    using AutoMapper;
     using Xunit;
     using UnravelTravel.Data.Models;
-    using UnravelTravel.Models.InputModels.Account;
     using UnravelTravel.Models.ViewModels.Countries;
     using UnravelTravel.Services.Data.Contracts;
 
@@ -16,20 +13,15 @@
         private const string England = "England";
         private const string Netherlands = "Netherlands";
 
-        private readonly ICountriesService countriesServiceMock;
-
-        public CountriesServiceTests()
-        {
-            this.countriesServiceMock = this.Provider.GetRequiredService<ICountriesService>();
-        }
-
+        private ICountriesService CountriesServiceMock => this.ServiceProvider.GetRequiredService<ICountriesService>();
+       
         [Fact]
         public async Task GetAllAsyncReturnsAllCountries()
         {
-            this.Context.Countries.Add(new Country { Id = 1, Name = Bulgaria });
-            this.Context.Countries.Add(new Country { Id = 2, Name = England });
-            this.Context.Countries.Add(new Country { Id = 3, Name = Netherlands });
-            await this.Context.SaveChangesAsync();
+            this.DbContext.Countries.Add(new Country { Id = 1, Name = Bulgaria });
+            this.DbContext.Countries.Add(new Country { Id = 2, Name = England });
+            this.DbContext.Countries.Add(new Country { Id = 3, Name = Netherlands });
+            await this.DbContext.SaveChangesAsync();
 
             var expected = new CountryViewModel[]
             {
@@ -38,7 +30,7 @@
                 new CountryViewModel {Id = 3, Name = Netherlands},
             };
 
-            var actual = await this.countriesServiceMock.GetAllAsync();
+            var actual = await this.CountriesServiceMock.GetAllAsync();
 
             Assert.Collection(actual,
                 elem1 =>

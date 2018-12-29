@@ -1,19 +1,14 @@
 ﻿namespace UnravelTravel.Services.Data.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
-    using AutoMapper;
     using UnravelTravel.Data.Models;
-    using UnravelTravel.Models.InputModels.Account;
     using UnravelTravel.Models.InputModels.Reservations;
     using UnravelTravel.Models.ViewModels.Reservations;
     using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Services.Mapping;
     using Xunit;
 
     public class ReservationsServiceTests : BaseServiceTests
@@ -28,16 +23,8 @@
         private readonly string testUserId = Guid.NewGuid().ToString();
         private readonly DateTime testReservationDateTime = DateTime.Now.AddDays(2);
 
-        private readonly IReservationsService reservationsServiceMock;
-
-        public ReservationsServiceTests()
-        {
-            // If I move this to Base class AutoMapper throws exception on strange places
-            Mapper.Reset();
-            AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
-
-            this.reservationsServiceMock = this.Provider.GetRequiredService<IReservationsService>();
-        }
+        private IReservationsService ReservationsServiceMock =>
+            this.ServiceProvider.GetRequiredService<IReservationsService>();
 
         [Fact]
         public async Task BookAsyncCreatesReservation()
@@ -45,9 +32,9 @@
             await this.AddTestingUserToDb();
             await this.AddTestingRestaurantToDb();
             var reservationCreateInputModel = this.GetTestingReservationCreateInputModel();
-            var reservationViewModel = await this.reservationsServiceMock.BookAsync(TestRestaurantId, TestUsername, reservationCreateInputModel);
+            var reservationViewModel = await this.ReservationsServiceMock.BookAsync(TestRestaurantId, TestUsername, reservationCreateInputModel);
 
-            var reservationsRepository = this.Context.Reservations.OrderBy(r => r.CreatedOn);
+            var reservationsRepository = this.DbContext.Reservations.OrderBy(r => r.CreatedOn);
 
             Assert.Collection(reservationsRepository,
                 elem1 =>
@@ -68,7 +55,7 @@
 
             var reservationCreateInputModel = this.GetTestingReservationCreateInputModel();
 
-            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.reservationsServiceMock.BookAsync(TestRestaurantId, NotExistingUsername, reservationCreateInputModel));
+            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.ReservationsServiceMock.BookAsync(TestRestaurantId, NotExistingUsername, reservationCreateInputModel));
             Assert.Equal(string.Format(ServicesDataConstants.NullReferenceUsername, NotExistingUsername), exception.Message);
         }
 
@@ -78,7 +65,7 @@
             await this.AddTestingUserToDb();
             var reservationCreateInputModel = this.GetTestingReservationCreateInputModel();
 
-            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.reservationsServiceMock.BookAsync(TestRestaurantId, TestUsername, reservationCreateInputModel));
+            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.ReservationsServiceMock.BookAsync(TestRestaurantId, TestUsername, reservationCreateInputModel));
             Assert.Equal(string.Format(ServicesDataConstants.NullReferenceRestaurantId, TestRestaurantId), exception.Message);
         }
 
@@ -88,7 +75,7 @@
             await this.AddTestingUserToDb();
             await this.AddTestingRestaurantToDb();
 
-            this.Context.Reservations.Add(new Reservation
+            this.DbContext.Reservations.Add(new Reservation
             {
                 Id = TestReservationId,
                 Date = testReservationDateTime,
@@ -96,12 +83,12 @@
                 RestaurantId = TestRestaurantId,
                 UserId = testUserId,
             });
-            await this.Context.SaveChangesAsync();
+            await this.DbContext.SaveChangesAsync();
 
             var reservationCreateInputModel = this.GetTestingReservationCreateInputModel();
-            var reservationViewModel = await this.reservationsServiceMock.BookAsync(TestRestaurantId, TestUsername, reservationCreateInputModel);
+            var reservationViewModel = await this.ReservationsServiceMock.BookAsync(TestRestaurantId, TestUsername, reservationCreateInputModel);
 
-            var reservationsRepository = this.Context.Reservations.OrderBy(r => r.CreatedOn);
+            var reservationsRepository = this.DbContext.Reservations.OrderBy(r => r.CreatedOn);
 
             Assert.Collection(reservationsRepository,
                 elem1 =>
@@ -120,7 +107,7 @@
             await this.AddTestingUserToDb();
             await this.AddTestingRestaurantToDb();
 
-            this.Context.Reservations.Add(new Reservation
+            this.DbContext.Reservations.Add(new Reservation
             {
                 Id = TestReservationId,
                 Date = testReservationDateTime,
@@ -128,10 +115,10 @@
                 RestaurantId = TestRestaurantId,
                 UserId = testUserId,
             });
-            await this.Context.SaveChangesAsync();
+            await this.DbContext.SaveChangesAsync();
 
-            var reservationDetailsViewModel = await this.reservationsServiceMock.GetDetailsAsync(TestReservationId);
-            var reservationsRepository = this.Context.Reservations.OrderBy(r => r.CreatedOn);
+            var reservationDetailsViewModel = await this.ReservationsServiceMock.GetDetailsAsync(TestReservationId);
+            var reservationsRepository = this.DbContext.Reservations.OrderBy(r => r.CreatedOn);
 
             Assert.Collection(reservationsRepository,
                 elem1 =>
@@ -151,7 +138,7 @@
             await this.AddTestingRestaurantToDb();
 
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() =>
-                this.reservationsServiceMock.GetDetailsAsync(TestReservationId));
+                this.ReservationsServiceMock.GetDetailsAsync(TestReservationId));
             Assert.Equal(string.Format(ServicesDataConstants.NullReferenceReservationId, TestReservationId), exception.Message);
         }
 
@@ -161,7 +148,7 @@
             await this.AddTestingUserToDb();
             await this.AddTestingRestaurantToDb();
 
-            this.Context.Reservations.Add(new Reservation
+            this.DbContext.Reservations.Add(new Reservation
             {
                 Id = 1,
                 UserId = testUserId,
@@ -169,7 +156,7 @@
                 Date = testReservationDateTime,
                 PeopleCount = TestPeopleCount,
             });
-            this.Context.Reservations.Add(new Reservation
+            this.DbContext.Reservations.Add(new Reservation
             {
                 Id = 2,
                 UserId = testUserId,
@@ -177,7 +164,7 @@
                 Date = testReservationDateTime.AddDays(1),
                 PeopleCount = TestPeopleCount,
             });
-            await this.Context.SaveChangesAsync();
+            await this.DbContext.SaveChangesAsync();
 
             var expected = new ReservationDetailsViewModel[]
             {
@@ -199,7 +186,7 @@
                 }
             };
 
-            var actual = await this.reservationsServiceMock.GetAllAsync(TestUsername);
+            var actual = await this.ReservationsServiceMock.GetAllAsync(TestUsername);
             Assert.Collection(actual,
                 elem1 =>
                 {
@@ -226,7 +213,7 @@
             await this.AddTestingUserToDb();
             await this.AddTestingRestaurantToDb();
 
-            this.Context.Reservations.Add(new Reservation
+            this.DbContext.Reservations.Add(new Reservation
             {
                 Id = 1,
                 UserId = testUserId,
@@ -234,7 +221,7 @@
                 Date = testReservationDateTime,
                 PeopleCount = TestPeopleCount,
             });
-            this.Context.Reservations.Add(new Reservation
+            this.DbContext.Reservations.Add(new Reservation
             {
                 Id = 2,
                 UserId = Guid.NewGuid().ToString(),
@@ -242,7 +229,7 @@
                 Date = testReservationDateTime.AddDays(1),
                 PeopleCount = TestPeopleCount,
             });
-            this.Context.Reservations.Add(new Reservation
+            this.DbContext.Reservations.Add(new Reservation
             {
                 Id = 3,
                 UserId = Guid.NewGuid().ToString(),
@@ -250,7 +237,7 @@
                 Date = testReservationDateTime.AddDays(1),
                 PeopleCount = TestPeopleCount,
             });
-            await this.Context.SaveChangesAsync();
+            await this.DbContext.SaveChangesAsync();
 
             var expected = new ReservationDetailsViewModel[]
             {
@@ -264,7 +251,7 @@
                 },
             };
 
-            var actual = await this.reservationsServiceMock.GetAllAsync(TestUsername);
+            var actual = await this.ReservationsServiceMock.GetAllAsync(TestUsername);
             Assert.Collection(actual,
                 elem1 =>
                 {
@@ -288,22 +275,22 @@
 
         private async Task AddTestingRestaurantToDb()
         {
-            this.Context.Restaurants.Add(new Restaurant
+            this.DbContext.Restaurants.Add(new Restaurant
             {
                 Id = TestRestaurantId,
                 Name = TestRestaurantName,
             });
-            await this.Context.SaveChangesAsync();
+            await this.DbContext.SaveChangesAsync();
         }
 
         private async Task AddTestingUserToDb()
         {
-            this.Context.Users.Add(new ApplicationUser
+            this.DbContext.Users.Add(new ApplicationUser
             {
                 Id = testUserId,
                 UserName = TestUsername
             });
-            await this.Context.SaveChangesAsync();
+            await this.DbContext.SaveChangesAsync();
         }
     }
 }
