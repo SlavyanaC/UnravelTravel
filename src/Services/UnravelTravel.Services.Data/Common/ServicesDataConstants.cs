@@ -31,5 +31,7 @@
         public const string NullReferenceGuestShoppingCartActivityId = "Session does not contain shopping cart activity with id {0}.";
 
         public const string NullReferenceReservationId = "Reservation with id {0} not found.";
+
+        public const string NullReferenceTicketId = "Ticket with id {0} not found.";
     }
 }

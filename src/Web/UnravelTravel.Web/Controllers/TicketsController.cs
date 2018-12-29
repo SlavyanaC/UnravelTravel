@@ -1,10 +1,12 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
+    using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using UnravelTravel.Services.Data.Contracts;
 
-    [Authorize(Roles = "User")]
+    [Authorize]
     public class TicketsController : BaseController
     {
         private readonly ITicketsService ticketsService;
@@ -16,32 +18,27 @@
             this.shoppingCartsService = shoppingCartsService;
         }
 
-        public IActionResult BookGet() => this.Book();
+        public async Task<IActionResult> BookGet() => await this.Book();
 
         [HttpPost]
-        public IActionResult Book()
+        public async Task<IActionResult> Book()
         {
             var username = this.User.Identity.Name;
-            var shoppingCartActivities = this.shoppingCartsService.GetAllTickets(username).GetAwaiter().GetResult();
-            this.ticketsService.BookAllAsync(username, shoppingCartActivities).GetAwaiter().GetResult();
+            var shoppingCartActivities = await this.shoppingCartsService.GetAllTickets(username);
+            await this.ticketsService.BookAllAsync(username, shoppingCartActivities);
             return this.RedirectToAction("All");
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var ticketDetailsViewModel = this.ticketsService.GetDetailsAsync(id)
-                .GetAwaiter()
-                .GetResult();
-
+            var ticketDetailsViewModel = await this.ticketsService.GetDetailsAsync(id);
             return this.View(ticketDetailsViewModel);
         }
 
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
             var username = this.User.Identity.Name;
-            var tickets = this.ticketsService.GetAllAsync(username)
-                .GetAwaiter()
-                .GetResult();
+            var tickets = await this.ticketsService.GetAllAsync(username);
             return this.View(tickets);
         }
     }

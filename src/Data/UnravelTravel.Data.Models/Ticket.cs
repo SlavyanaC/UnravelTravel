@@ -17,5 +17,7 @@
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+
+        public int Quantity { get; set; }
     }
 }
