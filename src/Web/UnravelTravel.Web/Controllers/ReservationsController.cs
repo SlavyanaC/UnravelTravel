@@ -1,11 +1,13 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
+    using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using UnravelTravel.Models.InputModels.Reservations;
     using UnravelTravel.Services.Data.Contracts;
 
-    [Authorize(Roles = "User")]
+    [Authorize]
     public class ReservationsController : BaseController
     {
         private readonly IReservationsService reservationsService;
@@ -21,7 +23,7 @@
         }
 
         [HttpPost]
-        public IActionResult Book(int id, ReservationCreateInputModel reservationCreateInputModel)
+        public async Task<IActionResult> Book(int id, ReservationCreateInputModel reservationCreateInputModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -29,32 +31,21 @@
             }
 
             var username = this.User.Identity.Name;
-            var reservationId = this.reservationsService.BookAsync(
-                     id,
-                     username,
-                     reservationCreateInputModel.Date,
-                     reservationCreateInputModel.PeopleCount)
-                 .GetAwaiter()
-                 .GetResult();
+            var reservation = await this.reservationsService.BookAsync(id, username, reservationCreateInputModel);
 
-            return this.RedirectToAction("Details", new { id = reservationId });
+            return this.RedirectToAction("Details", new { id = reservation.Id });
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var detailViewModel = this.reservationsService.GetDetailsAsync(id)
-                .GetAwaiter()
-                .GetResult();
-
+            var detailViewModel = await this.reservationsService.GetDetailsAsync(id);
             return this.View(detailViewModel);
         }
 
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
             var username = this.User.Identity.Name;
-            var userReservationsViewModel = this.reservationsService.GetAllAsync(username)
-                .GetAwaiter()
-                .GetResult();
+            var userReservationsViewModel = await this.reservationsService.GetAllAsync(username);
             return this.View(userReservationsViewModel);
         }
     }

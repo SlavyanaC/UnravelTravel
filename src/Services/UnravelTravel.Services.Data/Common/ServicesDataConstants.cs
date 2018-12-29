@@ -12,7 +12,7 @@
 
         public const string InvalidLocationType = "Location type {0} is invalid.";
 
-        public const string LocationExists = "Location with name {0} already exists in destination with id {0}.";
+        public const string LocationExists = "Location with name {0} already exists in destination with id {1}.";
 
         public const string NullReferenceActivityId = "Activity with id {0} not found.";
 
@@ -29,5 +29,7 @@
         public const string NullReferenceShoppingCartActivityId = "Shopping cart activity with id {0} not found.";
 
         public const string NullReferenceGuestShoppingCartActivityId = "Session does not contain shopping cart activity with id {0}.";
+
+        public const string NullReferenceReservationId = "Reservation with id {0} not found.";
     }
 }

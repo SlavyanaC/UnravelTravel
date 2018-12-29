@@ -3,11 +3,12 @@
     using System;
     using System.Threading.Tasks;
 
+    using UnravelTravel.Models.InputModels.Reservations;
     using UnravelTravel.Models.ViewModels.Reservations;
 
     public interface IReservationsService
     {
-        Task<int> BookAsync(int restaurantId, string username, DateTime reservationDate, int peopleCount);
+        Task<ReservationDetailsViewModel> BookAsync(int restaurantId, string username, ReservationCreateInputModel reservationCreateInputModel);
 
         Task<ReservationDetailsViewModel> GetDetailsAsync(int id);
 
