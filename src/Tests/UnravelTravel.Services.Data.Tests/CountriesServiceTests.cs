@@ -1,14 +1,14 @@
-﻿using System.Reflection;
-using AutoMapper;
-using UnravelTravel.Models.InputModels.Account;
-namespace UnravelTravel.Services.Data.Tests
+﻿namespace UnravelTravel.Services.Data.Tests
 {
+    using System.Reflection;
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;
+    using AutoMapper;
+    using Xunit;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.InputModels.Account;
     using UnravelTravel.Models.ViewModels.Countries;
     using UnravelTravel.Services.Data.Contracts;
-    using Xunit;
 
     public class CountriesServiceTests : BaseServiceTests
     {

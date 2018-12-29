@@ -69,8 +69,8 @@
             services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
 
             // TODO: AutoMapper doesn't work correctly here
-            //Mapper.Reset();
-            //AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
+            Mapper.Reset();
+            AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
 
             var context = new DefaultHttpContext();
             services.AddSingleton<IHttpContextAccessor>( new HttpContextAccessor {HttpContext = context });

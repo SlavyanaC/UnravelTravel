@@ -1,6 +1,4 @@
-﻿using Xunit.Sdk;
-
-namespace UnravelTravel.Services.Data.Tests
+﻿namespace UnravelTravel.Services.Data.Tests
 {
     using System;
     using System.Collections.Generic;
