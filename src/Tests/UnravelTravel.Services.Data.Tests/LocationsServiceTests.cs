@@ -1,17 +1,21 @@
 namespace UnravelTravel.Services.Data.Tests
 {
     using System;
+    using System.Reflection;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.DependencyInjection;
+    using AutoMapper;
     using UnravelTravel.Data.Models.Enums;
+    using UnravelTravel.Models.InputModels.Account;
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Locations;
     using UnravelTravel.Models.ViewModels.Activities;
     using UnravelTravel.Models.ViewModels.Locations;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Data.Common;
+    using UnravelTravel.Services.Mapping;
     using UnravelTravel.Data.Models;
     using Xunit;
 
@@ -25,23 +29,32 @@ namespace UnravelTravel.Services.Data.Tests
         private const string TestLocationType = "Museum";
         private const string TestInvalidLocationType = "Invalid";
 
-        private ILocationsService LocationsServiceMock { get; set; }
+        private readonly ILocationsService locationsServiceMock;
 
         public LocationsServiceTests()
         {
-            this.LocationsServiceMock = this.Provider.GetRequiredService<ILocationsService>();
+            this.locationsServiceMock = this.Provider.GetRequiredService<ILocationsService>();
+
+            // If I move this to Base class AutoMapper throws exception on strange places
+            Mapper.Reset();
+            AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
         }
 
         [Fact]
         public async Task CreateAsyncCreatesLocation()
         {
             await this.AddTestingDestinationToDb();
-
             var locationCreateInputModel = this.GetTestingLocationCreateInputModel();
+            var location = await this.locationsServiceMock.CreateLocationAsync(locationCreateInputModel);
 
-            var location = await this.LocationsServiceMock.CreateLocationAsync(locationCreateInputModel);
-
-            Assert.Equal(1, location.Id);
+            var locationsRepository = this.Context.Locations.OrderBy(l => l.CreatedOn);
+            Assert.Collection(locationsRepository,
+                elem1 =>
+                {
+                    Assert.Equal(locationsRepository.Last().Id, location.Id);
+                    Assert.Equal(locationsRepository.Last().Name, location.Name);
+                    Assert.Equal(locationsRepository.Last().Address, location.Address);
+                });
             Assert.Equal(1, this.Context.Locations.Count());
         }
 
@@ -62,8 +75,8 @@ namespace UnravelTravel.Services.Data.Tests
 
             var locationCreateInputModel = this.GetTestingLocationCreateInputModel();
 
-            var exception =await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.LocationsServiceMock.CreateLocationAsync(locationCreateInputModel));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
+                 this.locationsServiceMock.CreateLocationAsync(locationCreateInputModel));
             Assert.Equal(string.Format(ServicesDataConstants.LocationExists, locationCreateInputModel.Name, locationCreateInputModel.DestinationId), exception.Message);
         }
 
@@ -76,7 +89,7 @@ namespace UnravelTravel.Services.Data.Tests
             locationCreateInputModel.Type = TestInvalidLocationType;
 
             var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.LocationsServiceMock.CreateLocationAsync(locationCreateInputModel));
+                this.locationsServiceMock.CreateLocationAsync(locationCreateInputModel));
 
             Assert.Equal(string.Format(ServicesDataConstants.InvalidLocationType, TestInvalidLocationType), exception.Message);
         }
@@ -87,7 +100,7 @@ namespace UnravelTravel.Services.Data.Tests
             var locationCreateInputModel = this.GetTestingLocationCreateInputModel();
 
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() =>
-                this.LocationsServiceMock.CreateLocationAsync(locationCreateInputModel));
+                this.locationsServiceMock.CreateLocationAsync(locationCreateInputModel));
 
             Assert.Equal(string.Format(ServicesDataConstants.NullReferenceDestinationId, TestLocationDestinationId), exception.Message);
         }
@@ -139,7 +152,7 @@ namespace UnravelTravel.Services.Data.Tests
                 },
             };
 
-            var actual = await this.LocationsServiceMock.GetAllLocationsAsync();
+            var actual = await this.locationsServiceMock.GetAllLocationsAsync();
 
             Assert.Collection(actual,
                 elem1 =>

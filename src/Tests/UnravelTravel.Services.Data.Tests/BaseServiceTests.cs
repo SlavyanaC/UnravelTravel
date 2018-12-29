@@ -2,11 +2,11 @@
 {
     using System;
     using System.Reflection;
-    using AutoMapper;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using AutoMapper;
     using UnravelTravel.Data;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
@@ -15,7 +15,7 @@
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Mapping;
 
-    public abstract class BaseServiceTests
+    public abstract class BaseServiceTests : IDisposable
     {
         protected IServiceProvider Provider { get; set; }
 
@@ -24,6 +24,7 @@
         protected BaseServiceTests()
         {
             var services = this.SetServices();
+
             this.Provider = services.BuildServiceProvider();
             this.Context = this.Provider.GetRequiredService<ApplicationDbContext>();
         }
@@ -35,23 +36,19 @@
             services.AddDbContext<ApplicationDbContext>(
                 opt => opt.UseInMemoryDatabase(Guid.NewGuid().ToString()));
 
-            // AutoMapper
-            Mapper.Reset();
-            AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
-
             services
-                .AddIdentity<ApplicationUser, ApplicationRole>(options =>
-                {
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequiredLength = 6;
-                })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddUserStore<ApplicationUserStore>()
-                .AddRoleStore<ApplicationRoleStore>()
-                .AddDefaultTokenProviders();
+                    .AddIdentity<ApplicationUser, ApplicationRole>(options =>
+                    {
+                        options.Password.RequireDigit = false;
+                        options.Password.RequireLowercase = false;
+                        options.Password.RequireUppercase = false;
+                        options.Password.RequireNonAlphanumeric = false;
+                        options.Password.RequiredLength = 6;
+                    })
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddUserStore<ApplicationUserStore>()
+                    .AddRoleStore<ApplicationRoleStore>()
+                    .AddDefaultTokenProviders();
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -71,7 +68,20 @@
             services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
             services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
 
+            // TODO: AutoMapper doesn't work here
+            //Mapper.Reset();
+            //AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
+
+            var context = new DefaultHttpContext();
+            services.AddSingleton<IHttpContextAccessor>( new HttpContextAccessor {HttpContext = context });
+
             return services;
+        }
+
+        public void Dispose()
+        {
+            Context.Database.EnsureDeleted();
+            this.SetServices();
         }
     }
 }
