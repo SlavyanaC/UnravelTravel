@@ -1,12 +1,14 @@
-﻿namespace UnravelTravel.Services.Data
+﻿
+namespace UnravelTravel.Services.Data
 {
     using System;
     using System.Threading.Tasks;
-
+    using AutoMap = AutoMapper;
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
+    using UnravelTravel.Models.InputModels.AdministratorInputModels.Locations;
     using UnravelTravel.Models.ViewModels.Locations;
     using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
@@ -23,25 +25,24 @@
             this.destinationsRepository = destinationsRepository;
         }
 
-        public async Task<int> CreateAsync(params object[] parameters)
+        public async Task<LocationViewModel> CreateLocationAsync(LocationCreateInputModel locationCreateInputModel)
         {
-            var name = parameters[0].ToString();
-            var address = parameters[1].ToString();
-
-            var destinationId = int.Parse(parameters[2].ToString());
-            var destination = await this.destinationsRepository.All().FirstOrDefaultAsync(d => d.Id == destinationId);
+            var destination = await this.destinationsRepository.All().FirstOrDefaultAsync(d => d.Id == locationCreateInputModel.DestinationId);
             if (destination == null)
             {
-                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, destinationId));
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, locationCreateInputModel.DestinationId));
             }
 
-            var typeString = parameters[3].ToString();
-            Enum.TryParse(typeString, true, out LocationType typeEnum);
+            var typeString = locationCreateInputModel.Type;
+            if (!Enum.TryParse(typeString, true, out LocationType typeEnum))
+            {
+                throw new ArgumentException(string.Format(ServicesDataConstants.InvalidLocationType, typeString));
+            }
 
             var location = new Location
             {
-                Name = name,
-                Address = address,
+                Name = locationCreateInputModel.Name,
+                Address = locationCreateInputModel.Address,
                 Destination = destination,
                 LocationType = typeEnum,
             };
@@ -49,7 +50,7 @@
             this.locationsRepository.Add(location);
             await this.locationsRepository.SaveChangesAsync();
 
-            return location.Id;
+            return AutoMap.Mapper.Map<LocationViewModel>(location);
         }
 
         public async Task<LocationViewModel[]> GetAllLocationsAsync()

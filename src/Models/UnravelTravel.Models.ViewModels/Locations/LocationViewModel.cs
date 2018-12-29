@@ -13,7 +13,7 @@
 
         public string Address { get; set; }
 
-        public string Type { get; set; }
+        public string LocationType { get; set; }
 
         public string DestinationName { get; set; }
 

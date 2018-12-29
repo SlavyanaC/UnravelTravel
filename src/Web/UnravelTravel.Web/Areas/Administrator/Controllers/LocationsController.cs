@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,8 +11,8 @@
 
     public class LocationsController : AdministratorController
     {
-        private ILocationsService locationsService;
-        private IDestinationsService destinationsService;
+        private readonly ILocationsService locationsService;
+        private readonly IDestinationsService destinationsService;
 
         public LocationsController(ILocationsService locationsService, IDestinationsService destinationsService)
         {
@@ -26,30 +27,20 @@
         }
 
         [HttpPost]
-        public IActionResult Create(LocationCreateInputModel locationCreateInputModel)
+        public async Task<IActionResult> Create(LocationCreateInputModel locationCreateInputModel)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(locationCreateInputModel);
             }
 
-            var locationId = this.locationsService.CreateAsync(
-                    locationCreateInputModel.Name,
-                    locationCreateInputModel.Address,
-                    locationCreateInputModel.DestinationId,
-                    locationCreateInputModel.Type)
-                .GetAwaiter()
-                .GetResult();
-
+            var locationViewModel = await this.locationsService.CreateLocationAsync(locationCreateInputModel);
             return this.RedirectToAction("All");
         }
 
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            var allLocationsViewModel = this.locationsService.GetAllLocationsAsync()
-                .GetAwaiter()
-                .GetResult();
-
+            var allLocationsViewModel = await this.locationsService.GetAllLocationsAsync();
             return this.View(allLocationsViewModel);
         }
 

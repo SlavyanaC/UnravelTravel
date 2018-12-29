@@ -10,6 +10,8 @@
 
         public const string NullReferenceLocationId = "Location with id {0} not found.";
 
+        public const string InvalidLocationType = "Location type {0} is invalid.";
+
         public const string NullReferenceActivityId = "Activity with id {0} not found.";
 
         public const string NullReferenceUsername = "User with username {0} not found.";
