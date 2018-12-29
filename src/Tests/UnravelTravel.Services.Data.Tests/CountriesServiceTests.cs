@@ -1,4 +1,7 @@
-﻿namespace UnravelTravel.Services.Data.Tests
+﻿using System.Reflection;
+using AutoMapper;
+using UnravelTravel.Models.InputModels.Account;
+namespace UnravelTravel.Services.Data.Tests
 {
     using System.Threading.Tasks;
     using Microsoft.Extensions.DependencyInjection;

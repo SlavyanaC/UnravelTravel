@@ -32,9 +32,9 @@
 
         public ReservationsServiceTests()
         {
-            // If I move this to Base class AutoMapper throws exception on strange places
-            Mapper.Reset();
-            AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
+            //// If I move this to Base class AutoMapper throws exception on strange places
+            //Mapper.Reset();
+            //AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
 
             this.reservationsServiceMock = this.Provider.GetRequiredService<IReservationsService>();
         }

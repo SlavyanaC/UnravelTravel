@@ -68,7 +68,7 @@
             services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
             services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
 
-            // TODO: AutoMapper doesn't work here
+            // TODO: AutoMapper doesn't work correctly here
             //Mapper.Reset();
             //AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
 
