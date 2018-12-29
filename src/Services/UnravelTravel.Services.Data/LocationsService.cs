@@ -1,9 +1,8 @@
-﻿
-namespace UnravelTravel.Services.Data
+﻿namespace UnravelTravel.Services.Data
 {
     using System;
     using System.Threading.Tasks;
-    using AutoMap = AutoMapper;
+
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
@@ -13,6 +12,8 @@ namespace UnravelTravel.Services.Data
     using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Mapping;
+
+    using AutoMap = AutoMapper;
 
     public class LocationsService : ILocationsService
     {
@@ -31,6 +32,12 @@ namespace UnravelTravel.Services.Data
             if (destination == null)
             {
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, locationCreateInputModel.DestinationId));
+            }
+
+            var locationExists = await this.locationsRepository.All().AnyAsync(l => l.Name == locationCreateInputModel.Name && l.DestinationId == locationCreateInputModel.DestinationId);
+            if (locationExists)
+            {
+                throw new ArgumentException(string.Format(ServicesDataConstants.LocationExists, locationCreateInputModel.Name, locationCreateInputModel.DestinationId));
             }
 
             var typeString = locationCreateInputModel.Type;
