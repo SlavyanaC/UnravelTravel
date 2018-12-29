@@ -108,7 +108,6 @@
             // services.AddDistributedRedisCache()
             services.AddSession();
 
-
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
