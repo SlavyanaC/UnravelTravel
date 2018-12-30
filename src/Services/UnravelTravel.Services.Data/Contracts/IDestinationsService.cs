@@ -9,7 +9,7 @@
 
     public interface IDestinationsService : IBaseDataService
     {
-        Task<int> CreateAsync(DestinationCreateInputModel destinationCreateInputModel);
+        Task<DestinationDetailsViewModel> CreateAsync(DestinationCreateInputModel destinationCreateInputModel);
 
         Task EditAsync(DestinationEditViewModel destinationEditViewModel);
 

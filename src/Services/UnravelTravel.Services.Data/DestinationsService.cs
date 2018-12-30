@@ -27,7 +27,12 @@
 
         private readonly Cloudinary cloudinary;
 
-        public DestinationsService(IRepository<Destination> destinationsRepository, IRepository<Country> countriesRepository, IActivitiesService activitiesService, IRestaurantsService restaurantsService, Cloudinary cloudinary)
+        public DestinationsService(
+            IRepository<Destination> destinationsRepository,
+            IRepository<Country> countriesRepository,
+            IActivitiesService activitiesService,
+            IRestaurantsService restaurantsService,
+            Cloudinary cloudinary)
         {
             this.destinationsRepository = destinationsRepository;
             this.countriesRepository = countriesRepository;
@@ -49,8 +54,14 @@
             return destinations;
         }
 
-        public async Task<int> CreateAsync(DestinationCreateInputModel destinationCreateInputModel)
+        public async Task<DestinationDetailsViewModel> CreateAsync(DestinationCreateInputModel destinationCreateInputModel)
         {
+            var country = await this.countriesRepository.All().FirstOrDefaultAsync(c => c.Id == destinationCreateInputModel.CountryId);
+            if (country == null)
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceCountryId, destinationCreateInputModel.CountryId));
+            }
+
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, destinationCreateInputModel.Image, destinationCreateInputModel.Name);
 
             var destination = new Destination
@@ -64,7 +75,8 @@
             this.destinationsRepository.Add(destination);
             await this.destinationsRepository.SaveChangesAsync();
 
-            return destination.Id;
+            var destinationDetailsViewModel = AutoMapper.Mapper.Map<DestinationDetailsViewModel>(destination);
+            return destinationDetailsViewModel;
         }
 
         public async Task<TViewModel> GetViewModelByIdAsync<TViewModel>(int id)
@@ -73,6 +85,10 @@
                 .Where(d => d.Id == id)
                 .To<TViewModel>()
                 .FirstOrDefaultAsync();
+            if (destination == null)
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, id));
+            }
 
             return destination;
         }
@@ -126,23 +142,18 @@
         {
             var destination = await this.destinationsRepository.All()
                 .FirstOrDefaultAsync(d => d.Id == destinationId);
-
             if (destination == null)
             {
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, destinationId));
             }
 
-            var activities = this.activitiesService.GetAllAsync()
-                .GetAwaiter()
-                .GetResult()
+            var activities = this.activitiesService.GetAllAsync().GetAwaiter().GetResult()
                 .Where(a => a.LocationDestinationId == destinationId &&
                             a.Date >= startDate &&
                             a.Date <= endDate)
                 .ToArray();
 
-            var restaurants = this.restaurantsService.GetAllAsync()
-                .GetAwaiter()
-                .GetResult()
+            var restaurants = this.restaurantsService.GetAllAsync().GetAwaiter().GetResult()
                 .Where(r => r.DestinationId == destinationId)
                 .ToArray();
 

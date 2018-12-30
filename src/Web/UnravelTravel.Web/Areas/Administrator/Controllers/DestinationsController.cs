@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@
         }
 
         [HttpPost]
-        public IActionResult Create(DestinationCreateInputModel destinationCreateInputModel)
+        public async Task<IActionResult> Create(DestinationCreateInputModel destinationCreateInputModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -41,30 +42,19 @@
                 return this.View(destinationCreateInputModel);
             }
 
-            var destinationId = this.destinationsService.CreateAsync(destinationCreateInputModel)
-                .GetAwaiter()
-                .GetResult();
-
-            return this.RedirectToAction("Details", "Destinations", new { area = "", id = destinationId });
+            var destination = await this.destinationsService.CreateAsync(destinationCreateInputModel);
+            return this.RedirectToAction("Details", "Destinations", new { area = "", id = destination.Id });
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             this.ViewData["countries"] = this.SelectAllCounties();
-
-            var destinationToEdit = this.destinationsService.GetViewModelByIdAsync<DestinationEditViewModel>(id)
-                .GetAwaiter()
-                .GetResult();
-            if (destinationToEdit == null)
-            {
-                return this.Redirect("/");
-            }
-
+            var destinationToEdit = await this.destinationsService.GetViewModelByIdAsync<DestinationEditViewModel>(id);
             return this.View(destinationToEdit);
         }
 
         [HttpPost]
-        public IActionResult Edit(DestinationEditViewModel destinationEditViewModel)
+        public async Task<IActionResult> Edit(DestinationEditViewModel destinationEditViewModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -80,30 +70,22 @@
                 }
             }
 
-            this.destinationsService.EditAsync(destinationEditViewModel).GetAwaiter().GetResult();
-
+            await this.destinationsService.EditAsync(destinationEditViewModel);
             return this.RedirectToAction("All", "Destinations", new { area = "" });
         }
 
         [Authorize]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var destinationToDelete = this.destinationsService.GetViewModelByIdAsync<DestinationEditViewModel>(id)
-                .GetAwaiter()
-                .GetResult();
-            if (destinationToDelete == null)
-            {
-                return this.Redirect("/");
-            }
-
+            var destinationToDelete = await this.destinationsService.GetViewModelByIdAsync<DestinationEditViewModel>(id);
             return this.View(destinationToDelete);
         }
 
         [HttpPost]
-        public IActionResult Delete(DestinationEditViewModel destinationEditViewModel)
+        public async Task<IActionResult> Delete(DestinationEditViewModel destinationEditViewModel)
         {
             var id = destinationEditViewModel.Id;
-            this.destinationsService.DeleteByIdAsync(id).GetAwaiter().GetResult();
+            await this.destinationsService.DeleteByIdAsync(id);
             return this.RedirectToAction("All", "Destinations", new { area = "" });
         }
 
