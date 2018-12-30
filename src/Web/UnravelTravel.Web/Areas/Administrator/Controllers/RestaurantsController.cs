@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -27,7 +28,7 @@
         }
 
         [HttpPost]
-        public IActionResult Create(RestaurantCreateInputModel restaurantCreateInputModel)
+        public async Task<IActionResult> Create(RestaurantCreateInputModel restaurantCreateInputModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -40,28 +41,20 @@
                 return this.View(restaurantCreateInputModel);
             }
 
-            var restaurantId = this.restaurantsService.CreateAsync(restaurantCreateInputModel).GetAwaiter().GetResult();
+            var restaurant = await this.restaurantsService.CreateAsync(restaurantCreateInputModel);
 
-            return this.RedirectToAction("Details", "Restaurants", new { area = "", id = restaurantId });
+            return this.RedirectToAction("Details", "Restaurants", new { area = "", id = restaurant.Id });
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             this.ViewData["Destinations"] = this.SelectAllDestinations();
-
-            var restaurantToEdit = this.restaurantsService.GetViewModelByIdAsync<RestaurantEditViewModel>(id)
-                .GetAwaiter()
-                .GetResult();
-            if (restaurantToEdit == null)
-            {
-                return this.Redirect("/");
-            }
-
+            var restaurantToEdit = await this.restaurantsService.GetViewModelByIdAsync<RestaurantEditViewModel>(id);
             return this.View(restaurantToEdit);
         }
 
         [HttpPost]
-        public IActionResult Edit(RestaurantEditViewModel restaurantEditView)
+        public async Task<IActionResult> Edit(RestaurantEditViewModel restaurantEditView)
         {
             if (!this.ModelState.IsValid)
             {
@@ -77,37 +70,27 @@
                 }
             }
 
-            this.restaurantsService.EditAsync(restaurantEditView).GetAwaiter().GetResult();
-
+            await this.restaurantsService.EditAsync(restaurantEditView);
             return this.RedirectToAction("All", "Restaurants", new { area = "" });
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var restaurantToDelete = this.restaurantsService.GetViewModelByIdAsync<RestaurantEditViewModel>(id)
-                .GetAwaiter()
-                .GetResult();
-            if (restaurantToDelete == null)
-            {
-                return this.Redirect("/");
-            }
-
+            var restaurantToDelete = await this.restaurantsService.GetViewModelByIdAsync<RestaurantEditViewModel>(id);
             return this.View(restaurantToDelete);
         }
 
         [HttpPost]
-        public IActionResult Delete(RestaurantEditViewModel destinationEditViewModel)
+        public async Task<IActionResult> Delete(RestaurantEditViewModel destinationEditViewModel)
         {
             var id = destinationEditViewModel.Id;
-            this.restaurantsService.DeleteByIdAsync(id).GetAwaiter().GetResult();
+            await this.restaurantsService.DeleteByIdAsync(id);
             return this.RedirectToAction("All", "Restaurants", new { area = "" });
         }
 
         private IEnumerable<SelectListItem> SelectAllDestinations()
         {
-            return this.destinationsService.GetAllDestinationsAsync()
-                .GetAwaiter()
-                .GetResult()
+            return this.destinationsService.GetAllDestinationsAsync().GetAwaiter().GetResult()
                 .Select(x => new SelectListItem
                 {
                     Value = x.Id.ToString(),

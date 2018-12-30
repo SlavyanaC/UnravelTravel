@@ -139,7 +139,6 @@
             // Cloudinary Setup
             var cloudinaryAccount = new CloudinaryDotNet.Account(CloudinaryConfig.CloudName, CloudinaryConfig.ApiKey, CloudinaryConfig.ApiSecret);
             var cloudinary = new Cloudinary(cloudinaryAccount);
-
             services.AddSingleton(cloudinary);
 
             // Stripe Setup

@@ -8,7 +8,7 @@
 
     public interface IRestaurantsService : IBaseDataService
     {
-        Task<int> CreateAsync(RestaurantCreateInputModel restaurantCreateInputModel);
+        Task<RestaurantDetailsViewModel> CreateAsync(RestaurantCreateInputModel restaurantCreateInputModel);
 
         Task<RestaurantViewModel[]> GetAllAsync();
 

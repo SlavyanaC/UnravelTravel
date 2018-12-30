@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
     using System;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,11 @@
             this.memoryCache = memoryCache;
         }
 
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
             if (!this.memoryCache.TryGetValue(WebConstants.AllRestaurantsCacheKey, out RestaurantViewModel[] cacheEntry))
             {
-                cacheEntry = this.restaurantsService.GetAllAsync().GetAwaiter().GetResult();
+                cacheEntry = await this.restaurantsService.GetAllAsync();
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
                 this.memoryCache.Set(WebConstants.AllRestaurantsCacheKey, cacheEntry, cacheEntryOptions);
@@ -34,29 +35,25 @@
             return this.View(cacheEntry);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var restaurantViewModel = this.restaurantsService.GetViewModelByIdAsync<RestaurantDetailsViewModel>(id)
-                .GetAwaiter()
-                .GetResult();
+            var restaurantViewModel = await this.restaurantsService.GetViewModelByIdAsync<RestaurantDetailsViewModel>(id);
             return this.View(restaurantViewModel);
         }
 
         [Authorize]
-        public IActionResult Review(int id)
+        public async Task<IActionResult> Review(int id)
         {
-            var reviewInputModel = this.restaurantsService.GetViewModelByIdAsync<RestaurantReviewInputModel>(id)
-                .GetAwaiter()
-                .GetResult();
+            var reviewInputModel = await this.restaurantsService.GetViewModelByIdAsync<RestaurantReviewInputModel>(id);
             return this.View(reviewInputModel);
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Review(int id, RestaurantReviewInputModel restaurantReviewInputModel)
+        public async Task<IActionResult> Review(int id, RestaurantReviewInputModel restaurantReviewInputModel)
         {
             var username = this.User.Identity.Name;
-            this.restaurantsService.Review(id, username, restaurantReviewInputModel).GetAwaiter().GetResult();
+            await this.restaurantsService.Review(id, username, restaurantReviewInputModel);
             return this.RedirectToAction("Details", new { id });
         }
     }
