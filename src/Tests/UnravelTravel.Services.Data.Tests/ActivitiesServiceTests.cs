@@ -138,7 +138,7 @@
         }
 
         [Fact]
-        public async Task DeleteByIdAsyncThrowsNullReferenceExceptionIfRestaurantNotFound()
+        public async Task DeleteByIdAsyncThrowsNullReferenceExceptionIfActivityNotFound()
         {
             await this.AddTestingDestinationToDb();
             await this.AddTestingLocationToDb();
@@ -150,7 +150,7 @@
         }
 
         [Fact]
-        public async Task DeleteByIdAsyncDeletesTheCorrectRestaurant()
+        public async Task DeleteByIdAsyncDeletesTheCorrectActivity()
         {
             await this.AddTestingDestinationToDb();
             await this.AddTestingLocationToDb();
@@ -188,7 +188,7 @@
         }
 
         [Fact]
-        public async Task DeleteByIdOnlyDeletesOneRestaurant()
+        public async Task DeleteByIdOnlyDeletesOneActivity()
         {
             await this.AddTestingDestinationToDb();
             await this.AddTestingLocationToDb();
@@ -219,7 +219,7 @@
         }
 
         [Fact]
-        public async Task CreateAsyncThrowsArgumentExceptionIdRestaurantTypeInvalid()
+        public async Task CreateAsyncThrowsArgumentExceptionIdActivityTypeInvalid()
         {
             await this.AddTestingDestinationToDb();
             await this.AddTestingLocationToDb();
