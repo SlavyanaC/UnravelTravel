@@ -22,5 +22,11 @@
     <ProjectReference Include="..\..\Data\UnravelTravel.Data\UnravelTravel.Data.csproj" />
     <ProjectReference Include="..\..\Services\UnravelTravel.Services.Data\UnravelTravel.Services.Data.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Test.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
  
 </Project>

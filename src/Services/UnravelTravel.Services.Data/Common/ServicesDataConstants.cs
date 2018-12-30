@@ -33,5 +33,9 @@
         public const string NullReferenceReservationId = "Reservation with id {0} not found.";
 
         public const string NullReferenceTicketId = "Ticket with id {0} not found.";
+
+        public const string InvalidRestaurantType = "Restaurant type {0} is invalid.";
+
+        public const string RestaurantReviewAlreadyAdded = "User with username {0} has already reviewed restaurant with id {1} and name {2}";
     }
 }

@@ -16,6 +16,8 @@
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Mapping;
 
+    using AutoMap = AutoMapper;
+
     public class RestaurantsService : IRestaurantsService
     {
         private readonly IRepository<Restaurant> restaurantsRepository;
@@ -25,7 +27,13 @@
         private readonly IRepository<RestaurantReview> restaurantReviewsRepository;
         private readonly Cloudinary cloudinary;
 
-        public RestaurantsService(IRepository<Restaurant> restaurantsRepository, IRepository<Destination> destinationsRepository, IRepository<ApplicationUser> usersRepository, IRepository<Review> reviewsRepository, IRepository<RestaurantReview> restaurantReviewsRepository, Cloudinary cloudinary)
+        public RestaurantsService(
+            IRepository<Restaurant> restaurantsRepository,
+            IRepository<Destination> destinationsRepository,
+            IRepository<ApplicationUser> usersRepository,
+            IRepository<Review> reviewsRepository,
+            IRepository<RestaurantReview> restaurantReviewsRepository,
+            Cloudinary cloudinary)
         {
             this.restaurantsRepository = restaurantsRepository;
             this.destinationsRepository = destinationsRepository;
@@ -45,9 +53,12 @@
             return restaurants;
         }
 
-        public async Task<int> CreateAsync(RestaurantCreateInputModel restaurantCreateInputModel)
+        public async Task<RestaurantDetailsViewModel> CreateAsync(RestaurantCreateInputModel restaurantCreateInputModel)
         {
-            Enum.TryParse(restaurantCreateInputModel.Type, true, out RestaurantType typeEnum);
+            if (!Enum.TryParse(restaurantCreateInputModel.Type, true, out RestaurantType typeEnum))
+            {
+                throw new ArgumentException(string.Format(ServicesDataConstants.InvalidRestaurantType, restaurantCreateInputModel.Type));
+            }
 
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, restaurantCreateInputModel.Image, restaurantCreateInputModel.Name);
 
@@ -64,7 +75,8 @@
             this.restaurantsRepository.Add(restaurant);
             await this.restaurantsRepository.SaveChangesAsync();
 
-            return restaurant.Id;
+            var restaurantDetailsViewModel = AutoMap.Mapper.Map<RestaurantDetailsViewModel>(restaurant);
+            return restaurantDetailsViewModel;
         }
 
         public async Task<TViewModel> GetViewModelByIdAsync<TViewModel>(int id)
@@ -74,13 +86,20 @@
                 .Where(d => d.Id == id)
                 .To<TViewModel>()
                 .FirstOrDefaultAsync();
+            if (restaurant == null)
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceRestaurantId, id));
+            }
 
             return restaurant;
         }
 
         public async Task EditAsync(RestaurantEditViewModel restaurantEditViewModel)
         {
-            Enum.TryParse(restaurantEditViewModel.Type, true, out RestaurantType restaurantTypeEnum);
+            if (!Enum.TryParse(restaurantEditViewModel.Type, true, out RestaurantType restaurantTypeEnum))
+            {
+                throw new ArgumentException(string.Format(ServicesDataConstants.InvalidRestaurantType, restaurantEditViewModel.Type));
+            }
 
             var restaurant = this.restaurantsRepository.All().FirstOrDefault(r => r.Id == restaurantEditViewModel.Id);
             if (restaurant == null)
@@ -97,7 +116,7 @@
             if (restaurantEditViewModel.NewImage != null)
             {
                 var newImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, restaurantEditViewModel.NewImage, restaurantEditViewModel.Name);
-                destination.ImageUrl = newImageUrl;
+                restaurant.ImageUrl = newImageUrl;
             }
 
             restaurant.Name = restaurantEditViewModel.Name;
@@ -112,14 +131,15 @@
 
         public async Task DeleteByIdAsync(int id)
         {
-            var restaurant = this.restaurantsRepository.All().FirstOrDefault(d => d.Id == id);
+            var restaurant = await this.restaurantsRepository
+                .All()
+                .FirstOrDefaultAsync(d => d.Id == id);
             if (restaurant == null)
             {
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceRestaurantId, id));
             }
 
             restaurant.IsDeleted = true;
-
             this.restaurantsRepository.Update(restaurant);
             await this.restaurantsRepository.SaveChangesAsync();
         }
@@ -138,6 +158,11 @@
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceRestaurantId, restaurantId));
             }
 
+            if (this.restaurantReviewsRepository.All().Any(r => r.RestaurantId == restaurantId && r.Review.User == user))
+            {
+                throw new ArgumentException(string.Format(ServicesDataConstants.RestaurantReviewAlreadyAdded, user.UserName, restaurant.Id, restaurant.Name));
+            }
+
             var review = new Review
             {
                 User = user,
@@ -146,7 +171,7 @@
             };
 
             this.reviewsRepository.Add(review);
-            await this.restaurantsRepository.SaveChangesAsync();
+            await this.reviewsRepository.SaveChangesAsync();
 
             var restaurantReview = new RestaurantReview
             {

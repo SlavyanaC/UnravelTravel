@@ -6,11 +6,13 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using CloudinaryDotNet;
     using UnravelTravel.Data;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Repositories;
-    using UnravelTravel.Models.InputModels.Account;
+    using UnravelTravel.Models.ViewModels.Activities;
+    using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Mapping;
 
@@ -68,10 +70,15 @@
             services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
 
             // AutoMapper
-            AutoMapperConfig.RegisterMappings(typeof(LoginInputModel).GetTypeInfo().Assembly);
+            AutoMapperConfig.RegisterMappings(typeof(ActivityViewModel).GetTypeInfo().Assembly);
+
+            // Cloudinary Setup
+            var cloudinaryAccount = new CloudinaryDotNet.Account(CloudinaryConfig.CloudName, CloudinaryConfig.ApiKey, CloudinaryConfig.ApiSecret);
+            var cloudinary = new Cloudinary(cloudinaryAccount);
+            services.AddSingleton(cloudinary);
 
             var context = new DefaultHttpContext();
-            services.AddSingleton<IHttpContextAccessor>( new HttpContextAccessor {HttpContext = context });
+            services.AddSingleton<IHttpContextAccessor>(new HttpContextAccessor { HttpContext = context });
 
             return services;
         }

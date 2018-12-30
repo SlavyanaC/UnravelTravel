@@ -20,8 +20,8 @@ namespace UnravelTravel.Services.Data.Tests
         private const string FirstTestLocationName = "Sofia";
         private const string SecondTestLocationName = "Plovdiv";
         private const string TestLocationAddress = "Bul. Bulgaria 101";
-        private const int TestLocationDestinationId = 1;
-        private const string TestLocationDestinationName = "Bulgaria";
+        private const int TestDestinationId = 1;
+        private const string TestDestinationName = "Bulgaria";
         private const string TestLocationType = "Museum";
         private const string TestInvalidLocationType = "Invalid";
 
@@ -56,7 +56,7 @@ namespace UnravelTravel.Services.Data.Tests
                 Id = 1,
                 Name = FirstTestLocationName,
                 Address = TestLocationAddress,
-                DestinationId = TestLocationDestinationId,
+                DestinationId = TestDestinationId,
                 LocationType = LocationType.Cafe,
             });
             await this.DbContext.SaveChangesAsync();
@@ -90,7 +90,7 @@ namespace UnravelTravel.Services.Data.Tests
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() =>
                 this.LocationsServiceMock.CreateLocationAsync(locationCreateInputModel));
 
-            Assert.Equal(string.Format(ServicesDataConstants.NullReferenceDestinationId, TestLocationDestinationId), exception.Message);
+            Assert.Equal(string.Format(ServicesDataConstants.NullReferenceDestinationId, TestDestinationId), exception.Message);
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace UnravelTravel.Services.Data.Tests
                 Name = FirstTestLocationName,
                 Address = TestLocationAddress,
                 Activities = new HashSet<Activity>(),
-                DestinationId = TestLocationDestinationId,
+                DestinationId = TestDestinationId,
                 LocationType = LocationType.Museum,
             });
             this.DbContext.Locations.Add(new Location
@@ -113,7 +113,7 @@ namespace UnravelTravel.Services.Data.Tests
                 Name = SecondTestLocationName,
                 Address = TestLocationAddress,
                 Activities = new HashSet<Activity>(),
-                DestinationId = TestLocationDestinationId,
+                DestinationId = TestDestinationId,
                 LocationType = LocationType.Museum,
             });
             await this.DbContext.SaveChangesAsync();
@@ -125,7 +125,7 @@ namespace UnravelTravel.Services.Data.Tests
                     Id = 1,
                     Name = FirstTestLocationName,
                     Address = TestLocationAddress,
-                    DestinationName = TestLocationDestinationName,
+                    DestinationName = TestDestinationName,
                     LocationType = TestLocationType,
                     Activities = new HashSet<ActivityViewModel>()
                 },
@@ -134,7 +134,7 @@ namespace UnravelTravel.Services.Data.Tests
                     Id = 2,
                     Name = SecondTestLocationName,
                     Address = TestLocationAddress,
-                    DestinationName = TestLocationDestinationName,
+                    DestinationName = TestDestinationName,
                     LocationType = TestLocationType,
                     Activities = new HashSet<ActivityViewModel>()
                 },
@@ -168,8 +168,8 @@ namespace UnravelTravel.Services.Data.Tests
         {
             this.DbContext.Destinations.Add(new Destination
             {
-                Name = TestLocationDestinationName,
-                Id = TestLocationDestinationId
+                Name = TestDestinationName,
+                Id = TestDestinationId
             });
             await this.DbContext.SaveChangesAsync();
         }
@@ -180,7 +180,7 @@ namespace UnravelTravel.Services.Data.Tests
             {
                 Name = FirstTestLocationName,
                 Address = TestLocationAddress,
-                DestinationId = TestLocationDestinationId,
+                DestinationId = TestDestinationId,
                 Type = TestLocationType,
             };
         }
