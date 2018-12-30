@@ -9,17 +9,17 @@
     {
         Task AssignShoppingCartsUserId(ApplicationUser user);
 
-        Task<ShoppingCartActivityViewModel[]> GetAllTickets(string username);
+        Task<ShoppingCartActivityViewModel[]> GetAllShoppingCartActivitiesAsync(string username);
 
-        Task AddActivityToShoppingCart(int activityId, string username, int quantity);
+        Task AddActivityToShoppingCartAsync(int activityId, string username, int quantity);
 
-        Task<ShoppingCartActivityViewModel> GetGuestShoppingCartActivityToAdd(int activityId, int quantity);
+        Task<ShoppingCartActivityViewModel> GetGuestShoppingCartActivityToAdd(int shoppingCartActivityId, int quantity);
 
-        Task EditShoppingCartActivity(int activityId, string username, int newQuantity);
+        Task EditShoppingCartActivityAsync(int shoppingCartActivityId, string username, int newQuantity);
 
         ShoppingCartActivityViewModel[] EditGuestShoppingCartActivity(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart, int newQuantity);
 
-        Task DeleteActivityFromShoppingCart(int activityId, string username);
+        Task DeleteActivityFromShoppingCart(int shoppingCartActivityId, string username);
 
         ShoppingCartActivityViewModel[] DeleteActivityFromGuestShoppingCart(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart);
 

@@ -23,7 +23,7 @@
             if (this.User.IsInRole(GlobalConstants.UserRoleName))
             {
                 var username = this.User.Identity.Name;
-                var shoppingCartTickets = this.shoppingCartsService.GetAllTickets(username)
+                var shoppingCartTickets = this.shoppingCartsService.GetAllShoppingCartActivitiesAsync(username)
                     .GetAwaiter()
                     .GetResult();
 

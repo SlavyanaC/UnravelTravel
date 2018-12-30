@@ -41,5 +41,7 @@
         public const string RestaurantReviewAlreadyAdded = "User with username {0} has already reviewed restaurant with id {1} and name {2}";
 
         public const string ActivityReviewAlreadyAdded = "User with username {0} has already reviewed activity with id {1} and name {2}";
+
+        public const string NullReferenceShoppingCartForUser = "User with id {0} and username {1} does not have a shopping cart.";
     }
 }

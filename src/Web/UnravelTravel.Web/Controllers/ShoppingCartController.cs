@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
     using Stripe;
@@ -21,14 +22,12 @@
             this.shoppingCartService = shoppingCartService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (this.User.IsInRole(GlobalConstants.UserRoleName))
             {
                 var username = this.User.Identity.Name;
-                var shoppingCart = this.shoppingCartService.GetAllTickets(username)
-                    .GetAwaiter().GetResult();
-
+                var shoppingCart = await this.shoppingCartService.GetAllShoppingCartActivitiesAsync(username);
                 return this.View(shoppingCart);
             }
 
@@ -36,19 +35,17 @@
             return this.View(cart);
         }
 
-        public IActionResult Add(int id, int quantity)
+        public async Task<IActionResult> Add(int id, int quantity)
         {
             if (this.User.IsInRole(GlobalConstants.UserRoleName))
             {
                 var username = this.User.Identity.Name;
-                this.shoppingCartService.AddActivityToShoppingCart(id, username, quantity).GetAwaiter().GetResult();
+                await this.shoppingCartService.AddActivityToShoppingCartAsync(id, username, quantity);
             }
             else
             {
                 var cart = this.GetShoppingCartFromSession();
-                var shoppingCartActivity = this.shoppingCartService.GetGuestShoppingCartActivityToAdd(id, quantity)
-                     .GetAwaiter()
-                     .GetResult();
+                var shoppingCartActivity = await this.shoppingCartService.GetGuestShoppingCartActivityToAdd(id, quantity);
 
                 // TODO: Work with List<ShoppingCartActivityViewModel> instead of array
                 var cartAsList = cart.ToList();
@@ -59,30 +56,29 @@
             return this.RedirectToAction("Index");
         }
 
-        public IActionResult Edit(int id, int newQuantity)
+        public async Task<IActionResult> Edit(int id, int newQuantity)
         {
             if (this.User.IsInRole(GlobalConstants.UserRoleName))
             {
                 var username = this.User.Identity.Name;
-                this.shoppingCartService.EditShoppingCartActivity(id, username, newQuantity).GetAwaiter().GetResult();
+                await this.shoppingCartService.EditShoppingCartActivityAsync(id, username, newQuantity);
             }
             else
             {
                 var cart = this.GetShoppingCartFromSession();
                 cart = this.shoppingCartService.EditGuestShoppingCartActivity(id, cart, newQuantity);
-
                 this.HttpContext.Session.SetObjectAsJson(WebConstants.ShoppingCartSessionKey, cart);
             }
 
             return this.RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (this.User.IsInRole(GlobalConstants.UserRoleName))
             {
                 var username = this.User.Identity.Name;
-                this.shoppingCartService.DeleteActivityFromShoppingCart(id, username).GetAwaiter().GetResult();
+                await this.shoppingCartService.DeleteActivityFromShoppingCart(id, username);
             }
             else
             {
@@ -95,7 +91,7 @@
         }
 
         // Stripe
-        public IActionResult Charge(string stripeEmail, string stripeToken)
+        public async Task<IActionResult> Charge(string stripeEmail, string stripeToken)
         {
             var customers = new CustomerService();
             var charges = new ChargeService();
@@ -107,7 +103,7 @@
             });
 
             var username = this.User.Identity.Name;
-            var userTickets = this.shoppingCartService.GetAllTickets(username).GetAwaiter().GetResult();
+            var userTickets = await this.shoppingCartService.GetAllShoppingCartActivitiesAsync(username);
             var totalSum = userTickets.Sum(ut => ut.ShoppingCartActivityTotalPrice);
             var totalSumInCents = totalSum * 100;
 

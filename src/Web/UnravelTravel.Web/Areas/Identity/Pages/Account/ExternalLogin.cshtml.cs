@@ -170,7 +170,7 @@
             {
                 foreach (var activity in shoppingCartActivities)
                 {
-                    await this.shoppingCartsService.AddActivityToShoppingCart(activity.ActivityId, identityName, activity.Quantity);
+                    await this.shoppingCartsService.AddActivityToShoppingCartAsync(activity.ActivityId, identityName, activity.Quantity);
                 }
 
                 this.HttpContext.Session.Remove(WebConstants.ShoppingCartSessionKey);

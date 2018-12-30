@@ -31,15 +31,22 @@
             this.shoppingCartsRepository = shoppingCartsRepository;
         }
 
+        // TODO: this is stupid but db does not store userId for each shopping cart find out why!
         public async Task AssignShoppingCartsUserId(ApplicationUser user)
         {
-            var shoppingCart = await this.shoppingCartsRepository.All().FirstOrDefaultAsync(sc => sc.User == user);
+            var shoppingCart = await this.shoppingCartsRepository.All()
+                .FirstOrDefaultAsync(sc => sc.User.Id == user.Id);
+            if (shoppingCart == null)
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceShoppingCartForUser, user.Id, user.UserName));
+            }
+
             shoppingCart.UserId = user.Id;
             this.shoppingCartsRepository.Update(shoppingCart);
             await this.shoppingCartActivitiesRepository.SaveChangesAsync();
         }
 
-        public async Task<ShoppingCartActivityViewModel[]> GetAllTickets(string username)
+        public async Task<ShoppingCartActivityViewModel[]> GetAllShoppingCartActivitiesAsync(string username)
         {
             var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == username);
             if (user == null)
@@ -84,7 +91,7 @@
             return shoppingCartActivity;
         }
 
-        public async Task AddActivityToShoppingCart(int activityId, string username, int quantity)
+        public async Task AddActivityToShoppingCartAsync(int activityId, string username, int quantity)
         {
             var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == activityId);
             if (activity == null)
@@ -137,12 +144,18 @@
 
         public ShoppingCartActivityViewModel[] DeleteActivityFromGuestShoppingCart(int activityId, ShoppingCartActivityViewModel[] cart)
         {
-            if (cart.All(sca => sca.ActivityId != activityId))
+            var shoppingCartActivityViewModel = cart.FirstOrDefault(sca => sca.ActivityId == activityId);
+
+            if (shoppingCartActivityViewModel == null)
             {
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceGuestShoppingCartActivityId, activityId));
             }
 
-            var shoppingCartActivityViewModel = cart.First(sca => sca.ActivityId == activityId);
+            var activity = this.activitiesRepository.All().FirstOrDefault(a => a.Id == activityId);
+            if (activity == null)
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, activityId));
+            }
 
             // TODO: use List<ShoppingCartActivityViewModel>
             var cartAsList = cart.ToList();
@@ -151,7 +164,7 @@
             return cart;
         }
 
-        public async Task EditShoppingCartActivity(int shoppingCartActivityId, string username, int newQuantity)
+        public async Task EditShoppingCartActivityAsync(int shoppingCartActivityId, string username, int newQuantity)
         {
             var shoppingCartActivity = await this.shoppingCartActivitiesRepository.All()
                 .FirstOrDefaultAsync(sca => sca.Id == shoppingCartActivityId);
@@ -176,24 +189,30 @@
             await this.shoppingCartActivitiesRepository.SaveChangesAsync();
         }
 
-        public ShoppingCartActivityViewModel[] EditGuestShoppingCartActivity(int activityId, ShoppingCartActivityViewModel[] cart, int newQuantity)
+        public ShoppingCartActivityViewModel[] EditGuestShoppingCartActivity(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart, int newQuantity)
         {
-            if (cart.All(sca => sca.ActivityId != activityId))
-            {
-                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceGuestShoppingCartActivityId, activityId));
-            }
-
             if (newQuantity <= 0)
             {
                 throw new ArgumentException(ServicesDataConstants.ZeroOrNegativeQuantity);
             }
 
-            var shoppingCartActivityViewModel = cart.First(sca => sca.ActivityId == activityId);
+            var shoppingCartActivityViewModel = cart.FirstOrDefault(sca => sca.ActivityId == shoppingCartActivityId);
+            if (shoppingCartActivityViewModel == null)
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceGuestShoppingCartActivityId, shoppingCartActivityId));
+            }
+
+            var activity = this.activitiesRepository.All().FirstOrDefault(a => a.Id == shoppingCartActivityId);
+            if (activity == null)
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, shoppingCartActivityId));
+            }
+
             shoppingCartActivityViewModel.Quantity = newQuantity;
 
             for (var i = 0; i < cart.Length; i++)
             {
-                if (cart[i].Id == activityId)
+                if (cart[i].Id == shoppingCartActivityId)
                 {
                     cart[i] = shoppingCartActivityViewModel;
                 }

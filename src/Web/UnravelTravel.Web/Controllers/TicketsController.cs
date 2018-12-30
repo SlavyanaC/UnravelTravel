@@ -24,7 +24,7 @@
         public async Task<IActionResult> Book()
         {
             var username = this.User.Identity.Name;
-            var shoppingCartActivities = await this.shoppingCartsService.GetAllTickets(username);
+            var shoppingCartActivities = await this.shoppingCartsService.GetAllShoppingCartActivitiesAsync(username);
             await this.ticketsService.BookAllAsync(username, shoppingCartActivities);
             return this.RedirectToAction("All");
         }
