@@ -15,6 +15,7 @@
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
+    using CloudinaryDotNet;
     using Xunit;
 
     public class RestaurantsServiceTests : BaseServiceTests
@@ -24,11 +25,11 @@
         private const int SecondTestDestinationId = 2;
         private const string SecondTestDestinationName = "USA";
         private const int TestRestaurantId = 1;
-        private const string TestRestaurantName = "Pri Baba";
+        private const string TestRestaurantName = "Test Restaurant 123";
         private const string TestRestaurantAddress = "bul. Bulgaria 102";
         private const int TestRestaurantSeats = 102;
         private const int SecondTestRestaurantId = 2;
-        private const string SecondTestRestaurantName = "Pri Dyado";
+        private const string SecondTestRestaurantName = "Secondd Restaurant";
         private const string TestRestaurantType = "Bar";
         private const string InvalidRestaurantType = "InvalidType";
         private const string TestImageUrl = "https://someurl.com";
@@ -267,6 +268,8 @@
 
                 restaurantDetailsViewModel = await this.RestaurantsServiceMock.CreateAsync(restaurantCreateInputModel);
             }
+
+            ApplicationCloudinary.DeleteImage(ServiceProvider.GetRequiredService<Cloudinary>(), restaurantDetailsViewModel.Name);
 
             var restaurantsDbSet = this.DbContext.Restaurants.OrderBy(r => r.CreatedOn);
 

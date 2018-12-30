@@ -1,5 +1,6 @@
 ﻿namespace UnravelTravel.Services.Data.Common
 {
+    using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
 
@@ -23,11 +24,23 @@
                 var uploadParams = new ImageUploadParams()
                 {
                     File = new FileDescription(name, ms),
+                    PublicId = name,
                 };
 
                 var uploadResult = cloudinary.Upload(uploadParams);
                 return uploadResult.SecureUri.AbsoluteUri;
             }
+        }
+
+        public static void DeleteImage(Cloudinary cloudinary, string name)
+        {
+            var delParams = new DelResParams()
+            {
+                PublicIds = new List<string>() { name },
+                Invalidate = true,
+            };
+
+            cloudinary.DeleteResources(delParams);
         }
     }
 }
