@@ -414,6 +414,8 @@
                 };
 
                 await this.ActivitiesServiceMock.EditAsync(activityToEditViewModel);
+
+                ApplicationCloudinary.DeleteImage(ServiceProvider.GetRequiredService<Cloudinary>(), activityToEditViewModel.Name);
             }
 
             Assert.NotEqual(TestImageUrl, this.DbContext.Activities.Find(TestActivityId).ImageUrl);

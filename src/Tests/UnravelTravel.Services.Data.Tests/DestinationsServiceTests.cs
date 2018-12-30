@@ -60,7 +60,7 @@
         private IDestinationsService DestinationsServiceMock => this.ServiceProvider.GetRequiredService<IDestinationsService>();
 
         [Fact]
-        public async Task GetAllDestinationsAsyncReturnsAllRestaurants()
+        public async Task GetAllDestinationsAsyncReturnsAllDestinations()
         {
             await this.AddTestingCountryToDb();
 
@@ -255,6 +255,8 @@
                 };
 
                 await this.DestinationsServiceMock.EditAsync(destinationEditViewModel);
+
+                ApplicationCloudinary.DeleteImage(ServiceProvider.GetRequiredService<Cloudinary>(), destinationEditViewModel.Name);
             }
 
             Assert.NotEqual(TestImageUrl, this.DbContext.Destinations.Find(TestDestinationId).ImageUrl);

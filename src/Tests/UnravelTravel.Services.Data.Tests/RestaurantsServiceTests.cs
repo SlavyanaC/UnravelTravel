@@ -401,6 +401,8 @@
                 };
 
                 await this.RestaurantsServiceMock.EditAsync(restaurantEditViewModel);
+
+                ApplicationCloudinary.DeleteImage(ServiceProvider.GetRequiredService<Cloudinary>(), restaurantEditViewModel.Name);
             }
 
             Assert.NotEqual(TestImageUrl, this.DbContext.Restaurants.Find(TestRestaurantId).ImageUrl);
