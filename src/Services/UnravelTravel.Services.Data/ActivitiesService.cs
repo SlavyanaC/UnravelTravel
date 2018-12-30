@@ -25,7 +25,13 @@
         private readonly IRepository<ApplicationUser> usersRepository;
         private readonly Cloudinary cloudinary;
 
-        public ActivitiesService(IRepository<Activity> activitiesRepository, IRepository<Location> locationsRepository, Cloudinary cloudinary, IRepository<Review> reviewsRepository, IRepository<ActivityReview> activityReviewsRepository, IRepository<ApplicationUser> usersRepository)
+        public ActivitiesService(
+            IRepository<Activity> activitiesRepository,
+            IRepository<Location> locationsRepository,
+            Cloudinary cloudinary,
+            IRepository<Review> reviewsRepository,
+            IRepository<ActivityReview> activityReviewsRepository,
+            IRepository<ApplicationUser> usersRepository)
         {
             this.activitiesRepository = activitiesRepository;
             this.locationsRepository = locationsRepository;
@@ -45,17 +51,20 @@
             return activities;
         }
 
-        public async Task<int> CreateAsync(ActivityCreateInputModel activityCreateInputModel)
+        public async Task<ActivityDetailsViewModel> CreateAsync(ActivityCreateInputModel activityCreateInputModel)
         {
-            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, activityCreateInputModel.Image, activityCreateInputModel.Name);
-
-            Enum.TryParse(activityCreateInputModel.Type, true, out ActivityType activityTypeEnum);
+            if (!Enum.TryParse(activityCreateInputModel.Type, true, out ActivityType activityTypeEnum))
+            {
+                throw new ArgumentException(string.Format(ServicesDataConstants.InvalidActivityType, activityCreateInputModel.Type));
+            }
 
             var location = await this.locationsRepository.All().FirstOrDefaultAsync(l => l.Id == activityCreateInputModel.LocationId);
             if (location == null)
             {
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceLocationId, activityCreateInputModel.LocationId));
             }
+
+            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, activityCreateInputModel.Image, activityCreateInputModel.Name);
 
             var activity = new Activity
             {
@@ -70,7 +79,8 @@
             this.activitiesRepository.Add(activity);
             await this.activitiesRepository.SaveChangesAsync();
 
-            return activity.Id;
+            var activityDetailsViewModel = AutoMapper.Mapper.Map<ActivityDetailsViewModel>(activity);
+            return activityDetailsViewModel;
         }
 
         public async Task<TViewModel> GetViewModelByIdAsync<TViewModel>(int id)
@@ -81,11 +91,21 @@
                 .To<TViewModel>()
                 .FirstOrDefaultAsync();
 
+            if (activity == null)
+            {
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, id));
+            }
+
             return activity;
         }
 
         public async Task EditAsync(ActivityToEditViewModel activityToEditViewModel)
         {
+            if (!Enum.TryParse(activityToEditViewModel.Type, true, out ActivityType activityTypeEnum))
+            {
+                throw new ArgumentException(string.Format(ServicesDataConstants.InvalidActivityType, activityToEditViewModel.Type));
+            }
+
             var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == activityToEditViewModel.Id);
             if (activity == null)
             {
@@ -97,8 +117,6 @@
             {
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceLocationId, activityToEditViewModel.LocationId));
             }
-
-            Enum.TryParse(activityToEditViewModel.Type, true, out ActivityType activityTypeEnum);
 
             if (activityToEditViewModel.NewImage != null)
             {
@@ -140,7 +158,12 @@
             var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == activityId);
             if (activity == null)
             {
-                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, activityReviewInputModel.Id));
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, activityId));
+            }
+
+            if (this.activityReviewsRepository.All().Any(r => r.ActivityId == activityId && r.Review.User == user))
+            {
+                throw new ArgumentException(string.Format(ServicesDataConstants.ActivityReviewAlreadyAdded, user.UserName, activity.Id, activity.Name));
             }
 
             var review = new Review

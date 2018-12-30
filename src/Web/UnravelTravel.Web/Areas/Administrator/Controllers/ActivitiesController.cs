@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -27,7 +28,7 @@
         }
 
         [HttpPost]
-        public IActionResult Create(ActivityCreateInputModel activityCreateInputModel)
+        public async Task<IActionResult> Create(ActivityCreateInputModel activityCreateInputModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -40,27 +41,19 @@
                 return this.View(activityCreateInputModel);
             }
 
-            var activityId = this.activitiesService.CreateAsync(activityCreateInputModel).GetAwaiter().GetResult();
-
-            return this.RedirectToAction("Details", "Activities", new { area = "", id = activityId });
+            var activity = await this.activitiesService.CreateAsync(activityCreateInputModel);
+            return this.RedirectToAction("Details", "Activities", new { area = "", id = activity.Id });
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             this.ViewData["Locations"] = this.SelectAllLocations();
-            var activityToEdit = this.activitiesService.GetViewModelByIdAsync<ActivityToEditViewModel>(id)
-                .GetAwaiter()
-                .GetResult();
-            if (activityToEdit == null)
-            {
-                return this.Redirect("/");
-            }
-
+            var activityToEdit = await this.activitiesService.GetViewModelByIdAsync<ActivityToEditViewModel>(id);
             return this.View(activityToEdit);
         }
 
         [HttpPost]
-        public IActionResult Edit(ActivityToEditViewModel activityToEditViewModel)
+        public async Task<IActionResult> Edit(ActivityToEditViewModel activityToEditViewModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -76,31 +69,21 @@
                 }
             }
 
-            this.activitiesService.EditAsync(activityToEditViewModel).GetAwaiter().GetResult();
-
+            await this.activitiesService.EditAsync(activityToEditViewModel);
             return this.RedirectToAction("All", "Activities", new { area = "" });
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var activityToDelete = this.activitiesService.GetViewModelByIdAsync<ActivityToEditViewModel>(id)
-                .GetAwaiter()
-                .GetResult();
-            if (activityToDelete == null)
-            {
-                return this.Redirect("/");
-            }
-
+            var activityToDelete = await this.activitiesService.GetViewModelByIdAsync<ActivityToEditViewModel>(id);
             return this.View(activityToDelete);
         }
 
         [HttpPost]
-        public IActionResult Delete(ActivityToEditViewModel activityToEditViewModel)
+        public async Task<IActionResult> Delete(ActivityToEditViewModel activityToEditViewModel)
         {
             var id = activityToEditViewModel.Id;
-            this.activitiesService.DeleteByIdAsync(id)
-                .GetAwaiter()
-                .GetResult();
+            await this.activitiesService.DeleteByIdAsync(id);
             return this.RedirectToAction("All", "Activities", new { area = "" });
         }
 

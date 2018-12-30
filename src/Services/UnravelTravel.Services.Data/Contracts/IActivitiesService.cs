@@ -8,7 +8,7 @@
 
     public interface IActivitiesService : IBaseDataService
     {
-        Task<int> CreateAsync(ActivityCreateInputModel activityCreateInputModel);
+        Task<ActivityDetailsViewModel> CreateAsync(ActivityCreateInputModel activityCreateInputModel);
 
         Task<ActivityViewModel[]> GetAllAsync();
 

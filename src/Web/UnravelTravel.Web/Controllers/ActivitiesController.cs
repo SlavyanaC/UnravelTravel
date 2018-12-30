@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
     using System;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,11 @@
             this.memoryCache = memoryCache;
         }
 
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
             if (!this.memoryCache.TryGetValue(WebConstants.AllActivitiesCacheKey, out ActivityViewModel[] cacheEntry))
             {
-                cacheEntry = this.activitiesService.GetAllAsync().GetAwaiter().GetResult();
+                cacheEntry = await this.activitiesService.GetAllAsync();
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
                 this.memoryCache.Set(WebConstants.AllActivitiesCacheKey, cacheEntry, cacheEntryOptions);
@@ -34,26 +35,22 @@
             return this.View(cacheEntry);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var detailsViewModel = this.activitiesService.GetViewModelByIdAsync<ActivityDetailsViewModel>(id)
-                .GetAwaiter()
-                .GetResult();
+            var detailsViewModel = await this.activitiesService.GetViewModelByIdAsync<ActivityDetailsViewModel>(id);
             return this.View(detailsViewModel);
         }
 
         [Authorize]
-        public IActionResult Review(int id)
+        public async Task<IActionResult> Review(int id)
         {
-            var reviewInputModel = this.activitiesService.GetViewModelByIdAsync<ActivityReviewInputModel>(id)
-                .GetAwaiter()
-                .GetResult();
+            var reviewInputModel = await this.activitiesService.GetViewModelByIdAsync<ActivityReviewInputModel>(id);
             return this.View(reviewInputModel);
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Review(int id, ActivityReviewInputModel activityReviewInputModel)
+        public async Task<IActionResult> Review(int id, ActivityReviewInputModel activityReviewInputModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -61,8 +58,7 @@
             }
 
             var username = this.User.Identity.Name;
-
-            this.activitiesService.Review(id, username, activityReviewInputModel).GetAwaiter().GetResult();
+            await this.activitiesService.Review(id, username, activityReviewInputModel);
             return this.RedirectToAction("Details", new { id = id });
         }
     }
