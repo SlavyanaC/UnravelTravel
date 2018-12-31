@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -18,32 +19,30 @@
             this.destinationsService = destinationsService;
         }
 
-        public IActionResult Index(SearchInputModel searchInputModel)
+        public async Task<IActionResult> Index(SearchInputModel searchInputModel)
         {
             this.HttpContext.Session.SetString("SessionsTest", "Test");
             this.ViewData["Destinations"] = this.SelectAllDestinations();
 
             return searchInputModel.DestinationId != 0 ?
-                this.Search(searchInputModel) :
+               await this.Search(searchInputModel) :
                 this.View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() => this.View();
 
-        private IActionResult Search(SearchInputModel searchInputModel)
+        private async Task<IActionResult> Search(SearchInputModel searchInputModel)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(searchInputModel);
             }
 
-            var searchResultViewModel = this.destinationsService.GetSearchResultAsync(
+            var searchResultViewModel = await this.destinationsService.GetSearchResultAsync(
                 searchInputModel.DestinationId,
                 searchInputModel.StartDate,
-                searchInputModel.EndDate)
-                .GetAwaiter()
-                .GetResult();
+                searchInputModel.EndDate);
 
             return this.View("IndexWithSearchResult", searchResultViewModel);
         }
