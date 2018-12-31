@@ -76,7 +76,7 @@
 
                 if (shoppingCartActivity.Quantity <= 0)
                 {
-                    throw new ArgumentException(ServicesDataConstants.ZeroOrNegativeQuantity);
+                    throw new InvalidOperationException(ServicesDataConstants.ZeroOrNegativeQuantity);
                 }
 
                 await this.BookAsync(user, activity, shoppingCartActivity.Quantity);

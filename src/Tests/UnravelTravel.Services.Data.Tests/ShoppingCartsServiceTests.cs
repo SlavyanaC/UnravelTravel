@@ -156,12 +156,12 @@
         }
 
         [Fact]
-        public async Task GetGuestShoppingCartActivityToAddThrowsArgumentExceptionIfNegativeOrZeroQuantity()
+        public async Task GetGuestShoppingCartActivityToAddThrowsInvalidOperationExceptionIfNegativeOrZeroQuantity()
         {
             await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
 
-            var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
                 this.ShoppingCartsServiceMock.GetGuestShoppingCartActivityToAdd(TestActivityId,
                     -1));
             Assert.Equal(ServicesDataConstants.ZeroOrNegativeQuantity, exception.Message);
@@ -318,10 +318,10 @@
         }
 
         [Fact]
-        public async Task AddActivityToShoppingCartAsyncThrowsArgumentExceptionIf()
+        public async Task AddActivityToShoppingCartAsyncInvalidOperationExceptionIfZeroOrNegativeQuantity()
         {
             await this.GetAllShoppingCartActivitiesSetDbContext();
-            var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
                 this.ShoppingCartsServiceMock.AddActivityToShoppingCartAsync(TestActivityId, TestUsername,
                     0));
             Assert.Equal(ServicesDataConstants.ZeroOrNegativeQuantity, exception.Message);
@@ -366,11 +366,11 @@
         }
 
         [Fact]
-        public async Task EditShoppingCartActivityAsyncThrowsArgumentExceptionIfZeroOrNegativeQuantity()
+        public async Task EditShoppingCartActivityAsyncThrowsInvalidOperationExceptionIfZeroOrNegativeQuantity()
         {
             await this.GetAllShoppingCartActivitiesSetDbContext();
 
-            var exception = await Assert.ThrowsAsync<ArgumentException>(() => this.ShoppingCartsServiceMock.EditShoppingCartActivityAsync(TestShoppingCartActivityId, TestUsername, -1));
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => this.ShoppingCartsServiceMock.EditShoppingCartActivityAsync(TestShoppingCartActivityId, TestUsername, -1));
             Assert.Equal(ServicesDataConstants.ZeroOrNegativeQuantity, exception.Message);
         }
 
@@ -386,9 +386,9 @@
         }
 
         [Fact]
-        public void EditGuestShoppingCartActivityThrowsArgumentExceptionIfZeroOrNegativeQuantity()
+        public void EditGuestShoppingCartActivityThrowsInvalidOperationExceptionIfZeroOrNegativeQuantity()
         {
-            var exception = Assert.Throws<ArgumentException>(() => this.ShoppingCartsServiceMock.EditGuestShoppingCartActivity(TestShoppingCartActivityId, null, -1));
+            var exception = Assert.Throws<InvalidOperationException>(() => this.ShoppingCartsServiceMock.EditGuestShoppingCartActivity(TestShoppingCartActivityId, null, -1));
             Assert.Equal(ServicesDataConstants.ZeroOrNegativeQuantity, exception.Message);
         }
 

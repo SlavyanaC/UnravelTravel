@@ -73,7 +73,7 @@
 
             if (quantity <= 0)
             {
-                throw new ArgumentException(ServicesDataConstants.ZeroOrNegativeQuantity);
+                throw new InvalidOperationException(ServicesDataConstants.ZeroOrNegativeQuantity);
             }
 
             // TODO: AutoMapper?
@@ -107,7 +107,7 @@
 
             if (quantity <= 0)
             {
-                throw new ArgumentException(ServicesDataConstants.ZeroOrNegativeQuantity);
+                throw new InvalidOperationException(ServicesDataConstants.ZeroOrNegativeQuantity);
             }
 
             var shoppingCartActivity = new ShoppingCartActivity
@@ -181,7 +181,7 @@
 
             if (newQuantity <= 0)
             {
-                throw new ArgumentException(ServicesDataConstants.ZeroOrNegativeQuantity);
+                throw new InvalidOperationException(ServicesDataConstants.ZeroOrNegativeQuantity);
             }
 
             shoppingCartActivity.Quantity = newQuantity;
@@ -193,7 +193,7 @@
         {
             if (newQuantity <= 0)
             {
-                throw new ArgumentException(ServicesDataConstants.ZeroOrNegativeQuantity);
+                throw new InvalidOperationException(ServicesDataConstants.ZeroOrNegativeQuantity);
             }
 
             var shoppingCartActivityViewModel = cart.FirstOrDefault(sca => sca.ActivityId == shoppingCartActivityId);

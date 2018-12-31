@@ -97,7 +97,7 @@
         }
 
         [Fact]
-        public async Task BookAllAsyncThrowsArgumentExceptionIfZeroOrNegativeQuantity()
+        public async Task BookAllAsyncThrowsInvalidOperationExceptionIfZeroOrNegativeQuantity()
         {
             await this.AddTestingUserToDb();
             await this.AddTestingActivityToDb();
@@ -120,7 +120,7 @@
                 },
             };
 
-            var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
                 this.TicketsServiceMock.BookAllAsync(TestUsername, shoppingCartActivityViewModels));
             Assert.Equal(ServicesDataConstants.ZeroOrNegativeQuantity, exception.Message);
         }
