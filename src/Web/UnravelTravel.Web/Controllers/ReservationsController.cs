@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     using UnravelTravel.Models.InputModels.Reservations;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Filters;
 
     [Authorize]
     public class ReservationsController : BaseController
@@ -23,16 +24,11 @@
         }
 
         [HttpPost]
+        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Book(int id, ReservationCreateInputModel reservationCreateInputModel)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(reservationCreateInputModel);
-            }
-
             var username = this.User.Identity.Name;
             var reservation = await this.reservationsService.BookAsync(id, username, reservationCreateInputModel);
-
             return this.RedirectToAction("Details", new { id = reservation.Id });
         }
 

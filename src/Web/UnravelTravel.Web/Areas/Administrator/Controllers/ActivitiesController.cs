@@ -9,6 +9,7 @@
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Activities;
     using UnravelTravel.Models.ViewModels.Activities;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Filters;
 
     public class ActivitiesController : AdministratorController
     {
@@ -28,13 +29,9 @@
         }
 
         [HttpPost]
+        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Create(ActivityCreateInputModel activityCreateInputModel)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(activityCreateInputModel);
-            }
-
             var fileType = activityCreateInputModel.Image.ContentType.Split('/')[1];
             if (!this.IsImageTypeValid(fileType))
             {
@@ -53,13 +50,9 @@
         }
 
         [HttpPost]
+        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Edit(ActivityToEditViewModel activityToEditViewModel)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(activityToEditViewModel);
-            }
-
             if (activityToEditViewModel.NewImage != null)
             {
                 var fileType = activityToEditViewModel.NewImage.ContentType.Split('/')[1];

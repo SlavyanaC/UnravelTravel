@@ -9,6 +9,7 @@
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants;
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Filters;
 
     public class RestaurantsController : AdministratorController
     {
@@ -28,13 +29,9 @@
         }
 
         [HttpPost]
+        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Create(RestaurantCreateInputModel restaurantCreateInputModel)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(restaurantCreateInputModel);
-            }
-
             var fileType = restaurantCreateInputModel.Image.ContentType.Split('/')[1];
             if (!this.IsImageTypeValid(fileType))
             {
@@ -42,7 +39,6 @@
             }
 
             var restaurant = await this.restaurantsService.CreateAsync(restaurantCreateInputModel);
-
             return this.RedirectToAction("Details", "Restaurants", new { area = "", id = restaurant.Id });
         }
 
@@ -54,13 +50,9 @@
         }
 
         [HttpPost]
+        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Edit(RestaurantEditViewModel restaurantEditView)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(restaurantEditView);
-            }
-
             if (restaurantEditView.NewImage != null)
             {
                 var fileType = restaurantEditView.NewImage.ContentType.Split('/')[1];

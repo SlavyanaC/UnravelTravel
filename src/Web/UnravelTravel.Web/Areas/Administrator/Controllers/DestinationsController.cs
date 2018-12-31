@@ -10,6 +10,7 @@
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Destinations;
     using UnravelTravel.Models.ViewModels.Destinations;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Filters;
 
     public class DestinationsController : AdministratorController
     {
@@ -29,13 +30,9 @@
         }
 
         [HttpPost]
+        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Create(DestinationCreateInputModel destinationCreateInputModel)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(destinationCreateInputModel);
-            }
-
             var fileType = destinationCreateInputModel.Image.ContentType.Split('/')[1];
             if (!this.IsImageTypeValid(fileType))
             {
@@ -54,13 +51,9 @@
         }
 
         [HttpPost]
+        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Edit(DestinationEditViewModel destinationEditViewModel)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(destinationEditViewModel);
-            }
-
             if (destinationEditViewModel.NewImage != null)
             {
                 var fileType = destinationEditViewModel.NewImage.ContentType.Split('/')[1];
