@@ -10,7 +10,6 @@
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Common;
-    using UnravelTravel.Web.Filters;
 
     public class RestaurantsController : BaseController
     {
@@ -51,7 +50,6 @@
 
         [Authorize]
         [HttpPost]
-        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Review(int id, RestaurantReviewInputModel restaurantReviewInputModel)
         {
             var username = this.User.Identity.Name;

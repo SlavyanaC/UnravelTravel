@@ -8,7 +8,6 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Locations;
     using UnravelTravel.Services.Data.Contracts;
-    using UnravelTravel.Web.Filters;
 
     public class LocationsController : AdministratorController
     {
@@ -28,7 +27,6 @@
         }
 
         [HttpPost]
-        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Create(LocationCreateInputModel locationCreateInputModel)
         {
             var locationViewModel = await this.locationsService.CreateLocationAsync(locationCreateInputModel);
