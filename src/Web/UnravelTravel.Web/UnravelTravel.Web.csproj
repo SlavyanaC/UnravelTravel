@@ -35,8 +35,6 @@
     <ProjectReference Include="..\..\Models\UnravelTravel.Models.InputModels\UnravelTravel.Models.InputModels.csproj" />
     <ProjectReference Include="..\..\Services\UnravelTravel.Services.Data\UnravelTravel.Services.Data.csproj" />
     <ProjectReference Include="..\..\Services\UnravelTravel.Services.Messaging\UnravelTravel.Services.Messaging.csproj" />
-    <ProjectReference Include="..\..\Services\UnravelTravel.Services\UnravelTravel.Services.csproj" />
-    <ProjectReference Include="..\UnravelTravel.Web.Infrastructure\UnravelTravel.Web.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

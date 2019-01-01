@@ -26,6 +26,8 @@
 
         public DbSet<ActivityReview> ActivityReviews { get; set; }
 
+        public DbSet<AdminException> AdminExceptions { get; set; }
+
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<Destination> Destinations { get; set; }
