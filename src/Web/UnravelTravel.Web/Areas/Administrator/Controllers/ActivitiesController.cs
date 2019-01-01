@@ -76,6 +76,7 @@
         public async Task<IActionResult> Delete(ActivityToEditViewModel activityToEditViewModel)
         {
             var id = activityToEditViewModel.Id;
+
             await this.activitiesService.DeleteByIdAsync(id);
             return this.RedirectToAction("All", "Activities", new { area = "" });
         }

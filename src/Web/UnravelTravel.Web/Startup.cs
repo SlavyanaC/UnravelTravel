@@ -105,7 +105,6 @@
 
             services.AddSingleton(this.configuration);
 
-            // services.AddDistributedRedisCache()
             services.AddSession();
 
             // Data repositories
