@@ -16,13 +16,22 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\email-confirmation.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\email-confirmation.html" />
+  </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.11" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Sendgrid" Version="9.10.0" />
     <PackageReference Include="Stripe.net" Version="21.7.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -104,8 +113,14 @@
     <Content Update="Areas\Administrator\Views\Restaurants\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="wwwroot\email-confirmation.html">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\lib\bootstrap\js\moment.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Content>
+    <Content Update="wwwroot\password-reset.html">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 </Project>

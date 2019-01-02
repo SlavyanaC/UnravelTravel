@@ -10,8 +10,8 @@ using UnravelTravel.Data;
 namespace UnravelTravel.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181222120917_ShoppingCartActivityDeletable")]
-    partial class ShoppingCartActivityDeletable
+    [Migration("20190102104122_NewInitialCreate")]
+    partial class NewInitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -173,6 +173,27 @@ namespace UnravelTravel.Data.Migrations
                     b.ToTable("ActivityReviews");
                 });
 
+            modelBuilder.Entity("UnravelTravel.Data.Models.AdminException", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AdminUserName");
+
+                    b.Property<string>("CallingMethod");
+
+                    b.Property<string>("ExceptionMessage");
+
+                    b.Property<string>("ExceptionType");
+
+                    b.Property<DateTime>("OccurrenceDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdminExceptions");
+                });
+
             modelBuilder.Entity("UnravelTravel.Data.Models.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
@@ -258,6 +279,10 @@ namespace UnravelTravel.Data.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("IsDeleted");
 
@@ -570,6 +595,8 @@ namespace UnravelTravel.Data.Migrations
                     b.Property<bool>("IsDeleted");
 
                     b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<int>("Quantity");
 
                     b.Property<string>("UserId");
 

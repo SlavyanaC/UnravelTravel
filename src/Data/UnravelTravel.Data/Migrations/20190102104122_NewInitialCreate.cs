@@ -4,10 +4,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UnravelTravel.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class NewInitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AdminExceptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AdminUserName = table.Column<string>(nullable: true),
+                    ExceptionType = table.Column<string>(nullable: true),
+                    ExceptionMessage = table.Column<string>(nullable: true),
+                    CallingMethod = table.Column<string>(nullable: true),
+                    OccurrenceDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdminExceptions", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -454,7 +471,9 @@ namespace UnravelTravel.Data.Migrations
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     ShoppingCartId = table.Column<int>(nullable: false),
                     ActivityId = table.Column<int>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false)
+                    Quantity = table.Column<int>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -484,7 +503,8 @@ namespace UnravelTravel.Data.Migrations
                     UserId = table.Column<string>(nullable: true),
                     ActivityId = table.Column<int>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    DeletedOn = table.Column<DateTime>(nullable: true)
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -559,6 +579,13 @@ namespace UnravelTravel.Data.Migrations
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_Email",
+                table: "AspNetUsers",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_IsDeleted",
@@ -664,6 +691,11 @@ namespace UnravelTravel.Data.Migrations
                 column: "ActivityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCartActivities_IsDeleted",
+                table: "ShoppingCartActivities",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ShoppingCartActivities_ShoppingCartId",
                 table: "ShoppingCartActivities",
                 column: "ShoppingCartId");
@@ -688,6 +720,9 @@ namespace UnravelTravel.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ActivityReviews");
+
+            migrationBuilder.DropTable(
+                name: "AdminExceptions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

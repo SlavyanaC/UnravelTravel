@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Web.Areas.Identity.Pages.Account
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
     using UnravelTravel.Common;
     using UnravelTravel.Common.Extensions;
@@ -131,7 +133,26 @@
                     ShoppingCart = new ShoppingCart(),
                 };
 
-                var result = await this.userManager.CreateAsync(user);
+                // For validating unique email
+                IdentityResult result = null;
+                IdentityError[] customErrors = null;
+                try
+                {
+                    result = await this.userManager.CreateAsync(user);
+                }
+                catch (DbUpdateException ex)
+                {
+                    result = new IdentityResult();
+
+                    if (ex.InnerException.Message.Contains("IX_AspNetUsers_Email"))
+                    {
+                        var exceptionMessage = $"User with email {user.Email} already exists. Please login and navigate to Account External Logins Add another service.";
+                        customErrors = new[]
+                        {
+                            new IdentityError { Code = string.Empty, Description = exceptionMessage },
+                        };
+                    }
+                }
 
                 if (result.Succeeded)
                 {
@@ -149,7 +170,7 @@
                     }
                 }
 
-                foreach (var error in result.Errors)
+                foreach (var error in result.Errors.Concat(customErrors))
                 {
                     this.ModelState.AddModelError(string.Empty, error.Description);
                 }

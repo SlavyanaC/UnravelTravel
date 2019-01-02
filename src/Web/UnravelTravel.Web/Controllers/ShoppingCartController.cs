@@ -113,6 +113,7 @@
                 Description = $"{username} bought {userTickets.Count()} ticket on {DateTime.UtcNow}",
                 Currency = "usd",
                 CustomerId = customer.Id,
+                ReceiptEmail = stripeEmail,
             });
 
             return this.RedirectToAction("BookGet", "Tickets");

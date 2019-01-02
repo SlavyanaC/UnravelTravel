@@ -112,8 +112,8 @@
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
             // Application services
-            services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISmsSender, NullMessageSender>();
+            services.AddTransient<IEmailSender, SendGridEmailSender>(provider =>
+                new SendGridEmailSender(new LoggerFactory(), this.configuration["SendGridKey"], "unravelTravel@unravelTravel.com", "UnravelTravel"));
 
             services.AddScoped<IDestinationsService, DestinationsService>();
             services.AddScoped<ICountriesService, CountriesService>();

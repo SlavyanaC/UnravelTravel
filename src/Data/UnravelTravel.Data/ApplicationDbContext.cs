@@ -67,6 +67,10 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ApplicationUser>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
             builder.Entity<ShoppingCart>()
                 .HasOne(sc => sc.User)
                 .WithOne(u => u.ShoppingCart)
