@@ -18,14 +18,14 @@
             this.shoppingCartsService = shoppingCartsService;
         }
 
-        public async Task<IActionResult> BookGet() => await this.Book();
+        public async Task<IActionResult> BookGet() => await this.Book("online");
 
         [HttpPost]
-        public async Task<IActionResult> Book()
+        public async Task<IActionResult> Book(string paymentMethod = "onsite")
         {
             var username = this.User.Identity.Name;
             var shoppingCartActivities = await this.shoppingCartsService.GetAllShoppingCartActivitiesAsync(username);
-            await this.ticketsService.BookAllAsync(username, shoppingCartActivities);
+            await this.ticketsService.BookAllAsync(username, shoppingCartActivities, paymentMethod);
             return this.RedirectToAction("All");
         }
 
