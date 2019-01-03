@@ -15,14 +15,19 @@
         </div>
         <div class="form-group">
             <p>Image</p>
-                <input type="file" asp-for="Image" name="Image" />
-                <span asp-validation-for="Image" class="text-danger"></span>
+            <input type="file" asp-for="Image" name="Image" />
+            <span asp-validation-for="Image" class="text-danger"></span>
             <span asp-validation-for="Image" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Date"></label>
             <input asp-for="Date" class="form-control col-md-12" />
             <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control col-md-12" rows="7"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="LocationId"></label>
@@ -43,6 +48,11 @@
             <label asp-for="Price"></label>
             <input asp-for="Price" class="form-control col-md-12" />
             <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AdditionalInfo"></label>
+            <textarea asp-for="AdditionalInfo" class="form-control col-md-12" rows="3"></textarea>
+            <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-outline-success">Create activity</button>
     </form>

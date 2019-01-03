@@ -3,12 +3,12 @@
 }
 
 @model UnravelTravel.Models.InputModels.Home.SearchInputModel
-<div class="row justify-content-center">
+<div class="row d-flex justify-content-center" max-widt:100%>
     <form asp-area="" asp-controller="Home" asp-action="Index" method="get" class="text-center">
         <h3>Wonder what to do?</h3>
         <hr />
         <div class="row">
-            <div class="form-group col-4">
+            <div class="form-group col-md-4">
                 <h6><label asp-for="DestinationId"></label></h6>
                 <select asp-for="DestinationId" asp-items="destinations" class="form-control col-md-12">
                     <option selected="" disabled="">Where to</option>
@@ -26,6 +26,6 @@
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
         </div>
-        <button type="submit" class="btn btn-outline-primary">Search</button>
+        <button type="submit" class="btn btn-lg btn-outline-primary">Search</button>
     </form>
 </div>

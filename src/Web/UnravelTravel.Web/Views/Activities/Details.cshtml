@@ -5,32 +5,54 @@
 
 <h1 class="text-center">@Model.Name</h1>
 <div class="container">
-    <ul>
-        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
-        {
-            <li class="text-center">
-                <a asp-area="Administrator" asp-controller="Locations" asp-action="All">Location</a>: @Model.LocationName
-            </li>
-        }
-        else
-        {
-            <li class="text-center">Location: @Model.LocationName</li>
-        }
-        <li class="text-center">Date: @Model.Date</li>
-        <li class="text-center">Activity type: @Model.SplitWordsType</li>
-        <li class="text-center">Price: @Model.Price</li>
-        <li class="text-center">
-            Activity rating:
-            @if (Model.AverageRating != 0.0)
-            {
-                @Model.AverageRating.ToString("F2")
-            }
-            else
-            {
-                <span class="text-muted">No reviews yet</span>
-            }
-        </li>
-    </ul>
+    <div class="text-center">
+        <img src="@Model.ImageUrl" class="img-fluid rounded" style="height: 450px; width: 75%;" alt="Activity image" />
+    </div>
+    <table class="table table-borderless text-center">
+        <thead>
+            <tr>
+                <th width=25%;><h4>Date</h4></th>
+                <th width=25%;><h4>Type</h4></th>
+                <th width=25%;><h4>Rating</h4></th>
+                <th width=25%;><h4>Price</h4></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th width=25%;><b>@Model.DateString</b></th>
+                <td width=25%;><b>@Model.SplitWordsType</b></td>
+                <td width=25%;>
+                    @if (Math.Abs(Model.AverageRating) > 0.0)
+                    {
+                        <b>@Model.AverageRating.ToString("F2")</b>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No reviews yet</span>
+                    }
+                </td>
+                <td width=25%;><b>$@Model.Price</b></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h4>Description</h4>
+    <p><b>@Model.Description</b></p>
+    <hr />
+    <h4>Know before you go</h4>
+    <p><b>@Model.AdditionalInfo</b></p>
+    <hr />
+    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+    {
+        <h4> <a asp-area="Administrator" asp-controller="Locations" asp-action="All">Location</a></h4>
+        <p><b>@Model.LocationName</b></p>
+    }
+    else
+    {
+        <h4>Location:</h4>
+        <p><b> @Model.LocationName</b></p>
+    }
+    <hr />
     <div class="row d-flex justify-content-around">
         @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
@@ -41,11 +63,19 @@
         {
             <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
                 <div class="row form-group justify-content-center">
-                    <label>Quantity: </label>&nbsp;
+                    <h4><label>Quantity: </label></h4>&nbsp;
                     <input type="number" id="quantity" name="quantity" class="form-control form-control-sm col-md-3" />
                 </div>
-                <button type="submit" class="btn btn-outline-primary">Add to cart</button>
+                <button type="submit" class="btn btn-lg btn-outline-primary">Add to cart</button>
             </form>
         }
     </div>
+    <br />
+    <cache expires-after="@TimeSpan.FromHours(1)" vary-by="@Model.Id">
+        <iframe class="w-100"
+                height="450"
+                src="https://maps.google.com/maps?q=@Model.LocationAddress&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                style="border: 0"
+                allowfullscreen></iframe>
+    </cache>
 </div>

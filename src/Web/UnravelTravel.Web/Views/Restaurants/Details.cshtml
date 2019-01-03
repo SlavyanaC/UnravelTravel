@@ -4,26 +4,38 @@
 }
 <h1 class="text-center">@Model.Name</h1>
 <div class="container">
-    <ul>
-        <li class="text-center">Destination: @Model.DestinationName</li>
-        <li class="text-center">Restaurant type: @Model.SplitWordsType</li>
-        <li class="text-center">Total seats: @Model.Seats</li>
-        <li class="text-center">
-            Restaurant rating:
-            @if (Model.AverageRating != 0.0)
-            {
-                @Model.AverageRating.ToString("F2")
-            }
-            else
-            {
-                <span class="text-muted">No reviews yet</span>
-            }
-        </li>
-    </ul>
+    <div class="text-center">
+        <img src="@Model.ImageUrl" class="img-fluid rounded" style="height: 450px; width: 75%;" alt="Activity image" />
+    </div>
+    <table class="table table-borderless text-center">
+        <thead>
+            <tr>
+                <th width=25%;><h4>Type</h4></th>
+                <th width=25%;><h4>Total seats</h4></th>
+                <th width=25%;><h4>Rating</h4></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width=25%;><b>@Model.SplitWordsType</b></td>
+                <td width=25%>@Model.Seats</b></td>
+                <td width=25%;>
+                    @if (Math.Abs(Model.AverageRating) > 0.0)
+                    {
+                        <b>@Model.AverageRating.ToString("F2")</b>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No reviews yet</span>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <div class="text-center d-flex justify-content-around">
         @if (this.User.IsInRole(GlobalConstants.UserRoleName))
         {
-            <a class="btn btn-outline-primary" asp-controller="Reservations" asp-action="Book" asp-route-id="@Model.Id">Book table</a>
+            <a class="btn btn-lg btn-outline-primary" asp-controller="Reservations" asp-action="Book" asp-route-id="@Model.Id">Book table</a>
         }
         else if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
@@ -31,7 +43,7 @@
             <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Restaurants" asp-action="Delete" asp-route-id="@Model.Id">Delete restaurant</a>
         }
     </div>
-    <hr />
+    <hr/>
     <cache expires-after="@TimeSpan.FromHours(1)" vary-by="@Model.Id">
         <iframe class="w-100"
                 height="450"
