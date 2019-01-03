@@ -24,7 +24,12 @@
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\email-confirmation.html" />
+    <Content Include="Views\Emails\email-confirmation.html">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Emails\password-forgot.html">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -113,14 +118,8 @@
     <Content Update="Areas\Administrator\Views\Restaurants\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="wwwroot\email-confirmation.html">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\lib\bootstrap\js\moment.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Content>
-    <Content Update="wwwroot\password-reset.html">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 </Project>

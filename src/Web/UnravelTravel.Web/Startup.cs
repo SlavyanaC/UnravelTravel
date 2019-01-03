@@ -26,6 +26,7 @@
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Mapping;
     using UnravelTravel.Services.Messaging;
+    using UnravelTravel.Web.Common;
     using UnravelTravel.Web.Middlewares;
 
     public class Startup
