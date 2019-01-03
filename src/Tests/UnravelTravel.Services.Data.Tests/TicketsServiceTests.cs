@@ -15,6 +15,7 @@
     {
         private const string TestUsername = "Pesho";
         private const string NotExistingUsername = "Stamat";
+        private const string TestUserEmail = "pesho@pesho.pesho";
         private const int TestingActivityId = 1;
         private const string TestingActivityName = "Best Activity";
         private const int TestingTicketId = 1;
@@ -266,7 +267,8 @@
             this.DbContext.Users.Add(new ApplicationUser
             {
                 Id = testingUserId,
-                UserName = TestUsername
+                UserName = TestUsername,
+                Email = TestUserEmail,
             });
             await this.DbContext.SaveChangesAsync();
         }

@@ -14,9 +14,20 @@
     public class ReservationsServiceTests : BaseServiceTests
     {
         private const string TestUsername = "Pesho";
-        private const string TestRestaurantName = "Pri Ivan";
+        private const string TestUserEmail = "pesho@pesho.pesho";
+
         private const int TestRestaurantId = 1;
+        private const string TestRestaurantName = "Pri Ivan";
+        private const string TestRestaurantAddress = "123 Lyulyak Street, Sofia";
+
+        private const int TestDestinationId = 1;
+        private const string TestDestinationName = "SofiaTest";
+
+        private const int TestCountryId = 1;
+        private const string TestCountryName = "BulgariaTest";
+
         private const string NotExistingUsername = "Stamat";
+
         private const int TestReservationId = 1;
         private const int TestPeopleCount = 2;
 
@@ -30,6 +41,8 @@
         public async Task BookAsyncCreatesReservation()
         {
             await this.AddTestingUserToDb();
+            await this.AddTestingCountryToDb();
+            await this.AddTestingDestinationToDb();
             await this.AddTestingRestaurantToDb();
             var reservationCreateInputModel = this.GetTestingReservationCreateInputModel();
             var reservationViewModel = await this.ReservationsServiceMock.BookAsync(TestRestaurantId, TestUsername, reservationCreateInputModel);
@@ -73,6 +86,8 @@
         public async Task BookAsyncAddsPeopleCountToExistingReservation()
         {
             await this.AddTestingUserToDb();
+            await this.AddTestingCountryToDb();
+            await this.AddTestingDestinationToDb();
             await this.AddTestingRestaurantToDb();
 
             this.DbContext.Reservations.Add(new Reservation
@@ -273,12 +288,35 @@
             };
         }
 
+        private async Task AddTestingDestinationToDb()
+        {
+            this.DbContext.Destinations.Add(new Destination
+            {
+                Id = TestDestinationId,
+                Name = TestDestinationName,
+                CountryId = TestCountryId,
+            });
+            await this.DbContext.SaveChangesAsync();
+        }
+
+        private async Task AddTestingCountryToDb()
+        {
+            this.DbContext.Countries.Add(new Country
+            {
+                Id = TestCountryId,
+                Name = TestCountryName,
+            });
+            await this.DbContext.SaveChangesAsync();
+        }
+
         private async Task AddTestingRestaurantToDb()
         {
             this.DbContext.Restaurants.Add(new Restaurant
             {
                 Id = TestRestaurantId,
                 Name = TestRestaurantName,
+                Address = TestRestaurantAddress,
+                DestinationId = TestDestinationId,
             });
             await this.DbContext.SaveChangesAsync();
         }
@@ -288,7 +326,8 @@
             this.DbContext.Users.Add(new ApplicationUser
             {
                 Id = testUserId,
-                UserName = TestUsername
+                UserName = TestUsername,
+                Email = TestUserEmail,
             });
             await this.DbContext.SaveChangesAsync();
         }

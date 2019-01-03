@@ -21,10 +21,17 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\UnravelTravel.Data\UnravelTravel.Data.csproj" />
     <ProjectReference Include="..\..\Services\UnravelTravel.Services.Data\UnravelTravel.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\UnravelTravel.Services.Messaging\UnravelTravel.Services.Messaging.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Test.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Emails\reservation-receipt.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Emails\tickets-receipt.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

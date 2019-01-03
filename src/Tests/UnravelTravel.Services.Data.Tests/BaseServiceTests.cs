@@ -1,4 +1,7 @@
-﻿namespace UnravelTravel.Services.Data.Tests
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Logging;
+
+namespace UnravelTravel.Services.Data.Tests
 {
     using System;
     using System.Reflection;
@@ -15,6 +18,7 @@
     using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Mapping;
+    using UnravelTravel.Services.Messaging;
 
     public abstract class BaseServiceTests : IDisposable
     {
@@ -56,6 +60,9 @@
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
             // Application services
+            services.AddTransient<IEmailSender, SendGridEmailSender>(provider =>
+                new SendGridEmailSender(new LoggerFactory(), "SendGridKey", "unravelTravel@unravelTravel.com", "UnravelTravel"));
+
             services.AddScoped<IDestinationsService, DestinationsService>();
             services.AddScoped<ICountriesService, CountriesService>();
             services.AddScoped<IRestaurantsService, RestaurantsService>();
