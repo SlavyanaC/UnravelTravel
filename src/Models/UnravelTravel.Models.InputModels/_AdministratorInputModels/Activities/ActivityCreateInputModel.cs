@@ -32,6 +32,6 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Activities
         [Display(Name = nameof(Location))]
         public int LocationId { get; set; }
 
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
     }
 }

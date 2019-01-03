@@ -123,14 +123,10 @@
             foreach (var ticketId in ticketIds)
             {
                 var ticket = await this.ticketsRepository.All().FirstOrDefaultAsync(t => t.Id == ticketId);
-                if (ticket == null)
-                {
-                    throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceTicketId, ticketId));
-                }
 
                 var activityName = ticket.Activity.Name;
                 var ticketQuantity = ticket.Quantity;
-                var activityPrice = ticket.Activity.Price.Value * ticket.Quantity;
+                var activityPrice = ticket.Activity.Price * ticket.Quantity;
 
                 var ticketInfoHtml = string.Format(
                     ServicesDataConstants.TicketActivityReceiptHtmlInfo,
