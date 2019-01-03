@@ -1,10 +1,9 @@
-﻿using UnravelTravel.Models.Common;
-
-namespace UnravelTravel.Models.ViewModels.Destinations
+﻿namespace UnravelTravel.Models.ViewModels.Destinations
 {
     using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Http;
     using UnravelTravel.Data.Models;
+    using UnravelTravel.Models.Common;
     using UnravelTravel.Services.Mapping;
 
     public class DestinationEditViewModel : IMapFrom<Destination>

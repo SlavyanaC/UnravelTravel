@@ -65,7 +65,7 @@
 
         public async Task<IActionResult> Delete(int id)
         {
-            var restaurantToDelete = await this.restaurantsService.GetViewModelByIdAsync<RestaurantEditViewModel>(id);
+            var restaurantToDelete = await this.restaurantsService.GetViewModelByIdAsync<RestaurantDeleteViewModel>(id);
             return this.View(restaurantToDelete);
         }
 

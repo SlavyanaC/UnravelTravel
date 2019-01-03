@@ -18,12 +18,16 @@
             public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
             public const int MinMinutesTillStart = 15;
+            public const int DescriptionMaxLength = 850;
+            public const int DescriptionMinLength = 10;
 
             public const string StartingHourError = "Activity starting hour must be at least 15 minutes from now";
             public const string AdminDateDisplay = "Activity date and starting hour";
             public const string NameDisplay = "Activity name";
             public const string DateDisplay = "Activity date";
             public const string StartingHourDisplay = "Activity starting hour";
+            public const string AdditionalInfoDisplay = "Know before you go";
+            public const string DescriptionLengthError = "Description must be between {2} and {1} symbols";
         }
 
         public class Destination
@@ -32,7 +36,7 @@
             public const int NameMaxLength = 50;
 
             public const int InformationMinLength = 10;
-            public const int InformationMaxLength = 550;
+            public const int InformationMaxLength = 850;
 
             public const string InformationError = "Information must be between {2} and {1} symbols";
         }

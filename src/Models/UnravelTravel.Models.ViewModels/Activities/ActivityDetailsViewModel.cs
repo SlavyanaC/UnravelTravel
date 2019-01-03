@@ -1,4 +1,7 @@
-﻿namespace UnravelTravel.Models.ViewModels.Activities
+﻿using System.Globalization;
+using UnravelTravel.Common;
+
+namespace UnravelTravel.Models.ViewModels.Activities
 {
     using System;
     using UnravelTravel.Common.Extensions;
@@ -17,9 +20,18 @@
 
         public DateTime Date { get; set; }
 
+        public string DateString => this.Date.ToString(GlobalConstants.DateFormat + " " + GlobalConstants.HourFormat,
+            CultureInfo.InvariantCulture);
+
+        public string Description { get; set; }
+
+        public string AdditionalInfo { get; set; }
+
         public int LocationId { get; set; }
 
         public string LocationName { get; set; }
+
+        public string LocationAddress { get; set; }
 
         public double AverageRating { get; set; }
 

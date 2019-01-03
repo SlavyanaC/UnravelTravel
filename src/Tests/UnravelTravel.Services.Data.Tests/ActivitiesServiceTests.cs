@@ -301,7 +301,7 @@
             await this.AddTestingDestinationToDb();
             await this.AddTestingLocationToDb();
 
-            var invalidActivityEditInputModel = new ActivityToEditViewModel()
+            var invalidActivityEditInputModel = new ActivityEditViewModel()
             {
                 Name = TestActivityName,
                 LocationId = TestLocationId,
@@ -319,7 +319,7 @@
             await this.AddTestingDestinationToDb();
             await this.AddTestingLocationToDb();
 
-            var invalidActivityEditViewModel = new ActivityToEditViewModel()
+            var invalidActivityEditViewModel = new ActivityEditViewModel()
             {
                 Id = SecondTestActivityId,
                 Name = SecondTestActivityName,
@@ -336,7 +336,7 @@
         public async Task EditAsyncThrowsNullReferenceExceptionIfDestinationNotFound()
         {
             await this.AddTestingActivityToDb();
-            var invalidActivityEditViewModel = new ActivityToEditViewModel()
+            var invalidActivityEditViewModel = new ActivityEditViewModel()
             {
                 Id = TestActivityId,
                 Name = TestActivityName,
@@ -365,7 +365,7 @@
             Assert.NotEqual(newName, this.DbContext.Activities.Find(TestActivityId).Name);
             Assert.NotEqual(newLocationId, this.DbContext.Activities.Find(TestActivityId).LocationId);
 
-            var activityEditViewModel = new ActivityToEditViewModel()
+            var activityEditViewModel = new ActivityEditViewModel()
             {
                 Id = TestActivityId,
                 Name = newName,
@@ -404,7 +404,7 @@
                     ContentType = TestImageContentType,
                 };
 
-                var activityToEditViewModel = new ActivityToEditViewModel()
+                var activityToEditViewModel = new ActivityEditViewModel()
                 {
                     Id = TestActivityId,
                     Name = TestActivityName,

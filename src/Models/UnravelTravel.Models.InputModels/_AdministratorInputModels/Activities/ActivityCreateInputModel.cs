@@ -29,9 +29,17 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Activities
         public DateTime Date { get; set; }
 
         [Required]
+        [StringLength(ModelConstants.Activity.DescriptionMaxLength, MinimumLength = ModelConstants.Activity.DescriptionMinLength, ErrorMessage = ModelConstants.Activity.DescriptionLengthError)]
+        public string Description { get; set; }
+
+        [Display(Name = ModelConstants.Activity.AdditionalInfoDisplay)]
+        public string AdditionalInfo { get; set; }
+
+        [Required]
         [Display(Name = nameof(Location))]
         public int LocationId { get; set; }
 
+        [Required]
         public decimal Price { get; set; }
     }
 }

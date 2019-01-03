@@ -8,7 +8,7 @@
     using UnravelTravel.Models.Common;
     using UnravelTravel.Services.Mapping;
 
-    public class ActivityToEditViewModel : IMapFrom<Activity>
+    public class ActivityEditViewModel : IMapFrom<Activity>
     {
         public int Id { get; set; }
 
@@ -33,6 +33,13 @@
         [DataType(DataType.DateTime)]
         [GreaterThan(nameof(Now), ErrorMessage = ModelConstants.Activity.StartingHourError)]
         public DateTime Date { get; set; }
+
+        [Required]
+        [StringLength(ModelConstants.Activity.DescriptionMaxLength, MinimumLength = ModelConstants.Activity.DescriptionMinLength, ErrorMessage = ModelConstants.Activity.DescriptionLengthError)]
+        public string Description { get; set; }
+
+        [Display(Name = ModelConstants.Activity.AdditionalInfoDisplay)]
+        public string AdditionalInfo { get; set; }
 
         [Required]
         public int LocationId { get; set; }

@@ -67,12 +67,12 @@
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            var destinationToDelete = await this.destinationsService.GetViewModelByIdAsync<DestinationEditViewModel>(id);
+            var destinationToDelete = await this.destinationsService.GetViewModelByIdAsync<DestinationDeleteViewModel>(id);
             return this.View(destinationToDelete);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(DestinationEditViewModel destinationEditViewModel)
+        public async Task<IActionResult> Delete(DestinationDeleteViewModel destinationEditViewModel)
         {
             var id = destinationEditViewModel.Id;
             await this.destinationsService.DeleteByIdAsync(id);

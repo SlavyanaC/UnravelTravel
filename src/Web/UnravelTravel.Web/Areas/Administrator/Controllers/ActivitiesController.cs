@@ -43,12 +43,12 @@
         public async Task<IActionResult> Edit(int id)
         {
             this.ViewData["Locations"] = this.SelectAllLocations();
-            var activityToEdit = await this.activitiesService.GetViewModelByIdAsync<ActivityToEditViewModel>(id);
+            var activityToEdit = await this.activitiesService.GetViewModelByIdAsync<ActivityEditViewModel>(id);
             return this.View(activityToEdit);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ActivityToEditViewModel activityToEditViewModel)
+        public async Task<IActionResult> Edit(ActivityEditViewModel activityToEditViewModel)
         {
             if (activityToEditViewModel.NewImage != null)
             {
@@ -65,14 +65,14 @@
 
         public async Task<IActionResult> Delete(int id)
         {
-            var activityToDelete = await this.activitiesService.GetViewModelByIdAsync<ActivityToEditViewModel>(id);
+            var activityToDelete = await this.activitiesService.GetViewModelByIdAsync<ActivityDeleteViewModel>(id);
             return this.View(activityToDelete);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(ActivityToEditViewModel activityToEditViewModel)
+        public async Task<IActionResult> Delete(ActivityDeleteViewModel activityDeleteViewModel)
         {
-            var id = activityToEditViewModel.Id;
+            var id = activityDeleteViewModel.Id;
 
             await this.activitiesService.DeleteByIdAsync(id);
             return this.RedirectToAction("All", "Activities", new { area = "" });

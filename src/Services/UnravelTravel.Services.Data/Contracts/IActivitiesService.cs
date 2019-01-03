@@ -12,7 +12,7 @@
 
         Task<ActivityViewModel[]> GetAllAsync();
 
-        Task EditAsync(ActivityToEditViewModel activityToEditViewModel);
+        Task EditAsync(ActivityEditViewModel activityToEditViewModel);
 
         Task Review(int activityId, string username, ActivityReviewInputModel activityReviewInputModel);
     }

@@ -72,6 +72,8 @@
                 ImageUrl = imageUrl,
                 Date = activityCreateInputModel.Date,
                 Type = activityTypeEnum,
+                Description = activityCreateInputModel.Description,
+                AdditionalInfo = activityCreateInputModel.AdditionalInfo,
                 Location = location,
                 Price = activityCreateInputModel.Price,
             };
@@ -99,7 +101,7 @@
             return activity;
         }
 
-        public async Task EditAsync(ActivityToEditViewModel activityToEditViewModel)
+        public async Task EditAsync(ActivityEditViewModel activityToEditViewModel)
         {
             if (!Enum.TryParse(activityToEditViewModel.Type, true, out ActivityType activityTypeEnum))
             {
@@ -127,6 +129,8 @@
             activity.Name = activityToEditViewModel.Name;
             activity.Type = activityTypeEnum;
             activity.Date = activityToEditViewModel.Date;
+            activity.Description = activityToEditViewModel.Description;
+            activity.AdditionalInfo = activityToEditViewModel.AdditionalInfo;
             activity.Location = location;
 
             this.activitiesRepository.Update(activity);
