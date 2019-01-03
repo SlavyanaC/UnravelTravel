@@ -9,6 +9,7 @@
     using HtmlAgilityPack;
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.EntityFrameworkCore;
+    using UnravelTravel.Common;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.ViewModels.ShoppingCart;
@@ -93,11 +94,11 @@
 
             await this.shoppingCartsService.ClearShoppingCart(username);
 
-            var content = await this.GenerateEmailContent(ticketIds, paymentMethod);
+            var emailContent = await this.GenerateEmailContent(ticketIds, paymentMethod);
             await this.emailSender.SendEmailAsync(
                 user.Email,
-                "Booking confirmation",
-                content);
+                ServicesDataConstants.BookingEmailSubject,
+                emailContent);
         }
 
         private async Task<int> GetBookingId(ApplicationUser user, Activity activity, int quantity)
@@ -115,7 +116,7 @@
             return ticket.Id;
         }
 
-        private async Task<string> GenerateEmailContent(List<int> ticketIds, string paymentMethod)
+        private async Task<string> GenerateEmailContent(IEnumerable<int> ticketIds, string paymentMethod)
         {
             var ticketsInfo = new StringBuilder();
             var totalPrice = 0m;
@@ -129,38 +130,31 @@
 
                 var activityName = ticket.Activity.Name;
                 var ticketQuantity = ticket.Quantity;
-                var activityPrice = ticket.Activity.Price.Value;
+                var activityPrice = ticket.Activity.Price.Value * ticket.Quantity;
 
-                var str = $@"<tr>
-                     <td align=""left"" width=""25%"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">{ticketId}</td>
-                     <td align=""left"" width=""50%"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">{activityName}</td>
-                     <td align=""left"" width=""25%"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">{ticketQuantity}</td>
-                     <td align=""left"" width=""25%"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">${activityPrice:F2}</td>
-                     </tr>";
+                var ticketInfoHtml = string.Format(
+                    ServicesDataConstants.TicketActivityReceiptHtmlInfo,
+                    ticketId,
+                    activityName,
+                    ticketQuantity,
+                    activityPrice);
 
-                ticketsInfo.Append(str);
+                ticketsInfo.Append(ticketInfoHtml);
                 totalPrice += activityPrice;
             }
 
-            var total = $@"<tr>
-				  <td align=""left"" width=""50%"" style=""padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;""><strong>Total</strong></td>
-				  <td align=""left"" width=""25%"" style=""padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;""><strong></strong></td>
-				  <td align=""left"" width=""25%"" style=""padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;""><strong></strong></td>
-                  <td align=""left"" width=""25%"" style=""padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;""><strong>${totalPrice:F2}</strong></td>
-                </tr>";
+            var totalInfoHtml = string.Format(ServicesDataConstants.TotalReceiptHtmlInfo, totalPrice);
 
-            var receiptPath =
-                @"C:\Users\Slavi\Documents\Project\UnravelTravel\src\Services\UnravelTravel.Services.Data\Common\receipt.html";
-
+            var receiptPath = ServicesDataConstants.TicketsReceiptEmailHtmlPath;
             var doc = new HtmlDocument();
             doc.Load(receiptPath);
 
             paymentMethod = paymentMethod == "online" ? "Payed online" : "Pay when you get there";
 
             var content = doc.Text;
-            content = content.Replace("@ticketsInfo", ticketsInfo.ToString())
-                .Replace("@totalInfo", total)
-                .Replace("@paymentMethod", paymentMethod);
+            content = content.Replace(ServicesDataConstants.TicketsInfoPlaceholder, ticketsInfo.ToString())
+                .Replace(ServicesDataConstants.TotalReceiptInfoPlaceholder, totalInfoHtml)
+                .Replace(ServicesDataConstants.PaymentMethodPlaceholder, paymentMethod);
 
             return content;
         }

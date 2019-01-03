@@ -43,5 +43,43 @@
         public const string ActivityReviewAlreadyAdded = "User with username {0} has already reviewed activity with id {1} and name {2}";
 
         public const string NullReferenceShoppingCartForUser = "User with id {0} and username {1} does not have a shopping cart.";
+
+        public const string BookingEmailSubject = "Booking confirmation";
+
+        public const string TicketsReceiptEmailHtmlPath = "Views/Emails/tickets-receipt.html";
+
+        public const string TicketsInfoPlaceholder = "@ticketsInfo";
+
+        public const string TicketActivityReceiptHtmlInfo = @"<tr>
+                     <td align=""left"" width=""25%"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">{0}</td>
+                     <td align=""left"" width=""50%"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">{1}</td>
+                     <td align=""left"" width=""25%"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">{2}</td>
+                     <td align=""left"" width=""25%"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">${3:F2}</td>
+                     </tr>";
+
+        public const string TotalReceiptInfoPlaceholder = "@totalInfo";
+
+        public const string TotalReceiptHtmlInfo = @"<tr>
+				  <td align=""left"" width=""50%"" style=""padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;""><strong>Total</strong></td>
+				  <td align=""left"" width=""25%"" style=""padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;""><strong></strong></td>
+				  <td align=""left"" width=""25%"" style=""padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;""><strong></strong></td>
+                  <td align=""left"" width=""25%"" style=""padding: 12px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-top: 2px dashed #D2C7BA; border-bottom: 2px dashed #D2C7BA;""><strong>${0:F2}</strong></td>
+                </tr>";
+
+        public const string PaymentMethodPlaceholder = "@paymentMethod";
+
+        public const string ReservationReceiptEmailHtmlPath = "Views/Emails/reservation-receipt.html";
+
+        public const string ReservationInfoPlaceholder = "@reservationInfo";
+
+        public const string ReservationHtmlInfo =
+            @"<td align=""left"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-    serif; font-size: 16px; line-height: 24px;"">{0}</td>
+              <td align = ""left"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">{1}</td>
+              <td align = ""left"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">{2}</td>
+              <td align = ""left"" style=""padding: 6px 12px;font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;"">{3}</td>";
+
+        public const string RestaurantInfoPlaceholder = "@restaurantInfo";
+
+        public const string RestaurantHtmlInfo = @"<p>{0}<br>{1}, {2}</p>";
     }
 }
