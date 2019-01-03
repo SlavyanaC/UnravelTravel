@@ -1,4 +1,6 @@
-﻿namespace UnravelTravel.Services.Data
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+
+namespace UnravelTravel.Services.Data
 {
     using System;
     using System.Linq;
@@ -49,7 +51,6 @@
                 .All()
                 .To<RestaurantViewModel>()
                 .ToArrayAsync();
-
             return restaurants;
         }
 

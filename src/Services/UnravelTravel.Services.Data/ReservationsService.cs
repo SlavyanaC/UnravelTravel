@@ -4,6 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using HtmlAgilityPack;
+    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
@@ -20,12 +22,14 @@
         private readonly IRepository<Reservation> reservationsRepository;
         private readonly IRepository<ApplicationUser> usersRepository;
         private readonly IRepository<Restaurant> restaurantsRepository;
+        private readonly IEmailSender emailSender;
 
-        public ReservationsService(IRepository<Reservation> reservationsRepository, IRepository<ApplicationUser> usersRepository, IRepository<Restaurant> restaurantsRepository)
+        public ReservationsService(IRepository<Reservation> reservationsRepository, IRepository<ApplicationUser> usersRepository, IRepository<Restaurant> restaurantsRepository, IEmailSender emailSender)
         {
             this.usersRepository = usersRepository;
             this.restaurantsRepository = restaurantsRepository;
             this.reservationsRepository = reservationsRepository;
+            this.emailSender = emailSender;
         }
 
         public async Task<ReservationDetailsViewModel> BookAsync(int restaurantId, string username, ReservationCreateInputModel reservationCreateInputModel)
@@ -65,6 +69,13 @@
             await this.reservationsRepository.SaveChangesAsync();
 
             var reservationDetailsViewModel = AutoMap.Mapper.Map<ReservationDetailsViewModel>(reservation);
+
+            var emailContent = await this.GenerateEmailContent(reservationDetailsViewModel);
+            await this.emailSender.SendEmailAsync(
+                user.Email,
+                ServicesDataConstants.BookingEmailSubject,
+                emailContent);
+
             return reservationDetailsViewModel;
         }
 
@@ -92,6 +103,35 @@
                 .ToArrayAsync();
 
             return allReservations;
+        }
+
+        private async Task<string> GenerateEmailContent(ReservationDetailsViewModel reservationDetailsViewModel)
+        {
+            var reservationInfoHtml = string.Format(
+                ServicesDataConstants.ReservationHtmlInfo,
+                reservationDetailsViewModel.Id,
+                reservationDetailsViewModel.RestaurantName,
+                reservationDetailsViewModel.PeopleCount,
+                reservationDetailsViewModel.ReservationDateString + " " + reservationDetailsViewModel.ReservationHourString);
+
+            var restaurant = await this.restaurantsRepository.All()
+                .FirstOrDefaultAsync(r => r.Id == reservationDetailsViewModel.RestaurantId);
+
+            var restaurantInfoHtml = string.Format(
+                ServicesDataConstants.RestaurantHtmlInfo,
+                restaurant.Address,
+                restaurant.Destination.Name,
+                restaurant.Destination.Country.Name);
+
+            var receiptPath = ServicesDataConstants.ReservationReceiptEmailHtmlPath;
+            var doc = new HtmlDocument();
+            doc.Load(receiptPath);
+
+            var content = doc.Text;
+            content = content.Replace(ServicesDataConstants.ReservationInfoPlaceholder, reservationInfoHtml)
+                .Replace(ServicesDataConstants.RestaurantInfoPlaceholder, restaurantInfoHtml);
+
+            return content;
         }
     }
 }
