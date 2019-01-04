@@ -9,6 +9,7 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using UnravelTravel.Models.InputModels.Home;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Common;
 
     public class HomeController : BaseController
     {
@@ -22,7 +23,7 @@
         public async Task<IActionResult> Index(SearchInputModel searchInputModel)
         {
             this.HttpContext.Session.SetString("SessionsTest", "Test");
-            this.ViewData["Destinations"] = this.SelectAllDestinations();
+            this.ViewData["Destinations"] = SelectListGenerator.GetAllDestinations(this.destinationsService);
 
             return searchInputModel.DestinationId != 0 ?
                await this.Search(searchInputModel) :
@@ -45,18 +46,6 @@
                 searchInputModel.EndDate);
 
             return this.View("IndexWithSearchResult", searchResultViewModel);
-        }
-
-        private IEnumerable<SelectListItem> SelectAllDestinations()
-        {
-            return this.destinationsService.GetAllDestinationsAsync()
-                .GetAwaiter()
-                .GetResult()
-                .Select(x => new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Name,
-                });
         }
     }
 }

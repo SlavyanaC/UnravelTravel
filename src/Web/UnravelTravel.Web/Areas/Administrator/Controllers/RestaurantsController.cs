@@ -9,6 +9,7 @@
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants;
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Common;
 
     public class RestaurantsController : AdministratorController
     {
@@ -23,7 +24,7 @@
 
         public IActionResult Create()
         {
-            this.ViewData["Destinations"] = this.SelectAllDestinations();
+            this.ViewData["Destinations"] = SelectListGenerator.GetAllDestinations(this.destinationsService);
             return this.View();
         }
 
@@ -42,7 +43,7 @@
 
         public async Task<IActionResult> Edit(int id)
         {
-            this.ViewData["Destinations"] = this.SelectAllDestinations();
+            this.ViewData["Destinations"] = SelectListGenerator.GetAllDestinations(this.destinationsService);
             var restaurantToEdit = await this.restaurantsService.GetViewModelByIdAsync<RestaurantEditViewModel>(id);
             return this.View(restaurantToEdit);
         }
@@ -75,16 +76,6 @@
             var id = destinationEditViewModel.Id;
             await this.restaurantsService.DeleteByIdAsync(id);
             return this.RedirectToAction("All", "Restaurants", new { area = "" });
-        }
-
-        private IEnumerable<SelectListItem> SelectAllDestinations()
-        {
-            return this.destinationsService.GetAllDestinationsAsync().GetAwaiter().GetResult()
-                .Select(x => new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Name,
-                });
         }
     }
 }

@@ -10,6 +10,7 @@
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Destinations;
     using UnravelTravel.Models.ViewModels.Destinations;
     using UnravelTravel.Services.Data.Contracts;
+    using UnravelTravel.Web.Common;
 
     public class DestinationsController : AdministratorController
     {
@@ -24,7 +25,7 @@
 
         public IActionResult Create()
         {
-            this.ViewData["Countries"] = this.SelectAllCounties();
+            this.ViewData["Countries"] = SelectListGenerator.GetAllCountries(this.countriesService);
             return this.View();
         }
 
@@ -43,7 +44,7 @@
 
         public async Task<IActionResult> Edit(int id)
         {
-            this.ViewData["countries"] = this.SelectAllCounties();
+            this.ViewData["countries"] = SelectListGenerator.GetAllCountries(this.countriesService);
             var destinationToEdit = await this.destinationsService.GetViewModelByIdAsync<DestinationEditViewModel>(id);
             return this.View(destinationToEdit);
         }
@@ -77,18 +78,6 @@
             var id = destinationEditViewModel.Id;
             await this.destinationsService.DeleteByIdAsync(id);
             return this.RedirectToAction("All", "Destinations", new { area = "" });
-        }
-
-        private IEnumerable<SelectListItem> SelectAllCounties()
-        {
-            return this.countriesService.GetAllAsync()
-                .GetAwaiter()
-                .GetResult()
-                .Select(x => new SelectListItem
-                {
-                    Value = x.Id.ToString(),
-                    Text = x.Name,
-                });
         }
     }
 }
