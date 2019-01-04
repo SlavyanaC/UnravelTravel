@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
-
-namespace UnravelTravel.Services.Data
+﻿namespace UnravelTravel.Services.Data
 {
     using System;
     using System.Linq;
@@ -49,6 +47,16 @@ namespace UnravelTravel.Services.Data
         {
             var restaurants = await this.restaurantsRepository
                 .All()
+                .To<RestaurantViewModel>()
+                .ToArrayAsync();
+            return restaurants;
+        }
+
+        public async Task<RestaurantViewModel[]> GetAllInDestinationAsync(int destinationId)
+        {
+            var restaurants = await this.restaurantsRepository
+                .All()
+                .Where(r => r.DestinationId == destinationId)
                 .To<RestaurantViewModel>()
                 .ToArrayAsync();
             return restaurants;

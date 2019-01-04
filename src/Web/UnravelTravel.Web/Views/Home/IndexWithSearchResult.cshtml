@@ -11,8 +11,6 @@
 <div class="jumbotron text-center" style="padding-top: 30px; padding-bottom: 30px;">
     <div class="row d-flex.justify-content-center">
         <h3 class="col-md-12" style="color:salmon">@Model.DestinationName</h3>
-        @*<h3 class="col-md-4" style="color:salmon">@Model.StartDate</h3>
-        <h3 class="col-md-4" style="color:salmon">@Model.EndDate</h3>*@
     </div>
     <h4>Activities</h4>
     @await this.Html.PartialAsync("_DestinationActivitiesPartial", @Model.Activities)

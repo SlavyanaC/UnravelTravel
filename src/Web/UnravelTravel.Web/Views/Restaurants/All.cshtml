@@ -5,7 +5,14 @@
 }
 
 <div class="container-fluid text-center">
-    <h1>All restaurants</h1>
+    @if (@Model.All(a => a.DestinationName.Equals(Model.First().DestinationName)))
+    {
+        <h1>All restaurants in @Model.First().DestinationName</h1>
+    }
+    else
+    {
+        <h1>All restaurants</h1>
+    }
 </div>
 <div class="card-deck container-fluid">
     @foreach (var item in Model)

@@ -20,7 +20,7 @@
             public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
             public const int MinMinutesTillStart = 15;
-            public const int DescriptionMaxLength = 1050;
+            public const int DescriptionMaxLength = 1950;
             public const int DescriptionMinLength = 10;
 
             public const string StartingHourError = "Activity starting hour must be at least 15 minutes from now";

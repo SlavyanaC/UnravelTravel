@@ -24,15 +24,32 @@
 
         public async Task<IActionResult> All()
         {
-            if (!this.memoryCache.TryGetValue(WebConstants.AllRestaurantsCacheKey, out RestaurantViewModel[] cacheEntry))
-            {
-                cacheEntry = await this.restaurantsService.GetAllAsync();
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
-                this.memoryCache.Set(WebConstants.AllRestaurantsCacheKey, cacheEntry, cacheEntryOptions);
-            }
+            //if (!this.memoryCache.TryGetValue(WebConstants.AllRestaurantsCacheKey, out RestaurantViewModel[] cacheEntry))
+            //{
+            //    cacheEntry = await this.restaurantsService.GetAllAsync();
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+            //        .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
+            //    this.memoryCache.Set(WebConstants.AllRestaurantsCacheKey, cacheEntry, cacheEntryOptions);
+            //}
+            //return this.View(cacheEntry);
 
-            return this.View(cacheEntry);
+            var restaurantsViewModel = await this.restaurantsService.GetAllAsync();
+            return this.View(restaurantsViewModel);
+        }
+
+        public async Task<IActionResult> AllInDestination(int destinationId)
+        {
+            //if (!this.memoryCache.TryGetValue(WebConstants.AllRestaurantsCacheKey, out RestaurantViewModel[] cacheEntry))
+            //{
+            //    cacheEntry = await this.restaurantsService.GetAllInDestinationAsync(destinationId);
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+            //        .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
+            //    this.memoryCache.Set(WebConstants.AllRestaurantsCacheKey, cacheEntry, cacheEntryOptions);
+            //}
+            //return this.View(nameof(this.All), cacheEntry);
+
+            var restaurantsViewModel = await this.restaurantsService.GetAllInDestinationAsync(destinationId);
+            return this.View(nameof(this.All), restaurantsViewModel);
         }
 
         public async Task<IActionResult> Details(int id)

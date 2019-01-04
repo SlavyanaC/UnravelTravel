@@ -8,7 +8,7 @@
             </div>
             @if (Model.Count() != 0)
             {
-                <span class="badge badge-light">@Model.Count()</span>
+                <span class="badge badge-pill badge-light">@Model.Count()</span>
             }
             <div class="dropdown-menu">
                 @foreach (var shoppingCartActivity in Model)
@@ -16,12 +16,12 @@
                     <div class="d-flex justify-content-around">
                         <a class="dropdown-item col-md-11" asp-area="" asp-controller="Activities" asp-action="Details" asp-route-id="@shoppingCartActivity.ActivityId">
                             <img src="@shoppingCartActivity.ActivityImageUrl" width="50" height="50">
-                            @shoppingCartActivity.ActivityName
-                            @shoppingCartActivity.Quantity
-                            @(shoppingCartActivity.ActivityPrice * shoppingCartActivity.Quantity)$
+                            <span>@shoppingCartActivity.ActivityName</span>
+                            <span> @shoppingCartActivity.Quantity</span>
+                            <span><b>$@(shoppingCartActivity.ActivityPrice * shoppingCartActivity.Quantity)</b></span>
                         </a>
                         <a class="col-md-1 text-danger px-0" asp-area="" asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@shoppingCartActivity.Id">
-                            <i class="fas fa-times-circle"></i>
+                            <i class="fas fa-times"></i>
                         </a>
                     </div>
                 }
@@ -31,11 +31,11 @@
                         <em class="text-muted">Your shopping cart is empty</em>
                     </a>
                 }
+                <div class="text-center">
+                    <b>Total sum: $@(Model.Sum(x => x.ActivityPrice * x.Quantity))</b>
+                </div>
                 <a class="dropdown-item text-center" asp-area="" asp-controller="ShoppingCart" asp-action="Index">
                     Open shopping cart
-                    <div class="text-center">
-                        <p class="">Total sum: @(Model.Sum(x => x.ActivityPrice * x.Quantity))$</p>
-                    </div>
                 </a>
             </div>
         </div>

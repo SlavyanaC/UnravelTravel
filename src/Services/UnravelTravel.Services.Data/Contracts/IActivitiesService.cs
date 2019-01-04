@@ -12,6 +12,8 @@
 
         Task<ActivityViewModel[]> GetAllAsync();
 
+        Task<ActivityViewModel[]> GetAllInDestinationAsync(int destinationId);
+
         Task EditAsync(ActivityEditViewModel activityToEditViewModel);
 
         Task Review(int activityId, string username, ActivityReviewInputModel activityReviewInputModel);

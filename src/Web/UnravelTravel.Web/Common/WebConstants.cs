@@ -8,7 +8,8 @@
 
         public const string AllRestaurantsCacheKey = "AllRestaurants";
 
-        public const int AllViewMinutesExpiration = 10;
+        // TODO: Change this for caching
+        public const int AllViewMinutesExpiration = 1;
 
         public const string ShoppingCartSessionKey = "shoppingCart";
     }

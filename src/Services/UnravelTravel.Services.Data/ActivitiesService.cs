@@ -51,6 +51,17 @@
             return activities;
         }
 
+        public async Task<ActivityViewModel[]> GetAllInDestinationAsync(int destinationId)
+        {
+            var activities = await this.activitiesRepository
+                .All()
+                .Where(a => a.DestinationId == destinationId)
+                .To<ActivityViewModel>()
+                .ToArrayAsync();
+
+            return activities;
+        }
+
         public async Task<ActivityDetailsViewModel> CreateAsync(ActivityCreateInputModel activityCreateInputModel)
         {
             if (!Enum.TryParse(activityCreateInputModel.Type, true, out ActivityType activityTypeEnum))

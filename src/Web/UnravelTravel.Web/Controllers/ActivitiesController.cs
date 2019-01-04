@@ -24,15 +24,32 @@
 
         public async Task<IActionResult> All()
         {
-            if (!this.memoryCache.TryGetValue(WebConstants.AllActivitiesCacheKey, out ActivityViewModel[] cacheEntry))
-            {
-                cacheEntry = await this.activitiesService.GetAllAsync();
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
-                this.memoryCache.Set(WebConstants.AllActivitiesCacheKey, cacheEntry, cacheEntryOptions);
-            }
+            // if (!this.memoryCache.TryGetValue(WebConstants.AllActivitiesCacheKey, out ActivityViewModel[] cacheEntry))
+            // {
+            //    cacheEntry = await this.activitiesService.GetAllAsync();
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+            //        .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
+            //    this.memoryCache.Set(WebConstants.AllActivitiesCacheKey, cacheEntry, cacheEntryOptions);
+            // }
+            // return this.View(cacheEntry);
 
-            return this.View(cacheEntry);
+            var activitiesViewModel = await this.activitiesService.GetAllAsync();
+            return this.View(activitiesViewModel);
+        }
+
+        public async Task<IActionResult> AllInDestination(int destinationId)
+        {
+            // if (!this.memoryCache.TryGetValue(WebConstants.AllActivitiesCacheKey, out ActivityViewModel[] cacheEntry))
+            // {
+            //    cacheEntry = await this.activitiesService.GetAllInDestinationAsync(destinationId);
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
+            //        .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
+            //    this.memoryCache.Set(WebConstants.AllActivitiesCacheKey, cacheEntry, cacheEntryOptions);
+            // }
+            // return this.View(nameof(this.All), cacheEntry);
+
+            var activitiesViewModel = await this.activitiesService.GetAllInDestinationAsync(destinationId);
+            return this.View(nameof(this.All), activitiesViewModel);
         }
 
         public async Task<IActionResult> Details(int id)
@@ -54,7 +71,7 @@
         {
             var username = this.User.Identity.Name;
             await this.activitiesService.Review(id, username, activityReviewInputModel);
-            return this.RedirectToAction("Details", new { id = id });
+            return this.RedirectToAction(nameof(this.Details), new { id = id });
         }
     }
 }
