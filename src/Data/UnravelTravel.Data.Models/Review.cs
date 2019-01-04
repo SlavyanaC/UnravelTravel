@@ -12,7 +12,7 @@
 
         public string UserId { get; set; }
 
-        public virtual ApplicationUser User { get; set; }
+        public virtual UnravelTravelUser User { get; set; }
 
         public bool IsDeleted { get; set; }
 

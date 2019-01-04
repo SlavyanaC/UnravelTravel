@@ -22,11 +22,11 @@
     public class LoginModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly SignInManager<UnravelTravelUser> signInManager;
         private readonly ILogger<LoginModel> logger;
         private readonly IShoppingCartsService shoppingCartsService;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, IShoppingCartsService shoppingCartsService)
+        public LoginModel(SignInManager<UnravelTravelUser> signInManager, ILogger<LoginModel> logger, IShoppingCartsService shoppingCartsService)
         {
             this.signInManager = signInManager;
             this.logger = logger;

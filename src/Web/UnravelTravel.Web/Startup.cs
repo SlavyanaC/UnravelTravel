@@ -43,7 +43,7 @@
         {
             // Framework services
             // TODO: Add pooling when this bug is fixed: https://github.com/aspnet/EntityFrameworkCore/issues/9741
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<UnravelTravelDbContext>(options =>
             {
                 options.UseLazyLoadingProxies();
                 options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection"));
@@ -64,7 +64,7 @@
             });
 
             services
-                .AddIdentity<ApplicationUser, ApplicationRole>(options =>
+                .AddIdentity<UnravelTravelUser, ApplicationRole>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
@@ -72,7 +72,7 @@
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequiredLength = 6;
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<UnravelTravelDbContext>()
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders();
@@ -120,13 +120,12 @@
             services.AddScoped<ICountriesService, CountriesService>();
             services.AddScoped<IRestaurantsService, RestaurantsService>();
             services.AddScoped<IActivitiesService, ActivitiesService>();
-            services.AddScoped<ILocationsService, LocationsService>();
             services.AddScoped<ITicketsService, TicketsService>();
             services.AddScoped<IReservationsService, ReservationsService>();
             services.AddScoped<IShoppingCartsService, ShoppingCartsService>();
 
             // Identity stores
-            services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
+            services.AddTransient<IUserStore<UnravelTravelUser>, ApplicationUserStore>();
             services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
 
             // Facebook authentication
@@ -153,7 +152,7 @@
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var dbContext = serviceScope.ServiceProvider.GetRequiredService<UnravelTravelDbContext>();
 
                 if (env.IsDevelopment())
                 {

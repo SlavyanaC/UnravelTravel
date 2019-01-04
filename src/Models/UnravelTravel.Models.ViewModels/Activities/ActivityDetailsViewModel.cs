@@ -1,9 +1,8 @@
-﻿using System.Globalization;
-using UnravelTravel.Common;
-
-namespace UnravelTravel.Models.ViewModels.Activities
+﻿namespace UnravelTravel.Models.ViewModels.Activities
 {
     using System;
+    using System.Globalization;
+    using UnravelTravel.Common;
     using UnravelTravel.Common.Extensions;
 
     public class ActivityDetailsViewModel
@@ -27,11 +26,13 @@ namespace UnravelTravel.Models.ViewModels.Activities
 
         public string AdditionalInfo { get; set; }
 
-        public int LocationId { get; set; }
+        public int DestinationId { get; set; }
+
+        public string DestinationName { get; set; }
+
+        public string Address { get; set; }
 
         public string LocationName { get; set; }
-
-        public string LocationAddress { get; set; }
 
         public double AverageRating { get; set; }
 

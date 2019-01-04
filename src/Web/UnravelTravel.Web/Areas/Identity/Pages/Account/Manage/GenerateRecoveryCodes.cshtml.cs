@@ -14,11 +14,11 @@
     public class GenerateRecoveryCodesModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<UnravelTravelUser> userManager;
         private readonly ILogger<GenerateRecoveryCodesModel> logger;
 
         public GenerateRecoveryCodesModel(
-            UserManager<ApplicationUser> userManager,
+            UserManager<UnravelTravelUser> userManager,
             ILogger<GenerateRecoveryCodesModel> logger)
         {
             this.userManager = userManager;

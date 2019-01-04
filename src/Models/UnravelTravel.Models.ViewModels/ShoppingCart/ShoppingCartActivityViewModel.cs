@@ -30,8 +30,8 @@
         [Display(Name = ModelConstants.Activity.StartingHourDisplay)]
         public string ActivityHourString => this.ActivityDate.ToString(GlobalConstants.HourFormat, CultureInfo.InvariantCulture);
 
-        [Display(Name = nameof(Location))]
-        public string ActivityLocationName { get; set; }
+        [Display(Name = nameof(Destination))]
+        public string ActivityDestinationName { get; set; }
 
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }

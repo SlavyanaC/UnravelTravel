@@ -17,11 +17,11 @@
     public class DownloadPersonalDataModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<UnravelTravelUser> userManager;
         private readonly ILogger<DownloadPersonalDataModel> logger;
 
         public DownloadPersonalDataModel(
-            UserManager<ApplicationUser> userManager,
+            UserManager<UnravelTravelUser> userManager,
             ILogger<DownloadPersonalDataModel> logger)
         {
             this.userManager = userManager;
@@ -40,7 +40,7 @@
 
             // Only include personal data for download
             var personalData = new Dictionary<string, string>();
-            var personalDataProps = typeof(ApplicationUser).GetProperties().Where(
+            var personalDataProps = typeof(UnravelTravelUser).GetProperties().Where(
                             prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
             {

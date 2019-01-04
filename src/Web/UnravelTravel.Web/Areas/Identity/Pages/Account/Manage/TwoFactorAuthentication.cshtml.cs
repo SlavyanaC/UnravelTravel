@@ -14,13 +14,13 @@
     {
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
 
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<UnravelTravelUser> userManager;
+        private readonly SignInManager<UnravelTravelUser> signInManager;
         private readonly ILogger<TwoFactorAuthenticationModel> logger;
 
         public TwoFactorAuthenticationModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<UnravelTravelUser> userManager,
+            SignInManager<UnravelTravelUser> signInManager,
             ILogger<TwoFactorAuthenticationModel> logger)
         {
             this.userManager = userManager;

@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace UnravelTravel.Data.Migrations
+﻿namespace UnravelTravel.Data.Migrations
 {
-    public partial class NewInitialCreate : Migration
+    using System;
+    using Microsoft.EntityFrameworkCore.Metadata;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,7 +18,7 @@ namespace UnravelTravel.Data.Migrations
                     ExceptionType = table.Column<string>(nullable: true),
                     ExceptionMessage = table.Column<string>(nullable: true),
                     CallingMethod = table.Column<string>(nullable: true),
-                    OccurrenceDate = table.Column<DateTime>(nullable: false)
+                    OccurrenceDate = table.Column<DateTime>(nullable: false),
                 },
                 constraints: table =>
                 {
@@ -176,7 +176,7 @@ namespace UnravelTravel.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Locations",
+                name: "Activities",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -184,17 +184,24 @@ namespace UnravelTravel.Data.Migrations
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: true),
+                    Type = table.Column<int>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    AdditionalInfo = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
-                    LocationType = table.Column<int>(nullable: false),
+                    LocationName = table.Column<string>(nullable: true),
                     DestinationId = table.Column<int>(nullable: false),
+                    AverageRating = table.Column<double>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Locations", x => x.Id);
+                    table.PrimaryKey("PK_Activities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Locations_Destinations_DestinationId",
+                        name: "FK_Activities_Destinations_DestinationId",
                         column: x => x.DestinationId,
                         principalTable: "Destinations",
                         principalColumn: "Id",
@@ -341,127 +348,6 @@ namespace UnravelTravel.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Activities",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Type = table.Column<int>(nullable: false),
-                    ImageUrl = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false),
-                    Price = table.Column<decimal>(nullable: true),
-                    LocationId = table.Column<int>(nullable: false),
-                    AverageRating = table.Column<double>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeletedOn = table.Column<DateTime>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Activities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Activities_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reservations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
-                    UserId = table.Column<string>(nullable: true),
-                    RestaurantId = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
-                    PeopleCount = table.Column<int>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeletedOn = table.Column<DateTime>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reservations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reservations_Restaurants_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "Restaurants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Reservations_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RestaurantReviews",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
-                    RestaurantId = table.Column<int>(nullable: false),
-                    ReviewId = table.Column<int>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeletedOn = table.Column<DateTime>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RestaurantReviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RestaurantReviews_Restaurants_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "Restaurants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RestaurantReviews_Reviews_ReviewId",
-                        column: x => x.ReviewId,
-                        principalTable: "Reviews",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ActivityReviews",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
-                    ActivityId = table.Column<int>(nullable: false),
-                    ReviewId = table.Column<int>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeletedOn = table.Column<DateTime>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ActivityReviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ActivityReviews_Activities_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "Activities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ActivityReviews_Reviews_ReviewId",
-                        column: x => x.ReviewId,
-                        principalTable: "Reviews",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ShoppingCartActivities",
                 columns: table => new
                 {
@@ -523,15 +409,107 @@ namespace UnravelTravel.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Reservations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    UserId = table.Column<string>(nullable: true),
+                    RestaurantId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    PeopleCount = table.Column<int>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Restaurants_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reservations_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ActivityReviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    ActivityId = table.Column<int>(nullable: false),
+                    ReviewId = table.Column<int>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ActivityReviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ActivityReviews_Activities_ActivityId",
+                        column: x => x.ActivityId,
+                        principalTable: "Activities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ActivityReviews_Reviews_ReviewId",
+                        column: x => x.ReviewId,
+                        principalTable: "Reviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RestaurantReviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    RestaurantId = table.Column<int>(nullable: false),
+                    ReviewId = table.Column<int>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantReviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RestaurantReviews_Restaurants_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RestaurantReviews_Reviews_ReviewId",
+                        column: x => x.ReviewId,
+                        principalTable: "Reviews",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Activities_DestinationId",
+                table: "Activities",
+                column: "DestinationId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Activities_IsDeleted",
                 table: "Activities",
                 column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Activities_LocationId",
-                table: "Activities",
-                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActivityReviews_ActivityId",
@@ -618,16 +596,6 @@ namespace UnravelTravel.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Destinations_IsDeleted",
                 table: "Destinations",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Locations_DestinationId",
-                table: "Locations",
-                column: "DestinationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Locations_IsDeleted",
-                table: "Locations",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
@@ -770,13 +738,10 @@ namespace UnravelTravel.Data.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "Destinations");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");
-
-            migrationBuilder.DropTable(
-                name: "Destinations");
 
             migrationBuilder.DropTable(
                 name: "Countries");

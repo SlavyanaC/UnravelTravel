@@ -20,7 +20,7 @@
             public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
             public const int MinMinutesTillStart = 15;
-            public const int DescriptionMaxLength = 850;
+            public const int DescriptionMaxLength = 1050;
             public const int DescriptionMinLength = 10;
 
             public const string StartingHourError = "Activity starting hour must be at least 15 minutes from now";
@@ -41,12 +41,6 @@
             public const int InformationMaxLength = 850;
 
             public const string InformationError = "Information must be between {2} and {1} symbols";
-        }
-
-        public class Location
-        {
-            public const int NameMinLength = 3;
-            public const int NameMaxLength = 50;
         }
 
         public class Restaurant

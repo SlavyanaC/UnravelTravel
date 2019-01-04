@@ -7,9 +7,9 @@ namespace UnravelTravel.Data.Models
     using Microsoft.AspNetCore.Identity;
     using UnravelTravel.Data.Common.Models;
 
-    public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
+    public class UnravelTravelUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
-        public ApplicationUser()
+        public UnravelTravelUser()
         {
             this.Id = Guid.NewGuid().ToString();
             this.Roles = new HashSet<IdentityUserRole<string>>();

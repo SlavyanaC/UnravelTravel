@@ -14,13 +14,13 @@
     public class DeletePersonalDataModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<UnravelTravelUser> userManager;
+        private readonly SignInManager<UnravelTravelUser> signInManager;
         private readonly ILogger<DeletePersonalDataModel> logger;
 
         public DeletePersonalDataModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<UnravelTravelUser> userManager,
+            SignInManager<UnravelTravelUser> signInManager,
             ILogger<DeletePersonalDataModel> logger)
         {
             this.userManager = userManager;

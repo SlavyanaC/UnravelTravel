@@ -36,8 +36,14 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Activities
         public string AdditionalInfo { get; set; }
 
         [Required]
-        [Display(Name = nameof(Location))]
-        public int LocationId { get; set; }
+        [Display(Name = nameof(Destination))]
+        public int DestinationId { get; set; }
+
+        [Required]
+        [StringLength(ModelConstants.AddressMaxLength, MinimumLength = ModelConstants.AddressMinLength, ErrorMessage = ModelConstants.AddressLengthError)]
+        public string Address { get; set; }
+
+        public string LocationName { get; set; }
 
         [Required]
         public decimal Price { get; set; }

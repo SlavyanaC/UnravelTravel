@@ -42,8 +42,17 @@
         public string AdditionalInfo { get; set; }
 
         [Required]
-        public int LocationId { get; set; }
+        public int DestinationId { get; set; }
+
+        public string DestinationName { get; set; }
+
+        [Required]
+        [StringLength(ModelConstants.AddressMaxLength, MinimumLength = ModelConstants.AddressMinLength, ErrorMessage = ModelConstants.AddressLengthError)]
+        public string Address { get; set; }
 
         public string LocationName { get; set; }
+
+        [Required]
+        public decimal Price { get; set; }
     }
 }

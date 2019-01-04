@@ -16,11 +16,14 @@
         private const string TestUsername = "Pesho";
         private const string NotExistingUsername = "Stamat";
         private const string TestUserEmail = "pesho@pesho.pesho";
+
         private const int TestingActivityId = 1;
         private const string TestingActivityName = "Best Activity";
+
         private const int TestingTicketId = 1;
-        private const int TestingLocationId = 1;
-        private const string TestingLocationName = "Arena Armeec";
+
+        private const int TestingDestinationId = 1;
+        private const string TestingDestinationName = "Test Destination 123";
 
         private readonly string testingUserId = Guid.NewGuid().ToString();
 
@@ -36,7 +39,7 @@
             {
                 Id = 2,
                 Name = TestingActivityName,
-                LocationId = TestingLocationId,
+                DestinationId = TestingDestinationId,
             });
             await this.DbContext.SaveChangesAsync();
 
@@ -59,7 +62,7 @@
             {
                 Id = 2,
                 Name = TestingActivityName,
-                LocationId = TestingLocationId,
+                DestinationId = TestingDestinationId,
             });
             await this.DbContext.SaveChangesAsync();
 
@@ -264,7 +267,7 @@
 
         private async Task AddTestingUserToDb()
         {
-            this.DbContext.Users.Add(new ApplicationUser
+            this.DbContext.Users.Add(new UnravelTravelUser
             {
                 Id = testingUserId,
                 UserName = TestUsername,
@@ -275,22 +278,22 @@
 
         private async Task AddTestingActivityToDb()
         {
-            await this.AddTestingLocationToDb();
+            await this.AddTestingDestinationToDb();
             this.DbContext.Activities.Add(new Activity
             {
                 Id = TestingActivityId,
                 Name = TestingActivityName,
-                LocationId = TestingLocationId,
+                DestinationId = TestingDestinationId,
             });
             await this.DbContext.SaveChangesAsync();
         }
 
-        private async Task AddTestingLocationToDb()
+        private async Task AddTestingDestinationToDb()
         {
-            this.DbContext.Locations.Add(new Location
+            this.DbContext.Destinations.Add(new Destination()
             {
-                Id = TestingLocationId,
-                Name = TestingLocationName,
+                Id = TestingDestinationId,
+                Name = TestingDestinationName,
             });
             await this.DbContext.SaveChangesAsync();
         }

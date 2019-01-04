@@ -7,12 +7,12 @@
 
     public class DbQueryRunner : IDbQueryRunner
     {
-        public DbQueryRunner(ApplicationDbContext context)
+        public DbQueryRunner(UnravelTravelDbContext context)
         {
             this.Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public ApplicationDbContext Context { get; set; }
+        public UnravelTravelDbContext Context { get; set; }
 
         public void RunQuery(string query, params object[] parameters)
         {

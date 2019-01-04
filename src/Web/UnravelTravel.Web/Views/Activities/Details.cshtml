@@ -31,16 +31,14 @@
     <h4>Know before you go</h4>
     <p>@Model.AdditionalInfo</p>
     <hr />
-    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
-    {
-        <h4> <a asp-area="Administrator" asp-controller="Locations" asp-action="All">Location</a></h4>
-        <p>@Model.LocationName</p>
-    }
-    else
-    {
-        <h4>Location:</h4>
-        <p>@Model.LocationName</p>
-    }
+    <h4>Address:</h4>
+    <p>
+        @Model.Address
+        @if (Model.LocationName != null)
+        {
+            <b>- @Model.LocationName</b>
+        }
+    </p>
     <hr />
     <div class="row d-flex justify-content-around">
         @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
@@ -63,7 +61,7 @@
     <cache expires-after="@TimeSpan.FromHours(1)" vary-by="@Model.Id">
         <iframe class="w-100"
                 height="450"
-                src="https://maps.google.com/maps?q=@Model.LocationAddress&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                src="https://maps.google.com/maps?q=@Model.Address&t=&z=13&ie=UTF8&iwloc=&output=embed"
                 style="border: 0"
                 allowfullscreen></iframe>
     </cache>

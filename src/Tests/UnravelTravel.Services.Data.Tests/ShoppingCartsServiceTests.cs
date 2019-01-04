@@ -25,8 +25,10 @@
         private const int TestActivityId = 1;
         private const string TestActivityName = "Test Activity 123";
         private const decimal TestActivityPrice = 12.55m;
-        private const int TestLocationId = 1;
-        private const string TestLocationName = "Test Location 123";
+
+        private const int TestDestinationId = 1;
+        private const string TestDestinationName = "Test Destination 123";
+
         private const int SecondTestActivityId = 2;
         private const string SecondTestActivityName = "Secondd Activity";
         private const decimal SecondTestActivityPrice = 50.80m;
@@ -43,7 +45,7 @@
         [Fact]
         public async Task AssignShoppingCartsUserIdThrowsNullReferenceExceptionIfNoShoppingCartForThisUser()
         {
-            var user = new ApplicationUser { Id = this.secondTestUserId, UserName = SecondTestUsername, };
+            var user = new UnravelTravelUser { Id = this.secondTestUserId, UserName = SecondTestUsername, };
             await this.DbContext.SaveChangesAsync();
 
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.ShoppingCartsServiceMock.AssignShoppingCartsUserId(user));
@@ -71,7 +73,8 @@
         [Fact]
         public async Task GetAllShoppingCartActivitiesAsyncReturnsCorrectShoppingCart()
         {
-            await GetAllShoppingCartActivitiesSetDbContext();
+            await this.AddTestingDestinationToDb();
+            await this.GetAllShoppingCartActivitiesSetDbContext();
             var expected = GetAllShoppingCartActivitiesExpectedResult();
             var actual = await this.ShoppingCartsServiceMock.GetAllShoppingCartActivitiesAsync(TestUsername);
             Assert.Collection(actual,
@@ -80,7 +83,7 @@
                 Assert.Equal(expected[0].Id, elem1.Id);
                 Assert.Equal(expected[0].ActivityId, elem1.ActivityId);
                 Assert.Equal(expected[0].ActivityName, elem1.ActivityName);
-                Assert.Equal(expected[0].ActivityLocationName, elem1.ActivityLocationName);
+                Assert.Equal(expected[0].ActivityDestinationName, elem1.ActivityDestinationName);
                 Assert.Equal(expected[0].ActivityPrice, elem1.ActivityPrice);
                 Assert.Equal(expected[0].ShoppingCartUserId, elem1.ShoppingCartUserId);
                 Assert.Equal(expected[0].Quantity, elem1.Quantity);
@@ -90,7 +93,7 @@
                     Assert.Equal(expected[1].Id, elem2.Id);
                     Assert.Equal(expected[1].ActivityId, elem2.ActivityId);
                     Assert.Equal(expected[1].ActivityName, elem2.ActivityName);
-                    Assert.Equal(expected[0].ActivityLocationName, elem2.ActivityLocationName);
+                    Assert.Equal(expected[0].ActivityDestinationName, elem2.ActivityDestinationName);
                     Assert.Equal(expected[1].ActivityPrice, elem2.ActivityPrice);
                     Assert.Equal(expected[1].ShoppingCartUserId, elem2.ShoppingCartUserId);
                     Assert.Equal(expected[1].Quantity, elem2.Quantity);
@@ -117,7 +120,6 @@
         [Fact]
         public async Task GetGuestShoppingCartActivityToAddThrowsNullReferenceExceptionIfActivityNotFound()
         {
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
 
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() =>
@@ -129,7 +131,7 @@
         [Fact]
         public async Task GetGuestShoppingCartActivityToAddReturnsCorrectShoppingCartActivity()
         {
-            await this.AddTestingLocationToDb();
+            await this.AddTestingDestinationToDb();
             await this.AddTestingActivityToDb();
 
             var expected = new ShoppingCartActivityViewModel
@@ -137,7 +139,7 @@
                 ActivityId = TestActivityId,
                 ActivityName = TestActivityName,
                 ActivityDate = testDate,
-                ActivityLocationName = TestLocationName,
+                ActivityDestinationName = TestDestinationName,
                 ActivityImageUrl = TestImageUrl,
                 ActivityPrice = TestActivityPrice,
                 Quantity = TestShoppingCartActivityQuantity,
@@ -148,7 +150,7 @@
             Assert.Equal(expected.Id, actual.Id);
             Assert.Equal(expected.ActivityName, actual.ActivityName);
             Assert.Equal(expected.ActivityDate, actual.ActivityDate);
-            Assert.Equal(expected.ActivityLocationName, actual.ActivityLocationName);
+            Assert.Equal(expected.ActivityDestinationName, actual.ActivityDestinationName);
             Assert.Equal(expected.ActivityImageUrl, actual.ActivityImageUrl);
             Assert.Equal(expected.ActivityPrice, actual.ActivityPrice);
             Assert.Equal(expected.Quantity, actual.Quantity);
@@ -158,7 +160,6 @@
         [Fact]
         public async Task GetGuestShoppingCartActivityToAddThrowsInvalidOperationExceptionIfNegativeOrZeroQuantity()
         {
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
 
             var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
@@ -177,7 +178,7 @@
                     Id = TestShoppingCartActivityId,
                     ActivityId = TestShoppingCartId,
                     ActivityName = TestActivityName,
-                    ActivityLocationName = TestLocationName,
+                    ActivityDestinationName = TestDestinationName,
                     ShoppingCartUserId = testUserId,
                     ActivityPrice = TestActivityPrice,
                     Quantity = TestShoppingCartActivityQuantity,
@@ -199,7 +200,7 @@
                     Id = TestShoppingCartActivityId,
                     ActivityId = TestShoppingCartId,
                     ActivityName = TestActivityName,
-                    ActivityLocationName = TestLocationName,
+                    ActivityDestinationName = TestDestinationName,
                     ShoppingCartUserId = testUserId,
                     ActivityPrice = TestActivityPrice,
                     Quantity = TestShoppingCartActivityQuantity,
@@ -227,12 +228,11 @@
         public async Task DeleteActivityFromShoppingCartThrowsNullReferenceExceptionIfShoppingCartActivityNotFound()
         {
             await this.AddTestingUserWithShoppingCartToDb();
-            await this.AddTestingLocationToDb();
             this.DbContext.Activities.Add(new Activity
             {
                 Id = SecondTestActivityId,
                 Name = SecondTestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Price = SecondTestActivityPrice,
             });
             this.DbContext.ShoppingCartActivities.Add(new ShoppingCartActivity
@@ -253,12 +253,11 @@
         public async Task DeleteActivityFromShoppingCartThrowsNullReferenceExceptionIfUserNotFound()
         {
             await this.AddTestingUserWithShoppingCartToDb();
-            await this.AddTestingLocationToDb();
             this.DbContext.Activities.Add(new Activity
             {
                 Id = SecondTestActivityId,
                 Name = SecondTestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Price = SecondTestActivityPrice,
             });
             this.DbContext.ShoppingCartActivities.Add(new ShoppingCartActivity
@@ -290,7 +289,6 @@
         public async Task AddActivityToShoppingCartAsyncThrowsNullReferenceExceptionIfActivityNotFound()
         {
             await this.AddTestingUserWithShoppingCartToDb();
-            await this.AddTestingLocationToDb();
             this.DbContext.ShoppingCartActivities.Add(new ShoppingCartActivity
             {
                 Id = TestShoppingCartActivityId,
@@ -331,12 +329,11 @@
         public async Task AddActivityToShoppingCartAsyncAddsActivityToShoppingCart()
         {
             await this.AddTestingUserWithShoppingCartToDb();
-            await this.AddTestingLocationToDb();
             this.DbContext.Activities.Add(new Activity
             {
                 Id = SecondTestActivityId,
                 Name = SecondTestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Price = SecondTestActivityPrice,
             });
             await this.DbContext.SaveChangesAsync();
@@ -402,7 +399,7 @@
                     Id = TestShoppingCartActivityId,
                     ActivityId = TestShoppingCartId,
                     ActivityName = TestActivityName,
-                    ActivityLocationName = TestLocationName,
+                    ActivityDestinationName = TestDestinationName,
                     ShoppingCartUserId = testUserId,
                     ActivityPrice = TestActivityPrice,
                     Quantity = TestShoppingCartActivityQuantity,
@@ -424,7 +421,7 @@
                     Id = TestShoppingCartActivityId,
                     ActivityId = TestShoppingCartId,
                     ActivityName = TestActivityName,
-                    ActivityLocationName = TestLocationName,
+                    ActivityDestinationName = TestDestinationName,
                     ShoppingCartUserId = testUserId,
                     ActivityPrice = TestActivityPrice,
                     Quantity = TestShoppingCartActivityQuantity,
@@ -458,7 +455,7 @@
                     Id = TestShoppingCartActivityId,
                     ActivityId = TestShoppingCartId,
                     ActivityName = TestActivityName,
-                    ActivityLocationName = TestLocationName,
+                    ActivityDestinationName = TestDestinationName,
                     ShoppingCartUserId = testUserId,
                     ActivityPrice = TestActivityPrice,
                     Quantity = TestShoppingCartActivityQuantity,
@@ -468,7 +465,7 @@
                     Id = SecondTestShoppingCartActivityId,
                     ActivityId = SecondTestActivityId,
                     ActivityName = SecondTestActivityName,
-                    ActivityLocationName = TestLocationName,
+                    ActivityDestinationName = TestDestinationName,
                     ShoppingCartUserId = testUserId,
                     ActivityPrice = SecondTestActivityPrice,
                     Quantity = TestShoppingCartActivityQuantity,
@@ -479,14 +476,13 @@
         private async Task GetAllShoppingCartActivitiesSetDbContext()
         {
             await this.AddTestingUserWithShoppingCartToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
 
             this.DbContext.Activities.Add(new Activity
             {
                 Id = SecondTestActivityId,
                 Name = SecondTestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Price = SecondTestActivityPrice,
             });
             await this.DbContext.SaveChangesAsync();
@@ -508,23 +504,13 @@
             await this.DbContext.SaveChangesAsync();
         }
 
-        private async Task AddTestingLocationToDb()
-        {
-            this.DbContext.Locations.Add(new Location
-            {
-                Id = TestLocationId,
-                Name = TestLocationName,
-            });
-            await this.DbContext.SaveChangesAsync();
-        }
-
         private async Task AddTestingActivityToDb()
         {
             this.DbContext.Activities.Add(new Activity
             {
                 Id = TestActivityId,
                 Name = TestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Price = TestActivityPrice,
                 Date = testDate,
                 ImageUrl = TestImageUrl,
@@ -532,9 +518,19 @@
             await this.DbContext.SaveChangesAsync();
         }
 
+        private async Task AddTestingDestinationToDb()
+        {
+            this.DbContext.Destinations.Add(new Destination
+            {
+                Id = TestDestinationId,
+                Name = TestDestinationName,
+            });
+            await this.DbContext.SaveChangesAsync();
+        }
+
         private async Task AddTestingUserWithShoppingCartToDb()
         {
-            this.DbContext.Users.Add(new ApplicationUser
+            this.DbContext.Users.Add(new UnravelTravelUser
             {
                 Id = this.testUserId,
                 UserName = TestUsername,

@@ -7,9 +7,9 @@
     using UnravelTravel.Data.Models;
 
     public class ApplicationUserStore : UserStore<
-        ApplicationUser,
+        UnravelTravelUser,
         ApplicationRole,
-        ApplicationDbContext,
+        UnravelTravelDbContext,
         string,
         IdentityUserClaim<string>,
         IdentityUserRole<string>,
@@ -17,24 +17,24 @@
         IdentityUserToken<string>,
         IdentityRoleClaim<string>>
     {
-        public ApplicationUserStore(ApplicationDbContext context, IdentityErrorDescriber describer = null)
+        public ApplicationUserStore(UnravelTravelDbContext context, IdentityErrorDescriber describer = null)
             : base(context, describer)
         {
         }
 
-        protected override IdentityUserRole<string> CreateUserRole(ApplicationUser user, ApplicationRole role)
+        protected override IdentityUserRole<string> CreateUserRole(UnravelTravelUser user, ApplicationRole role)
         {
             return new IdentityUserRole<string> { RoleId = role.Id, UserId = user.Id };
         }
 
-        protected override IdentityUserClaim<string> CreateUserClaim(ApplicationUser user, Claim claim)
+        protected override IdentityUserClaim<string> CreateUserClaim(UnravelTravelUser user, Claim claim)
         {
             var identityUserClaim = new IdentityUserClaim<string> { UserId = user.Id };
             identityUserClaim.InitializeFromClaim(claim);
             return identityUserClaim;
         }
 
-        protected override IdentityUserLogin<string> CreateUserLogin(ApplicationUser user, UserLoginInfo login) =>
+        protected override IdentityUserLogin<string> CreateUserLogin(UnravelTravelUser user, UserLoginInfo login) =>
             new IdentityUserLogin<string>
             {
                 UserId = user.Id,
@@ -44,7 +44,7 @@
             };
 
         protected override IdentityUserToken<string> CreateUserToken(
-            ApplicationUser user,
+            UnravelTravelUser user,
             string loginProvider,
             string name,
             string value)

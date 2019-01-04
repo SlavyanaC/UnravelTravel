@@ -11,7 +11,7 @@
 
     public static class ApplicationDbContextSeeder
     {
-        public static void Seed(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
+        public static void Seed(UnravelTravelDbContext dbContext, IServiceProvider serviceProvider)
         {
             if (dbContext == null)
             {
@@ -27,7 +27,7 @@
             Seed(dbContext, roleManager);
         }
 
-        public static void Seed(ApplicationDbContext dbContext, RoleManager<ApplicationRole> roleManager)
+        public static void Seed(UnravelTravelDbContext dbContext, RoleManager<ApplicationRole> roleManager)
         {
             if (dbContext == null)
             {

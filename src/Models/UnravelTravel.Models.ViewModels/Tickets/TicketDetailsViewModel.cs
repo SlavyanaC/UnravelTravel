@@ -9,13 +9,13 @@
     using UnravelTravel.Models.Common;
     using UnravelTravel.Services.Mapping;
 
-    public class TicketDetailsViewModel : IMapFrom<ApplicationUser>
+    public class TicketDetailsViewModel : IMapFrom<UnravelTravelUser>
     {
         public int Id { get; set; }
 
         public string UserId { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public UnravelTravelUser User { get; set; }
 
         [Display(Name = ModelConstants.UserFullNameDisplay)]
         public string UserFullName { get; set; }
@@ -35,8 +35,8 @@
         [Display(Name = ModelConstants.Activity.StartingHourDisplay)]
         public string ActivityHourString => this.ActivityDate.ToString(GlobalConstants.HourFormat, CultureInfo.InvariantCulture);
 
-        [Display(Name = nameof(Location))]
-        public string ActivityLocationName { get; set; }
+        [Display(Name = nameof(Destination))]
+        public string ActivityDestinationName { get; set; }
 
         public bool HasPassed => this.ActivityDate <= DateTime.Now;
 

@@ -323,7 +323,7 @@
 
         private async Task AddTestingUserToDb()
         {
-            this.DbContext.Users.Add(new ApplicationUser
+            this.DbContext.Users.Add(new UnravelTravelUser
             {
                 Id = testUserId,
                 UserName = TestUsername,

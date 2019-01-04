@@ -25,14 +25,14 @@
     public class ExternalLoginModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<UnravelTravelUser> signInManager;
+        private readonly UserManager<UnravelTravelUser> userManager;
         private readonly ILogger<ExternalLoginModel> logger;
         private readonly IShoppingCartsService shoppingCartsService;
 
         public ExternalLoginModel(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
+            SignInManager<UnravelTravelUser> signInManager,
+            UserManager<UnravelTravelUser> userManager,
             ILogger<ExternalLoginModel> logger,
             IShoppingCartsService shoppingCartsService)
         {
@@ -126,7 +126,7 @@
             if (this.ModelState.IsValid)
             {
                 var nameWithoutWhiteSpaces = info.Principal.Identity.Name.RemoveWhiteSpaces();
-                var user = new ApplicationUser
+                var user = new UnravelTravelUser
                 {
                     UserName = nameWithoutWhiteSpaces,
                     Email = this.Input.Email,

@@ -7,7 +7,7 @@
 
     public interface IShoppingCartsService
     {
-        Task AssignShoppingCartsUserId(ApplicationUser user);
+        Task AssignShoppingCartsUserId(UnravelTravelUser user);
 
         Task<ShoppingCartActivityViewModel[]> GetAllShoppingCartActivitiesAsync(string username);
 

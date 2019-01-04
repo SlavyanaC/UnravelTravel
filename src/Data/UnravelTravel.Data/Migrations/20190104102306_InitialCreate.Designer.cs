@@ -9,9 +9,9 @@ using UnravelTravel.Data;
 
 namespace UnravelTravel.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190102104122_NewInitialCreate")]
-    partial class NewInitialCreate
+    [DbContext(typeof(UnravelTravelDbContext))]
+    [Migration("20190104102306_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,6 +113,10 @@ namespace UnravelTravel.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AdditionalInfo");
+
+                    b.Property<string>("Address");
+
                     b.Property<double>("AverageRating");
 
                     b.Property<DateTime>("CreatedOn");
@@ -121,25 +125,29 @@ namespace UnravelTravel.Data.Migrations
 
                     b.Property<DateTime?>("DeletedOn");
 
+                    b.Property<string>("Description");
+
+                    b.Property<int>("DestinationId");
+
                     b.Property<string>("ImageUrl");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<int>("LocationId");
+                    b.Property<string>("LocationName");
 
                     b.Property<DateTime?>("ModifiedOn");
 
                     b.Property<string>("Name");
 
-                    b.Property<decimal?>("Price");
+                    b.Property<decimal>("Price");
 
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IsDeleted");
+                    b.HasIndex("DestinationId");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("IsDeleted");
 
                     b.ToTable("Activities");
                 });
@@ -346,37 +354,6 @@ namespace UnravelTravel.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.ToTable("Destinations");
-                });
-
-            modelBuilder.Entity("UnravelTravel.Data.Models.Location", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
-
-                    b.Property<DateTime>("CreatedOn");
-
-                    b.Property<DateTime?>("DeletedOn");
-
-                    b.Property<int>("DestinationId");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<int>("LocationType");
-
-                    b.Property<DateTime?>("ModifiedOn");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DestinationId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("UnravelTravel.Data.Models.Reservation", b =>
@@ -658,9 +635,9 @@ namespace UnravelTravel.Data.Migrations
 
             modelBuilder.Entity("UnravelTravel.Data.Models.Activity", b =>
                 {
-                    b.HasOne("UnravelTravel.Data.Models.Location", "Location")
+                    b.HasOne("UnravelTravel.Data.Models.Destination", "Destination")
                         .WithMany("Activities")
-                        .HasForeignKey("LocationId")
+                        .HasForeignKey("DestinationId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
@@ -690,14 +667,6 @@ namespace UnravelTravel.Data.Migrations
                     b.HasOne("UnravelTravel.Data.Models.Country", "Country")
                         .WithMany("Destinations")
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("UnravelTravel.Data.Models.Location", b =>
-                {
-                    b.HasOne("UnravelTravel.Data.Models.Destination", "Destination")
-                        .WithMany("Locations")
-                        .HasForeignKey("DestinationId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

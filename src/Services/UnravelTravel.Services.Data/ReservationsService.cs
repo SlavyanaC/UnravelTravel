@@ -20,11 +20,11 @@
     public class ReservationsService : IReservationsService
     {
         private readonly IRepository<Reservation> reservationsRepository;
-        private readonly IRepository<ApplicationUser> usersRepository;
+        private readonly IRepository<UnravelTravelUser> usersRepository;
         private readonly IRepository<Restaurant> restaurantsRepository;
         private readonly IEmailSender emailSender;
 
-        public ReservationsService(IRepository<Reservation> reservationsRepository, IRepository<ApplicationUser> usersRepository, IRepository<Restaurant> restaurantsRepository, IEmailSender emailSender)
+        public ReservationsService(IRepository<Reservation> reservationsRepository, IRepository<UnravelTravelUser> usersRepository, IRepository<Restaurant> restaurantsRepository, IEmailSender emailSender)
         {
             this.usersRepository = usersRepository;
             this.restaurantsRepository = restaurantsRepository;

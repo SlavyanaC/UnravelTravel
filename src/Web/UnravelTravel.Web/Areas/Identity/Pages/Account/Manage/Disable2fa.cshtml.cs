@@ -13,11 +13,11 @@
     public class Disable2FaModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<UnravelTravelUser> userManager;
         private readonly ILogger<Disable2FaModel> logger;
 
         public Disable2FaModel(
-            UserManager<ApplicationUser> userManager,
+            UserManager<UnravelTravelUser> userManager,
             ILogger<Disable2FaModel> logger)
         {
             this.userManager = userManager;

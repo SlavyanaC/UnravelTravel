@@ -490,7 +490,7 @@
             await this.AddTestingRestaurantToDb();
             await this.AddTestingUserToDb();
 
-            this.DbContext.Users.Add(new ApplicationUser { Id = Guid.NewGuid().ToString(), UserName = "Ivan" });
+            this.DbContext.Users.Add(new UnravelTravelUser { Id = Guid.NewGuid().ToString(), UserName = "Ivan" });
             await this.DbContext.SaveChangesAsync();
 
             var restaurantReviewInputModel = new RestaurantReviewInputModel
@@ -550,7 +550,7 @@
 
         private async Task AddTestingUserToDb()
         {
-            this.DbContext.Add(new ApplicationUser { Id = this.testUserId, UserName = TestUserName });
+            this.DbContext.Add(new UnravelTravelUser { Id = this.testUserId, UserName = TestUserName });
             await this.DbContext.SaveChangesAsync();
         }
 

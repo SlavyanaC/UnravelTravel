@@ -24,7 +24,7 @@ namespace UnravelTravel.Services.Data
     {
         private readonly IRepository<Restaurant> restaurantsRepository;
         private readonly IRepository<Destination> destinationsRepository;
-        private readonly IRepository<ApplicationUser> usersRepository;
+        private readonly IRepository<UnravelTravelUser> usersRepository;
         private readonly IRepository<Review> reviewsRepository;
         private readonly IRepository<RestaurantReview> restaurantReviewsRepository;
         private readonly Cloudinary cloudinary;
@@ -32,7 +32,7 @@ namespace UnravelTravel.Services.Data
         public RestaurantsService(
             IRepository<Restaurant> restaurantsRepository,
             IRepository<Destination> destinationsRepository,
-            IRepository<ApplicationUser> usersRepository,
+            IRepository<UnravelTravelUser> usersRepository,
             IRepository<Review> reviewsRepository,
             IRepository<RestaurantReview> restaurantReviewsRepository,
             Cloudinary cloudinary)

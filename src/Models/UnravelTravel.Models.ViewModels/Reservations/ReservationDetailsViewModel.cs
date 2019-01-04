@@ -14,7 +14,7 @@
 
         public string UserId { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public UnravelTravelUser User { get; set; }
 
         [Display(Name = "Full name")]
         public string UserFullName { get; set; }

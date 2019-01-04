@@ -41,10 +41,7 @@
         private const int TestActivityId = 1;
         private const string TestActivityName = "Test Activity 123";
         private const string TestActivityType = "Adventure";
-        private const int TestLocationId = 1;
-        private const string TestLocationName = "Test Location 123";
-        private const int SecondTestLocationId = 2;
-        private const string SecondTestLocationName = "Second Test Location";
+
         private const int SecondTestActivityId = 2;
         private const string SecondTestActivityName = "Secondd Activity";
 
@@ -375,18 +372,10 @@
                     {
                         Id = TestActivityId,
                         Name = TestActivityName,
-                        LocationId = TestLocationId,
+                        DestinationId = TestDestinationId,
                         Date = this.starDate.AddDays(2),
                         Type = ActivityType.Hiking.ToString(),
                     },
-                    new ActivityViewModel
-                    {
-                        Id = SecondTestActivityId,
-                        Name = SecondTestActivityName,
-                        LocationId = SecondTestLocationId,
-                        Date = this.starDate.AddDays(1),
-                        Type = ActivityType.Adventure.ToString(),
-                    }
                 },
                 Restaurants = new List<RestaurantViewModel>
                 {
@@ -413,25 +402,11 @@
             await this.AddTestingCountryToDb();
             await this.AddTestingDestinationToDb();
 
-            this.DbContext.Locations.Add(new Location
-            {
-                Id = TestLocationId,
-                Name = TestLocationName,
-                DestinationId = TestDestinationId
-            });
-            this.DbContext.Locations.Add(new Location
-            {
-                Id = SecondTestLocationId,
-                Name = SecondTestLocationName,
-                DestinationId = TestDestinationId
-            });
-            await this.DbContext.SaveChangesAsync();
-
             this.DbContext.Activities.Add(new Activity
             {
                 Id = TestActivityId,
                 Name = TestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Date = this.starDate.AddDays(2),
                 Type = ActivityType.Hiking,
             });
@@ -439,7 +414,7 @@
             {
                 Id = SecondTestActivityId,
                 Name = SecondTestActivityName,
-                LocationId = SecondTestLocationId,
+                DestinationId = SecondTestDestinationId,
                 Date = this.starDate.AddDays(1),
                 Type = ActivityType.Adventure,
             });

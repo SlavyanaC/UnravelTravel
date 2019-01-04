@@ -31,11 +31,11 @@
 
         private static void SandboxCode(IServiceProvider serviceProvider)
         {
-            //var context = serviceProvider.GetService<ApplicationDbContext>();
-            //var jsonString = File.ReadAllText("countries.json");
-            //var countries = JsonConvert.DeserializeObject<Country[]>(jsonString);
-            //context.Countries.AddRange(countries);
-            //context.SaveChanges();
+            var context = serviceProvider.GetService<UnravelTravelDbContext>();
+            var jsonString = File.ReadAllText("countries.json");
+            var countries = JsonConvert.DeserializeObject<Country[]>(jsonString);
+            context.Countries.AddRange(countries);
+            context.SaveChanges();
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -45,7 +45,7 @@
                 .AddEnvironmentVariables()
                 .Build();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<UnravelTravelDbContext>(options =>
                 options.UseSqlServer(
                     configuration.GetConnectionString("DefaultConnection")));
 

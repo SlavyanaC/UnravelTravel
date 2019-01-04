@@ -22,20 +22,26 @@
     {
         private const int TestDestinationId = 1;
         private const string TestDestinationName = "Bulgaria";
+        private const int SecondTestDestinationId = 2;
+        private const string SecondTestDestinationName = "USA";
+
         private const int TestActivityId = 1;
         private const string TestActivityName = "Test Activity 123";
         private const string TestActivityType = "Adventure";
-        private const int TestLocationId = 1;
-        private const string TestLocationName = "Test Location 123";
+
         private const int SecondTestActivityId = 2;
         private const string SecondTestActivityName = "Secondd Activity";
+
         private const string InvalidActivityType = "InvalidType";
+
         private const string TestImageUrl = "https://someurl.com";
         private const string TestImagePath = "Test.jpg";
         private const string TestImageContentType = "image/jpg";
+
         private const string TestUserName = "Pesho";
         private const string InvalidUsername = "Stamat";
         private const double TestReviewRating = 4.7;
+
         private const double SecondTestReviewRating = 1.2;
         private const string TestReviewContent = "Testing review.";
 
@@ -47,20 +53,19 @@
         public async Task GetAllAsyncReturnsAllRestaurants()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
 
             this.DbContext.Activities.Add(new Activity
             {
                 Id = TestActivityId,
                 Name = TestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = ActivityType.Adventure,
             });
             this.DbContext.Activities.Add(new Activity
             {
                 Id = SecondTestActivityId,
                 Name = SecondTestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = ActivityType.Adventure,
             });
             await this.DbContext.SaveChangesAsync();
@@ -71,16 +76,16 @@
                 {
                     Id = TestActivityId,
                     Name = TestActivityName,
-                    LocationId = TestLocationId,
-                    LocationName = TestLocationName,
+                    DestinationId = TestDestinationId,
+                    DestinationName = TestDestinationName,
                     Type = TestActivityType,
                 },
                 new ActivityViewModel
                 {
                     Id = SecondTestActivityId,
                     Name = SecondTestActivityName,
-                    LocationId = TestLocationId,
-                    LocationName = TestLocationName,
+                    DestinationId = TestDestinationId,
+                    DestinationName = TestDestinationName,
                     Type = TestActivityType,
                 },
             };
@@ -92,14 +97,14 @@
                 {
                     Assert.Equal(expected[0].Id, elem1.Id);
                     Assert.Equal(expected[0].Name, elem1.Name);
-                    Assert.Equal(expected[0].LocationName, elem1.LocationName);
+                    Assert.Equal(expected[0].DestinationName, elem1.DestinationName);
                     Assert.Equal(expected[0].Type, elem1.Type);
                 },
                 elem2 =>
                 {
                     Assert.Equal(expected[1].Id, elem2.Id);
                     Assert.Equal(expected[1].Name, elem2.Name);
-                    Assert.Equal(expected[1].LocationName, elem2.LocationName);
+                    Assert.Equal(expected[1].DestinationName, elem2.DestinationName);
                     Assert.Equal(expected[1].Type, elem2.Type);
                 });
             Assert.Equal(expected.Length, actual.Length);
@@ -119,7 +124,6 @@
         public async Task GetViewModelByIdAsyncReturnsCorrectViewModel()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
 
             var expected = this.DbContext.Activities.OrderBy(r => r.CreatedOn);
@@ -131,8 +135,8 @@
                 {
                     Assert.Equal(expected.First().Id, actual.Id);
                     Assert.Equal(expected.First().Name, actual.Name);
-                    Assert.Equal(expected.First().LocationId, actual.LocationId);
-                    Assert.Equal(expected.First().Location.Name, actual.LocationName);
+                    Assert.Equal(expected.First().DestinationId, actual.DestinationId);
+                    Assert.Equal(expected.First().Destination.Name, actual.DestinationName);
                     Assert.Equal(expected.First().Type.ToString(), actual.Type);
                 });
         }
@@ -141,7 +145,6 @@
         public async Task DeleteByIdAsyncThrowsNullReferenceExceptionIfActivityNotFound()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
 
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() =>
@@ -153,14 +156,13 @@
         public async Task DeleteByIdAsyncDeletesTheCorrectActivity()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
 
             var activityToDelete = new Activity()
             {
                 Id = 3,
                 Name = "To delete",
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = ActivityType.Adventure,
                 IsDeleted = false,
             };
@@ -169,7 +171,7 @@
             {
                 Id = SecondTestActivityId,
                 Name = SecondTestActivityName,
-                LocationId = TestDestinationId,
+                DestinationId = TestDestinationId,
                 Type = ActivityType.Adventure,
                 IsDeleted = false,
             });
@@ -177,7 +179,7 @@
             {
                 Id = 4,
                 Name = "Another",
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = ActivityType.Adventure,
                 IsDeleted = false,
             });
@@ -191,21 +193,20 @@
         public async Task DeleteByIdOnlyDeletesOneActivity()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
 
             var secondActivity = new Activity()
             {
                 Id = SecondTestActivityId,
                 Name = SecondTestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = ActivityType.Extreme,
             };
             var activityToDelete = new Activity
             {
                 Id = 3,
                 Name = "To be deleted",
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = ActivityType.Culinary,
             };
             this.DbContext.Activities.Add(secondActivity);
@@ -222,12 +223,11 @@
         public async Task CreateAsyncThrowsArgumentExceptionIdActivityTypeInvalid()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
 
             var invalidActivityCreateInputModel = new ActivityCreateInputModel
             {
                 Name = TestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = InvalidActivityType,
             };
 
@@ -237,27 +237,24 @@
         }
 
         [Fact]
-        public async Task CreateAsyncThrowsNullReferenceExceptionIfLocationNotFound()
+        public async Task CreateAsyncThrowsNullReferenceExceptionIfDestinationNotFound()
         {
-            await this.AddTestingDestinationToDb();
-
             var invalidActivityCreateInputModel = new ActivityCreateInputModel
             {
                 Name = TestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = TestActivityType,
             };
 
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() =>
                 this.ActivitiesServiceMock.CreateAsync(invalidActivityCreateInputModel));
-            Assert.Equal(string.Format(ServicesDataConstants.NullReferenceLocationId, invalidActivityCreateInputModel.LocationId), exception.Message);
+            Assert.Equal(string.Format(ServicesDataConstants.NullReferenceDestinationId, invalidActivityCreateInputModel.DestinationId), exception.Message);
         }
 
         [Fact]
         public async Task CreateAsyncAddsActivityToDbContext()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
 
             ActivityDetailsViewModel activityDetailsViewModel;
             using (var stream = File.OpenRead(TestImagePath))
@@ -271,7 +268,7 @@
                 var activityCreateInputModel = new ActivityCreateInputModel()
                 {
                     Name = TestActivityName,
-                    LocationId = TestLocationId,
+                    DestinationId = TestDestinationId,
                     Type = TestActivityType,
                     Image = file,
                 };
@@ -288,8 +285,7 @@
                 {
                     Assert.Equal(activitiesDbSet.Last().Id, activityDetailsViewModel.Id);
                     Assert.Equal(activitiesDbSet.Last().Name, activityDetailsViewModel.Name);
-                    Assert.Equal(activitiesDbSet.Last().LocationId, activityDetailsViewModel.LocationId);
-                    Assert.Equal(activitiesDbSet.Last().Location.Name, activityDetailsViewModel.LocationName);
+                    Assert.Equal(activitiesDbSet.Last().DestinationId, activityDetailsViewModel.DestinationId);
                     Assert.Equal(activitiesDbSet.Last().Type.ToString(), activityDetailsViewModel.Type);
                     Assert.Equal(activitiesDbSet.Last().ImageUrl, activityDetailsViewModel.ImageUrl);
                 });
@@ -299,12 +295,11 @@
         public async Task EditAsyncThrowsArgumentExceptionIfActivityTypeInvalid()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
 
             var invalidActivityEditInputModel = new ActivityEditViewModel()
             {
                 Name = TestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = InvalidActivityType,
             };
 
@@ -317,13 +312,12 @@
         public async Task EditAsyncThrowsNullReferenceExceptionIfActivityNotFound()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
 
             var invalidActivityEditViewModel = new ActivityEditViewModel()
             {
                 Id = SecondTestActivityId,
                 Name = SecondTestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = TestActivityType,
             };
 
@@ -340,57 +334,54 @@
             {
                 Id = TestActivityId,
                 Name = TestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = TestActivityType,
             };
 
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() =>
                 this.ActivitiesServiceMock.EditAsync(invalidActivityEditViewModel));
-            Assert.Equal(string.Format(ServicesDataConstants.NullReferenceLocationId, invalidActivityEditViewModel.LocationId), exception.Message);
+            Assert.Equal(string.Format(ServicesDataConstants.NullReferenceDestinationId, invalidActivityEditViewModel.DestinationId), exception.Message);
         }
 
         [Fact]
         public async Task EditAsyncEditsRestaurantWhenImageStaysTheSame()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
 
-            this.DbContext.Locations.Add(new Location { Id = 2, Name = "TestEditLocation" });
+            await this.DbContext.SaveChangesAsync();
+
+            this.DbContext.Destinations.Add(new Destination{Id = SecondTestDestinationId, Name = SecondTestDestinationName});
             await this.DbContext.SaveChangesAsync();
 
             var newName = SecondTestActivityName;
-            var newLocationId = 2;
+            var newDestinationId = 2;
 
             Assert.NotEqual(newName, this.DbContext.Activities.Find(TestActivityId).Name);
-            Assert.NotEqual(newLocationId, this.DbContext.Activities.Find(TestActivityId).LocationId);
 
             var activityEditViewModel = new ActivityEditViewModel()
             {
                 Id = TestActivityId,
                 Name = newName,
-                LocationId = newLocationId,
+                DestinationId = newDestinationId,
                 Type = TestActivityType,
                 NewImage = null,
             };
 
             await this.ActivitiesServiceMock.EditAsync(activityEditViewModel);
-
             Assert.Equal(newName, this.DbContext.Activities.Find(TestActivityId).Name);
-            Assert.Equal(newLocationId, this.DbContext.Activities.Find(TestActivityId).LocationId);
         }
 
         [Fact]
         public async Task EditAsyncEditsRestaurantsImage()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
 
             this.DbContext.Activities.Add(new Activity
             {
                 Id = TestActivityId,
                 Name = TestActivityName,
-                LocationId = TestLocationId,
+                DestinationId = TestDestinationId,
                 Type = ActivityType.Adventure,
                 ImageUrl = TestImageUrl,
             });
@@ -408,7 +399,7 @@
                 {
                     Id = TestActivityId,
                     Name = TestActivityName,
-                    LocationId = TestLocationId,
+                    DestinationId = TestDestinationId,
                     Type = TestActivityType,
                     NewImage = file,
                 };
@@ -425,7 +416,6 @@
         public async Task ReviewThrowsNullReferenceExceptionIfUserNotFound()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
 
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.ActivitiesServiceMock.Review(TestActivityId, InvalidUsername, null));
@@ -436,7 +426,6 @@
         public async Task ReviewThrowsNullReferenceExceptionIfActivityNotFound()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingUserToDb();
 
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.ActivitiesServiceMock.Review(TestActivityId, TestUserName, null));
@@ -447,7 +436,6 @@
         public async Task ReviewAddsNewReviewToDbContext()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
             await this.AddTestingUserToDb();
 
@@ -474,7 +462,6 @@
         public async Task ReviewAddsNewActivityReviewToDbContext()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
             await this.AddTestingUserToDb();
 
@@ -503,7 +490,6 @@
         public async Task ReviewThrowsArgumentExceptionIfUserHasAlreadyReviewedRestaurant()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
             await this.AddTestingUserToDb();
 
@@ -534,11 +520,10 @@
         public async Task UpdateRestaurantAverageRatingCalculatesRatingCorrectly()
         {
             await this.AddTestingDestinationToDb();
-            await this.AddTestingLocationToDb();
             await this.AddTestingActivityToDb();
             await this.AddTestingUserToDb();
 
-            this.DbContext.Users.Add(new ApplicationUser { Id = Guid.NewGuid().ToString(), UserName = "Ivan" });
+            this.DbContext.Users.Add(new UnravelTravelUser { Id = Guid.NewGuid().ToString(), UserName = "Ivan" });
             await this.DbContext.SaveChangesAsync();
 
             var activityReviewInputModel = new ActivityReviewInputModel()
@@ -567,7 +552,7 @@
 
         private async Task AddTestingUserToDb()
         {
-            this.DbContext.Add(new ApplicationUser { Id = this.testUserId, UserName = TestUserName });
+            this.DbContext.Add(new UnravelTravelUser { Id = this.testUserId, UserName = TestUserName });
             await this.DbContext.SaveChangesAsync();
         }
 
@@ -577,19 +562,8 @@
             {
                 Id = TestActivityId,
                 Name = TestActivityName,
-                LocationId = TestLocationId,
-                Type = ActivityType.Adventure,
-            });
-            await this.DbContext.SaveChangesAsync();
-        }
-
-        private async Task AddTestingLocationToDb()
-        {
-            this.DbContext.Locations.Add(new Location
-            {
-                Id = TestLocationId,
-                Name = TestLocationName,
                 DestinationId = TestDestinationId,
+                Type = ActivityType.Adventure,
             });
             await this.DbContext.SaveChangesAsync();
         }

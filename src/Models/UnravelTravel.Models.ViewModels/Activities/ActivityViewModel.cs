@@ -23,13 +23,9 @@
         public string DateAsString => this.Date.ToString(GlobalConstants.DateFormat + " " + GlobalConstants.HourFormat,
             CultureInfo.InvariantCulture);
 
-        public int LocationId { get; set; }
+        public int DestinationId { get; set; }
 
-        public string LocationName { get; set; }
-
-        public int LocationDestinationId { get; set; }
-
-        public string LocationDestinationName { get; set; }
+        public string DestinationName { get; set; }
 
         public double AverageRating { get; set; }
 

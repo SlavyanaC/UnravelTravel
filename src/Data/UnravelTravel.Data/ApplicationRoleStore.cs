@@ -6,9 +6,9 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using UnravelTravel.Data.Models;
 
-    public class ApplicationRoleStore : RoleStore<ApplicationRole,  ApplicationDbContext, string, IdentityUserRole<string>, IdentityRoleClaim<string>>
+    public class ApplicationRoleStore : RoleStore<ApplicationRole,  UnravelTravelDbContext, string, IdentityUserRole<string>, IdentityRoleClaim<string>>
     {
-        public ApplicationRoleStore(ApplicationDbContext context, IdentityErrorDescriber describer = null)
+        public ApplicationRoleStore(UnravelTravelDbContext context, IdentityErrorDescriber describer = null)
             : base(context, describer)
         {
         }

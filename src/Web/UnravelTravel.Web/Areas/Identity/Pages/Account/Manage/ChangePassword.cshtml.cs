@@ -13,13 +13,13 @@
     public class ChangePasswordModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<UnravelTravelUser> userManager;
+        private readonly SignInManager<UnravelTravelUser> signInManager;
         private readonly ILogger<ChangePasswordModel> logger;
 
         public ChangePasswordModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<UnravelTravelUser> userManager,
+            SignInManager<UnravelTravelUser> signInManager,
             ILogger<ChangePasswordModel> logger)
         {
             this.userManager = userManager;

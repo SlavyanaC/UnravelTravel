@@ -11,11 +11,11 @@
     using UnravelTravel.Data.Common.Models;
     using UnravelTravel.Data.Models;
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
+    public class UnravelTravelDbContext : IdentityDbContext<UnravelTravelUser, ApplicationRole, string>
     {
-        private static readonly MethodInfo SetIsDeletedQueryFilterMethod = typeof(ApplicationDbContext).GetMethod(nameof(SetIsDeletedQueryFilter), BindingFlags.NonPublic | BindingFlags.Static);
+        private static readonly MethodInfo SetIsDeletedQueryFilterMethod = typeof(UnravelTravelDbContext).GetMethod(nameof(SetIsDeletedQueryFilter), BindingFlags.NonPublic | BindingFlags.Static);
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public UnravelTravelDbContext(DbContextOptions<UnravelTravelDbContext> options)
             : base(options)
         {
         }
@@ -31,8 +31,6 @@
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<Destination> Destinations { get; set; }
-
-        public DbSet<Location> Locations { get; set; }
 
         public DbSet<Reservation> Reservations { get; set; }
 
@@ -67,14 +65,14 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<ApplicationUser>()
+            builder.Entity<UnravelTravelUser>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
             builder.Entity<ShoppingCart>()
                 .HasOne(sc => sc.User)
                 .WithOne(u => u.ShoppingCart)
-                .HasForeignKey<ApplicationUser>(u => u.ShoppingCartId)
+                .HasForeignKey<UnravelTravelUser>(u => u.ShoppingCartId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Needed for Identity models configuration
@@ -106,21 +104,21 @@
 
         private static void ConfigureUserIdentityRelations(ModelBuilder builder)
         {
-            builder.Entity<ApplicationUser>()
+            builder.Entity<UnravelTravelUser>()
                 .HasMany(e => e.Claims)
                 .WithOne()
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<ApplicationUser>()
+            builder.Entity<UnravelTravelUser>()
                 .HasMany(e => e.Logins)
                 .WithOne()
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<ApplicationUser>()
+            builder.Entity<UnravelTravelUser>()
                 .HasMany(e => e.Roles)
                 .WithOne()
                 .HasForeignKey(e => e.UserId)

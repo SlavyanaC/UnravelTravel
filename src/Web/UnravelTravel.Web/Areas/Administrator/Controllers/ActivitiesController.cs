@@ -13,17 +13,17 @@
     public class ActivitiesController : AdministratorController
     {
         private readonly IActivitiesService activitiesService;
-        private readonly ILocationsService locationsService;
+        private readonly IDestinationsService destinationsService;
 
-        public ActivitiesController(IActivitiesService activitiesService, ILocationsService locationsService)
+        public ActivitiesController(IActivitiesService activitiesService, IDestinationsService destinationsService)
         {
             this.activitiesService = activitiesService;
-            this.locationsService = locationsService;
+            this.destinationsService = destinationsService;
         }
 
         public IActionResult Create()
         {
-            this.ViewData["Locations"] = this.SelectAllLocations();
+            this.ViewData["Destinations"] = this.SelectAllDestinations();
             return this.View();
         }
 
@@ -42,7 +42,7 @@
 
         public async Task<IActionResult> Edit(int id)
         {
-            this.ViewData["Locations"] = this.SelectAllLocations();
+            this.ViewData["Destinations"] = this.SelectAllDestinations();
             var activityToEdit = await this.activitiesService.GetViewModelByIdAsync<ActivityEditViewModel>(id);
             return this.View(activityToEdit);
         }
@@ -78,9 +78,9 @@
             return this.RedirectToAction("All", "Activities", new { area = "" });
         }
 
-        private IEnumerable<SelectListItem> SelectAllLocations()
+        private IEnumerable<SelectListItem> SelectAllDestinations()
         {
-            return this.locationsService.GetAllLocationsAsync()
+            return this.destinationsService.GetAllDestinationsAsync()
                 .GetAwaiter()
                 .GetResult()
                 .Select(x => new SelectListItem

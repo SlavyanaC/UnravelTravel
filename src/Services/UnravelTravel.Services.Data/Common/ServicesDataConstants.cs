@@ -8,15 +8,9 @@
 
         public const string PngFormat = "png";
 
-        public const string NullReferenceLocationId = "Location with id {0} not found.";
-
-        public const string InvalidLocationType = "Location type {0} is invalid.";
-
         public const string InvalidRestaurantType = "Restaurant type {0} is invalid.";
 
         public const string InvalidActivityType = "Activity type {0} is invalid.";
-
-        public const string LocationExists = "Location with name {0} already exists in destination with id {1}.";
 
         public const string NullReferenceActivityId = "Activity with id {0} not found.";
 

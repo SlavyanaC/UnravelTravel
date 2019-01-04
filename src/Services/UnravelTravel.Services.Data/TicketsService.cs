@@ -21,14 +21,14 @@
     public class TicketsService : ITicketsService
     {
         private readonly IRepository<Ticket> ticketsRepository;
-        private readonly IRepository<ApplicationUser> usersRepository;
+        private readonly IRepository<UnravelTravelUser> usersRepository;
         private readonly IRepository<Activity> activitiesRepository;
         private readonly IShoppingCartsService shoppingCartsService;
         private readonly IEmailSender emailSender;
 
         public TicketsService(
             IRepository<Ticket> ticketsRepository,
-            IRepository<ApplicationUser> usersRepository,
+            IRepository<UnravelTravelUser> usersRepository,
             IRepository<Activity> activitiesRepository,
             IShoppingCartsService shoppingCartsService,
             IEmailSender emailSender)
@@ -101,7 +101,7 @@
                 emailContent);
         }
 
-        private async Task<int> GetBookingId(ApplicationUser user, Activity activity, int quantity)
+        private async Task<int> GetBookingId(UnravelTravelUser user, Activity activity, int quantity)
         {
             var ticket = new Ticket
             {

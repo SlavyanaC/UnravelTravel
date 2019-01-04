@@ -20,12 +20,9 @@ namespace UnravelTravel.Models.ViewModels.Destinations
 
         public string Information { get; set; }
 
-        public ICollection<Location> Locations { get; set; }
+        public ICollection<ActivityViewModel> Activities { get; set; }
 
-        public ICollection<ActivityViewModel> Activities =>
-            this.Locations.SelectMany(l => l.Activities).AsQueryable().To<ActivityViewModel>().ToList();
-
-        public ICollection<ActivityViewModel> LatestActivities => 
+        public ICollection<ActivityViewModel> LatestActivities =>
             this.Activities.Where(a => a.Date >= DateTime.Now).OrderBy(a => a.Date).Take(ModelConstants.DestinationActivitiesToDisplay).ToList();
 
         public ICollection<RestaurantViewModel> Restaurants { get; set; }

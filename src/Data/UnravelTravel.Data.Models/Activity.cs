@@ -28,9 +28,13 @@
 
         public string AdditionalInfo { get; set; }
 
-        public int LocationId { get; set; }
+        public string Address { get; set; }
 
-        public virtual Location Location { get; set; }
+        public string LocationName { get; set; }
+
+        public int DestinationId { get; set; }
+
+        public virtual Destination Destination { get; set; }
 
         public double AverageRating { get; set; }
 

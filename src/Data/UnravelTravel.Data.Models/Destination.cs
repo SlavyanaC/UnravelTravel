@@ -9,7 +9,7 @@
     {
         public Destination()
         {
-            this.Locations = new HashSet<Location>();
+            this.Activities = new HashSet<Activity>();
             this.Restaurants = new HashSet<Restaurant>();
         }
 
@@ -27,7 +27,7 @@
 
         public DateTime? DeletedOn { get; set; }
 
-        public virtual ICollection<Location> Locations { get; set; }
+        public virtual ICollection<Activity> Activities { get; set; }
 
         public virtual ICollection<Restaurant> Restaurants { get; set; }
     }

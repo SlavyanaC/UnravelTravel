@@ -18,7 +18,7 @@
                 @Html.DisplayNameFor(model => model.ActivityHourString)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ActivityLocationName)
+                @Html.DisplayNameFor(model => model.ActivityDestinationName)
             </th>
             <th>Actions</th>
         </tr>
@@ -30,7 +30,7 @@
                 <td display-for="@item.ActivityName"></td>
                 <td display-for="@item.ActivityDateString"></td>
                 <td display-for="@item.ActivityHourString"></td>
-                <td display-for="@item.ActivityLocationName"> </td>
+                <td display-for="@item.ActivityDestinationName"> </td>
                 <td>
                     <a class="btn btn-outline-primary" asp-area="" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;
                     @if (item.HasPassed)

@@ -23,20 +23,20 @@ namespace UnravelTravel.Web.Middlewares
 
         public async Task InvokeAsync(
             HttpContext context,
-            UserManager<ApplicationUser> userManager,
+            UserManager<UnravelTravelUser> userManager,
             RoleManager<ApplicationRole> roleManager,
-            ApplicationDbContext dbContext,
+            UnravelTravelDbContext dbContext,
             IShoppingCartsService shoppingCartsService)
         {
             await SeedUserInRoles(userManager, shoppingCartsService);
             await this.next(context);
         }
 
-        private static async Task SeedUserInRoles(UserManager<ApplicationUser> userManager, IShoppingCartsService shoppingCartsService)
+        private static async Task SeedUserInRoles(UserManager<UnravelTravelUser> userManager, IShoppingCartsService shoppingCartsService)
         {
             if (!userManager.Users.Any())
             {
-                var user = new ApplicationUser
+                var user = new UnravelTravelUser
                 {
                     UserName = GlobalConstants.AdministratorUsername,
                     Email = GlobalConstants.AdministratorEmail,

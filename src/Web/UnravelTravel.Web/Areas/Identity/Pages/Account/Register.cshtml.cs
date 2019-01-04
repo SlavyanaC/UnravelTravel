@@ -25,15 +25,15 @@
     public class RegisterModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<UnravelTravelUser> signInManager;
+        private readonly UserManager<UnravelTravelUser> userManager;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
         private readonly IShoppingCartsService shoppingCartsService;
 
         public RegisterModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<UnravelTravelUser> userManager,
+            SignInManager<UnravelTravelUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             IShoppingCartsService shoppingCartsService)
@@ -60,7 +60,7 @@
             returnUrl = returnUrl ?? this.Url.Content("~/");
             if (this.ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                var user = new UnravelTravelUser
                 {
                     UserName = this.Input.UserName,
                     FullName = this.Input.FullName,

@@ -148,7 +148,7 @@
             }
 
             var activities = this.activitiesService.GetAllAsync().GetAwaiter().GetResult()
-                .Where(a => a.LocationDestinationId == destinationId &&
+                .Where(a => a.DestinationId == destinationId &&
                             a.Date >= startDate &&
                             a.Date <= endDate)
                 .ToArray();

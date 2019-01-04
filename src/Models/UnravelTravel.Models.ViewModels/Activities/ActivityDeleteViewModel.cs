@@ -23,8 +23,14 @@
 
         public string AdditionalInfo { get; set; }
 
-        public int LocationId { get; set; }
+        public int DestinationId { get; set; }
+
+        public string DestinationName { get; set; }
 
         public string LocationName { get; set; }
+
+        public string Address { get; set; }
+
+        public decimal Price { get; set; }
     }
 }

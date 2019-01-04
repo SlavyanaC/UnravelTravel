@@ -19,22 +19,22 @@
     public class ActivitiesService : IActivitiesService
     {
         private readonly IRepository<Activity> activitiesRepository;
-        private readonly IRepository<Location> locationsRepository;
+        private readonly IRepository<Destination> destinationsRepository;
         private readonly IRepository<Review> reviewsRepository;
         private readonly IRepository<ActivityReview> activityReviewsRepository;
-        private readonly IRepository<ApplicationUser> usersRepository;
+        private readonly IRepository<UnravelTravelUser> usersRepository;
         private readonly Cloudinary cloudinary;
 
         public ActivitiesService(
             IRepository<Activity> activitiesRepository,
-            IRepository<Location> locationsRepository,
+            IRepository<Destination> destinationsRepository,
             Cloudinary cloudinary,
             IRepository<Review> reviewsRepository,
             IRepository<ActivityReview> activityReviewsRepository,
-            IRepository<ApplicationUser> usersRepository)
+            IRepository<UnravelTravelUser> usersRepository)
         {
             this.activitiesRepository = activitiesRepository;
-            this.locationsRepository = locationsRepository;
+            this.destinationsRepository = destinationsRepository;
             this.cloudinary = cloudinary;
             this.reviewsRepository = reviewsRepository;
             this.activityReviewsRepository = activityReviewsRepository;
@@ -58,10 +58,10 @@
                 throw new ArgumentException(string.Format(ServicesDataConstants.InvalidActivityType, activityCreateInputModel.Type));
             }
 
-            var location = await this.locationsRepository.All().FirstOrDefaultAsync(l => l.Id == activityCreateInputModel.LocationId);
-            if (location == null)
+            var destination = await this.destinationsRepository.All().FirstOrDefaultAsync(l => l.Id == activityCreateInputModel.DestinationId);
+            if (destination == null)
             {
-                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceLocationId, activityCreateInputModel.LocationId));
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, activityCreateInputModel.DestinationId));
             }
 
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, activityCreateInputModel.Image, activityCreateInputModel.Name);
@@ -74,7 +74,9 @@
                 Type = activityTypeEnum,
                 Description = activityCreateInputModel.Description,
                 AdditionalInfo = activityCreateInputModel.AdditionalInfo,
-                Location = location,
+                Destination = destination,
+                Address = activityCreateInputModel.Address,
+                LocationName = activityCreateInputModel.LocationName,
                 Price = activityCreateInputModel.Price,
             };
 
@@ -92,7 +94,6 @@
                 .Where(a => a.Id == id)
                 .To<TViewModel>()
                 .FirstOrDefaultAsync();
-
             if (activity == null)
             {
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, id));
@@ -114,10 +115,10 @@
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, activityToEditViewModel.Id));
             }
 
-            var location = await this.locationsRepository.All().FirstOrDefaultAsync(l => l.Id == activityToEditViewModel.LocationId);
-            if (location == null)
+            var destination = await this.destinationsRepository.All().FirstOrDefaultAsync(l => l.Id == activityToEditViewModel.DestinationId);
+            if (destination == null)
             {
-                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceLocationId, activityToEditViewModel.LocationId));
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, activityToEditViewModel.DestinationId));
             }
 
             if (activityToEditViewModel.NewImage != null)
@@ -131,7 +132,10 @@
             activity.Date = activityToEditViewModel.Date;
             activity.Description = activityToEditViewModel.Description;
             activity.AdditionalInfo = activityToEditViewModel.AdditionalInfo;
-            activity.Location = location;
+            activity.Destination = destination;
+            activity.Address = activityToEditViewModel.Address;
+            activity.LocationName = activityToEditViewModel.LocationName;
+            activity.Price = activityToEditViewModel.Price;
 
             this.activitiesRepository.Update(activity);
             await this.activitiesRepository.SaveChangesAsync();
@@ -146,7 +150,6 @@
             }
 
             activity.IsDeleted = true;
-
             this.activitiesRepository.Update(activity);
             await this.activitiesRepository.SaveChangesAsync();
         }

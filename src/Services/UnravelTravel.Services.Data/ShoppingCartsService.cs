@@ -14,13 +14,13 @@
 
     public class ShoppingCartsService : IShoppingCartsService
     {
-        private readonly IRepository<ApplicationUser> usersRepository;
+        private readonly IRepository<UnravelTravelUser> usersRepository;
         private readonly IRepository<Activity> activitiesRepository;
         private readonly IRepository<ShoppingCartActivity> shoppingCartActivitiesRepository;
         private readonly IRepository<ShoppingCart> shoppingCartsRepository;
 
         public ShoppingCartsService(
-            IRepository<ApplicationUser> usersRepository,
+            IRepository<UnravelTravelUser> usersRepository,
             IRepository<Activity> activitiesRepository,
             IRepository<ShoppingCartActivity> shoppingCartActivitiesRepository,
             IRepository<ShoppingCart> shoppingCartsRepository)
@@ -32,7 +32,7 @@
         }
 
         // TODO: this is stupid but db does not store userId for each shopping cart find out why!
-        public async Task AssignShoppingCartsUserId(ApplicationUser user)
+        public async Task AssignShoppingCartsUserId(UnravelTravelUser user)
         {
             var shoppingCart = await this.shoppingCartsRepository.All()
                 .FirstOrDefaultAsync(sc => sc.User.Id == user.Id);
@@ -82,7 +82,7 @@
                 ActivityId = activity.Id,
                 ActivityName = activity.Name,
                 ActivityDate = activity.Date,
-                ActivityLocationName = activity.Location.Name,
+                ActivityDestinationName = activity.Destination.Name,
                 ActivityImageUrl = activity.ImageUrl,
                 ActivityPrice = activity.Price,
                 Quantity = quantity,

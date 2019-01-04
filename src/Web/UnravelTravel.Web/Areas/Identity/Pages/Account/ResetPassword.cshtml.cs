@@ -14,9 +14,9 @@
     public class ResetPasswordModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<UnravelTravelUser> userManager;
 
-        public ResetPasswordModel(UserManager<ApplicationUser> userManager)
+        public ResetPasswordModel(UserManager<UnravelTravelUser> userManager)
         {
             this.userManager = userManager;
         }

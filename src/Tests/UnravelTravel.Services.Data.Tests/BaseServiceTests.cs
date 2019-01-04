@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.Logging;
-
-namespace UnravelTravel.Services.Data.Tests
+﻿namespace UnravelTravel.Services.Data.Tests
 {
     using System;
     using System.Reflection;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using CloudinaryDotNet;
     using UnravelTravel.Data;
     using UnravelTravel.Data.Common.Repositories;
@@ -27,22 +26,22 @@ namespace UnravelTravel.Services.Data.Tests
             var services = this.SetServices();
 
             this.ServiceProvider = services.BuildServiceProvider();
-            this.DbContext = this.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            this.DbContext = this.ServiceProvider.GetRequiredService<UnravelTravelDbContext>();
         }
 
         protected IServiceProvider ServiceProvider { get; set; }
 
-        protected ApplicationDbContext DbContext { get; set; }
+        protected UnravelTravelDbContext DbContext { get; set; }
 
         private ServiceCollection SetServices()
         {
             var services = new ServiceCollection();
 
-            services.AddDbContext<ApplicationDbContext>(
+            services.AddDbContext<UnravelTravelDbContext>(
                 opt => opt.UseInMemoryDatabase(Guid.NewGuid().ToString()));
 
             services
-                    .AddIdentity<ApplicationUser, ApplicationRole>(options =>
+                    .AddIdentity<UnravelTravelUser, ApplicationRole>(options =>
                     {
                         options.Password.RequireDigit = false;
                         options.Password.RequireLowercase = false;
@@ -50,7 +49,7 @@ namespace UnravelTravel.Services.Data.Tests
                         options.Password.RequireNonAlphanumeric = false;
                         options.Password.RequiredLength = 6;
                     })
-                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddEntityFrameworkStores<UnravelTravelDbContext>()
                     .AddUserStore<ApplicationUserStore>()
                     .AddRoleStore<ApplicationRoleStore>()
                     .AddDefaultTokenProviders();
@@ -67,13 +66,12 @@ namespace UnravelTravel.Services.Data.Tests
             services.AddScoped<ICountriesService, CountriesService>();
             services.AddScoped<IRestaurantsService, RestaurantsService>();
             services.AddScoped<IActivitiesService, ActivitiesService>();
-            services.AddScoped<ILocationsService, LocationsService>();
             services.AddScoped<ITicketsService, TicketsService>();
             services.AddScoped<IReservationsService, ReservationsService>();
             services.AddScoped<IShoppingCartsService, ShoppingCartsService>();
 
             // Identity stores
-            services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
+            services.AddTransient<IUserStore<UnravelTravelUser>, ApplicationUserStore>();
             services.AddTransient<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
 
             // AutoMapper
