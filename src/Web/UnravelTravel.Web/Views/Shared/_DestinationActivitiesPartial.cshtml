@@ -4,12 +4,15 @@
     @foreach (var item in Model)
     {
         <div class="col-md-4">
-            <div class="card text-white bg-info mb-3" style="max-width: 20rem;">
+            <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 300px">
                 <a asp-controller="Activities" asp-action="Details" asp-route-id="@item.Id">
                     <img style="height: 150px" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
                 </a>
                 <div class="card-body text-center">
                     <h5 class="card-title">@item.Name</h5>
+                    <p>
+                        @item.DateAsString
+                    </p>
                     @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                     {
                         <div calss="row">

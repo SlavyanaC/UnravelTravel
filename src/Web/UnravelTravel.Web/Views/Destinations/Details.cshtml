@@ -8,9 +8,9 @@
     <cache expires-after="@TimeSpan.FromHours(1)" vary-by="@Model.Id">
         <p class="text-center  text-info">@Model.Information</p>
     </cache>
-    <h4 class="text-center  text-info">Top activities:</h4>
+    <h4 class="text-center  text-info">Upcoming activities:</h4>
     <div class="jumbotron">
-        @await this.Html.PartialAsync("_DestinationActivitiesPartial", @Model.TopActivities)
+        @await this.Html.PartialAsync("_DestinationActivitiesPartial", @Model.LatestActivities)
         @if (Model.Activities.Any())
         {
             <h6 class="text-center text-center text-info">Total activities: @Model.Activities.Count()</h6>
@@ -39,7 +39,7 @@
     <cache expires-after="@TimeSpan.FromHours(1)" vary-by="@Model.Id">
         <iframe class="w-100"
                 height="450"
-                src="https://maps.google.com/maps?q=@Model.Name&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                src="https://maps.google.com/maps?q=@Model.MapsAddress&t=&z=13&ie=UTF8&iwloc=&output=embed"
                 style="border: 0"
                 allowfullscreen></iframe>
     </cache>

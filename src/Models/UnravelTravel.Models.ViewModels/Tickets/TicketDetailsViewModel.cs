@@ -38,7 +38,7 @@
         [Display(Name = nameof(Location))]
         public string ActivityLocationName { get; set; }
 
-        public bool HasPassed => this.ActivityDate <= DateTime.UtcNow;
+        public bool HasPassed => this.ActivityDate <= DateTime.Now;
 
         public bool IsRated => this.User.Tickets
             .Any(t => t.Activity.Reviews.Any(ar => ar.ActivityId == this.ActivityId &&

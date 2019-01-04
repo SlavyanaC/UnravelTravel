@@ -1,4 +1,7 @@
-﻿namespace UnravelTravel.Models.ViewModels.Destinations
+﻿using System;
+using UnravelTravel.Models.Common;
+
+namespace UnravelTravel.Models.ViewModels.Destinations
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -22,17 +25,13 @@
         public ICollection<ActivityViewModel> Activities =>
             this.Locations.SelectMany(l => l.Activities).AsQueryable().To<ActivityViewModel>().ToList();
 
-        public ICollection<ActivityViewModel> TopActivities =>
-            this.Activities.OrderByDescending(a => a.AverageRating).Take(3).ToList();
-
-        public int TotalActivities => this.Activities.Count();
+        public ICollection<ActivityViewModel> LatestActivities => 
+            this.Activities.Where(a => a.Date >= DateTime.Now).OrderBy(a => a.Date).Take(ModelConstants.DestinationActivitiesToDisplay).ToList();
 
         public ICollection<RestaurantViewModel> Restaurants { get; set; }
 
         public ICollection<RestaurantViewModel> TopRestaurants =>
-            this.Restaurants.OrderByDescending(r => r.AverageRating).Take(3).ToList();
-
-        public int TotalRestaurants => this.Restaurants.Count();
+            this.Restaurants.OrderByDescending(r => r.AverageRating).Take(ModelConstants.DestinationRestaurantsToDisplay).ToList();
 
         public string MapsAddress => $"{this.Name}+{this.CountryName}";
     }

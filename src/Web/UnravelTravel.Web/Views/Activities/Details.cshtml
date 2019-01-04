@@ -13,7 +13,6 @@
             <tr>
                 <th width=25%;><h4>Date</h4></th>
                 <th width=25%;><h4>Type</h4></th>
-                <th width=25%;><h4>Rating</h4></th>
                 <th width=25%;><h4>Price</h4></th>
             </tr>
         </thead>
@@ -21,36 +20,26 @@
             <tr>
                 <th width=25%;><b>@Model.DateString</b></th>
                 <td width=25%;><b>@Model.SplitWordsType</b></td>
-                <td width=25%;>
-                    @if (Math.Abs(Model.AverageRating) > 0.0)
-                    {
-                        <b>@Model.AverageRating.ToString("F2")</b>
-                    }
-                    else
-                    {
-                        <span class="text-muted">No reviews yet</span>
-                    }
-                </td>
                 <td width=25%;><b>$@Model.Price</b></td>
             </tr>
         </tbody>
     </table>
     <hr />
     <h4>Description</h4>
-    <p><b>@Model.Description</b></p>
+    <p>@Model.Description</p>
     <hr />
     <h4>Know before you go</h4>
-    <p><b>@Model.AdditionalInfo</b></p>
+    <p>@Model.AdditionalInfo</p>
     <hr />
     @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
     {
         <h4> <a asp-area="Administrator" asp-controller="Locations" asp-action="All">Location</a></h4>
-        <p><b>@Model.LocationName</b></p>
+        <p>@Model.LocationName</p>
     }
     else
     {
         <h4>Location:</h4>
-        <p><b> @Model.LocationName</b></p>
+        <p>@Model.LocationName</p>
     }
     <hr />
     <div class="row d-flex justify-content-around">
@@ -66,7 +55,7 @@
                     <h4><label>Quantity: </label></h4>&nbsp;
                     <input type="number" id="quantity" name="quantity" class="form-control form-control-sm col-md-3" />
                 </div>
-                <button type="submit" class="btn btn-lg btn-outline-primary">Add to cart</button>
+                <button type="submit" class="btn btn-lg btn-outline-primary"><i class="fas fa-cart-plus">&nbsp;</i>Add to cart</button>
             </form>
         }
     </div>

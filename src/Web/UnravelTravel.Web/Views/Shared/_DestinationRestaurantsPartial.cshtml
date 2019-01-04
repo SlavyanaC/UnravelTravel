@@ -4,7 +4,7 @@
     @foreach (var item in Model)
     {
         <div class="col-md-4">
-            <div class="card text-white bg-dark mb-3" style="max-width: 20rem;">
+            <div class="card text-white bg-dark mb-3" style="max-width: 20rem; height: 300px">
                 <a asp-controller="Restaurants" asp-action="Details" asp-route-id="@item.Id">
                     <img style="height: 150px" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
                 </a>
