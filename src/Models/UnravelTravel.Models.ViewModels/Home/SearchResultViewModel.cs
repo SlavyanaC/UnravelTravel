@@ -6,6 +6,8 @@
 
     public class SearchResultViewModel
     {
+        public int DestinationId { get; set; }
+
         public string DestinationName { get; set; }
 
         public string StartDate { get; set; }

@@ -160,6 +160,7 @@
 
             var searchResultViewModel = new SearchResultViewModel
             {
+                DestinationId = destination.Id,
                 DestinationName = destination.Name,
                 StartDate = startDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture),
                 EndDate = endDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture),
@@ -194,7 +195,7 @@
             var destination = await this.destinationsRepository.All().FirstOrDefaultAsync(d => d.Id == destinationId);
             if (destination == null)
             {
-                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, destinationId));
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, destinationId));
             }
 
             return destination.Name;

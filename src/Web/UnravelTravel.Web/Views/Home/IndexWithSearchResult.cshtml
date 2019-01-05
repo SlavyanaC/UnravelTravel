@@ -12,17 +12,26 @@
     <div class="row d-flex.justify-content-center">
         <h3 class="col-md-12" style="color:salmon">@Model.DestinationName</h3>
     </div>
-    <h4>Activities</h4>
+    <h4>Activities in the period</h4>
+    <h5>@Model.StartDate - @Model.EndDate</h5>
     @await this.Html.PartialAsync("_DestinationActivitiesPartial", @Model.Activities)
-    @if (!Model.Activities.Any())
+    @if (Model.Activities.Any())
+    {
+        <a asp-area="" asp-controller="Activities" asp-action="IndexInDestination" asp-route-destinationId="@Model.DestinationId"><h6 class="text-center text-center text-info">See all activities in @Model.DestinationName</h6></a>
+    }
+    else
     {
         <p class="text-center">
             <em class="text-muted">No activities for this period</em>
         </p>
     }
-    <h4>Restaurants</h4>
-    @await this.Html.PartialAsync("_DestinationRestaurantsPartial", @Model.Restaurants)
-    @if (!Model.Restaurants.Any())
+    <h4>Top rated restaurants</h4>
+    @await this.Html.PartialAsync("_DestinationRestaurantsPartial", @Model.Restaurants.Take(6))
+    @if (Model.Restaurants.Any())
+    {
+        <a asp-area="" asp-controller="Restaurants" asp-action="IndexInDestination" asp-route-destinationId="@Model.DestinationId"><h6 class="text-center text-center text-info">See all restaurants in @Model.DestinationName</h6></a>
+    }
+    else
     {
         <p class="text-center">
             <em class="text-muted">No restaurants in this destination</em>
