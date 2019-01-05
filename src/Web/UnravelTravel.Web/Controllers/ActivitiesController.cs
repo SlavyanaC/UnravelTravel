@@ -17,11 +17,13 @@
     public class ActivitiesController : BaseController
     {
         private readonly IActivitiesService activitiesService;
+        private readonly IDestinationsService destinationsService;
         private readonly IMemoryCache memoryCache;
 
-        public ActivitiesController(IActivitiesService activitiesService, IMemoryCache memoryCache)
+        public ActivitiesController(IActivitiesService activitiesService, IDestinationsService destinationsService, IMemoryCache memoryCache)
         {
             this.activitiesService = activitiesService;
+            this.destinationsService = destinationsService;
             this.memoryCache = memoryCache;
         }
 
@@ -30,7 +32,7 @@
             var activities = await this.activitiesService.GetAllAsync();
             if (activityIndexViewModel.SearchString != null)
             {
-                activities = this.activitiesService.GetActivitiesFromSearch(activityIndexViewModel.SearchString).ToArray();
+                activities = this.activitiesService.GetActivitiesFromSearch(activityIndexViewModel.SearchString, null).ToArray();
             }
 
             activities = this.activitiesService.SortBy(activities, activityIndexViewModel.Sorter).ToArray();
@@ -44,12 +46,12 @@
             return this.View(activityIndexViewModel);
         }
 
-        public async Task<IActionResult> AllInDestination(ActivityIndexViewModel activityIndexViewModel, int destinationId)
+        public async Task<IActionResult> IndexInDestination(ActivityIndexViewModel activityIndexViewModel, int destinationId)
         {
-            var activities = await this.activitiesService.GetAllInDestinationAsync(destinationId);
+            var activities = await this.activitiesService.GetAllInDestinationAsync(activityIndexViewModel.DestinationId ?? destinationId);
             if (activityIndexViewModel.SearchString != null)
             {
-                activities = this.activitiesService.GetActivitiesFromSearch(activityIndexViewModel.SearchString).ToArray();
+                activities = this.activitiesService.GetActivitiesFromSearch(activityIndexViewModel.SearchString, activityIndexViewModel.DestinationId).ToArray();
             }
 
             activities = this.activitiesService.SortBy(activities, activityIndexViewModel.Sorter).ToArray();
@@ -58,8 +60,9 @@
             var pageSize = activityIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;
             var pageDestinationsViewModel = activities.ToPagedList(pageNumber, pageSize);
 
+            activityIndexViewModel.DestinationName = await this.destinationsService.GetDestinationName(activityIndexViewModel.DestinationId.Value);
             activityIndexViewModel.ActivityViewModels = pageDestinationsViewModel;
-            return this.View(nameof(this.Index), activityIndexViewModel);
+            return this.View(activityIndexViewModel);
         }
 
         public async Task<IActionResult> Details(int id)

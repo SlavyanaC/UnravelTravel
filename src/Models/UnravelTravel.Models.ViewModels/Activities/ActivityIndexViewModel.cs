@@ -1,6 +1,5 @@
 ﻿namespace UnravelTravel.Models.ViewModels.Activities
 {
-    using UnravelTravel.Models.ViewModels.Destinations;
     using UnravelTravel.Models.ViewModels.Enums;
     using X.PagedList;
 
@@ -13,6 +12,10 @@
         public int? PageNumber { get; set; }
 
         public int? PageSize { get; set; }
+
+        public int? DestinationId { get; set; }
+
+        public string DestinationName { get; set; }
 
         public ActivitiesSorter Sorter { get; set; }
     }

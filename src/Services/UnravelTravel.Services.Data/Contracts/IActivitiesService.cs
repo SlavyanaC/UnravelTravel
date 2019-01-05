@@ -20,7 +20,7 @@
 
         Task Review(int activityId, string username, ActivityReviewInputModel activityReviewInputModel);
 
-        IEnumerable<ActivityViewModel> GetActivitiesFromSearch(string searchString);
+        IEnumerable<ActivityViewModel> GetActivitiesFromSearch(string searchString, int? destinationId);
 
         IEnumerable<ActivityViewModel> SortBy(ActivityViewModel[] activities, ActivitiesSorter sorter);
     }

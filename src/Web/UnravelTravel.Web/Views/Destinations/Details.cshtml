@@ -13,7 +13,7 @@
         @await this.Html.PartialAsync("_DestinationActivitiesPartial", @Model.LatestActivities)
         @if (Model.Activities.Any())
         {
-            <a asp-area="" asp-controller="Activities" asp-action="AllInDestination" asp-route-destinationId="@Model.Id"><h6 class="text-center text-center text-info">Total activities: @Model.Activities.Count()</h6></a>
+            <a asp-area="" asp-controller="Activities" asp-action="IndexInDestination" asp-route-destinationId="@Model.Id"><h6 class="text-center text-center text-info">Total activities: @Model.Activities.Count()</h6></a>
         }
         else
         {
@@ -27,7 +27,7 @@
         @await this.Html.PartialAsync("_DestinationRestaurantsPartial", @Model.TopRestaurants)
         @if (Model.Restaurants.Any())
         {
-            <a asp-area="" asp-controller="Restaurants" asp-action="AllInDestination" asp-route-destinationId="@Model.Id"><h6 class="text-center text-center text-info">Total restaurants: @Model.Restaurants.Count()</h6></a>
+            <a asp-area="" asp-controller="Restaurants" asp-action="IndexInDestination" asp-route-destinationId="@Model.Id"><h6 class="text-center text-center text-info">Total restaurants: @Model.Restaurants.Count()</h6></a>
         }
         else
         {

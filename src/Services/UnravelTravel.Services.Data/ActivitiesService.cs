@@ -208,25 +208,22 @@
             await this.UpdateActivityAverageRating(activity);
         }
 
-        public IEnumerable<ActivityViewModel> GetActivitiesFromSearch(string searchString)
+        public IEnumerable<ActivityViewModel> GetActivitiesFromSearch(string searchString, int? destinationId)
         {
-            var escapedSearchCharArray = searchString.Split(new char[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
+            var escapedSearchTokens = searchString.Split(new[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var escapedString = string.Join(string.Empty, escapedSearchCharArray);
-
-            var destinations = this.activitiesRepository
+            var activities = this.activitiesRepository
                 .All()
-                .Where(a => a.Name.Contains(escapedString) ||
-                            a.Description.Contains(escapedString) ||
-                            a.AdditionalInfo.Contains(escapedString) ||
-                            a.Address.Contains(escapedString) ||
-                            a.Destination.Name.Contains(escapedString) ||
-                            a.Type.ToString().Contains(escapedString) ||
-                            a.LocationName.Contains(escapedString))
+                .Where(a => escapedSearchTokens.All(t => a.Name.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => a.Description.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => a.Address.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => a.Description.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => a.Destination.Name.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => a.Type.ToString().ToLower().Contains(t.ToLower())))
                 .To<ActivityViewModel>()
                 .ToArray();
 
-            return destinations;
+            return destinationId == null ? activities : activities.Where(a => a.DestinationId == destinationId);
         }
 
         public IEnumerable<ActivityViewModel> SortBy(ActivityViewModel[] activities, ActivitiesSorter sorter)

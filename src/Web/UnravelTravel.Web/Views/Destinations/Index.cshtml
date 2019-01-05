@@ -6,26 +6,33 @@
 
 <h2 class="text-center">All Destinations</h2>
 
-<div class="d-flex justify-content-around">
-    <form method="get" asp-controller="Destinations" asp-action="Index">
-        <input class="btn btn-outline-primary" name="SearchString" value="@Model.SearchString">
+<form method="get" asp-controller="Destinations" asp-action="Index">
+    <div class="row d-flex justify-content-between">
+        <div class="form-group">
+            <label class="text-primary">Search</label>
+            <input class="btn btn-outline-primary" name="SearchString" value="@Model.SearchString">
+        </div>
         <input type="hidden" name="Page" value="@Model.PageNumber">
-        <span class="text-primary">Show:</span>
-        <select class="btn btn-outline-primary" name="PageSize" onchange="this.form.submit();">
-            <option value="6" selected="@(Model.PageSize == 6 ? true : false)">6</option>
-            <option value="12" selected="@(Model.PageSize == 12 ? true : false)">12</option>
-            <option value="24" selected="@(Model.PageSize == 24 ? true : false)">24</option>
-            <option value="48" selected="@(Model.PageSize == 48 ? true : false)">48</option>
-        </select>
-        <span class="text-primary">Sort by:</span>
-        <select class="btn btn-outline-primary" name="Sorter" id="Sorter" onchange="this.form.submit();">
-            <option value="1" selected="@(Model.Sorter.ToString() == "CountryName" ? true : false)">Country name</option>
-            <option value="2" selected="@(Model.Sorter.ToString() == "ActivitiesCount" ? true : false)">Activities count</option>
-            <option value="3" selected="@(Model.Sorter.ToString() == "RestaurantsCount" ? true : false)">Restaurants count</option>
-        </select>
-    </form>
-</div>
-<hr/>
+        <div class="form-group">
+            <label class="text-primary">Sort by</label>
+            <select class="btn btn-outline-primary" name="Sorter" id="Sorter" onchange="this.form.submit();">
+                <option value="1" selected="@(Model.Sorter.ToString() == "CountryName" ? true : false)">Country name</option>
+                <option value="2" selected="@(Model.Sorter.ToString() == "ActivitiesCount" ? true : false)">Activities count (desc.)</option>
+                <option value="3" selected="@(Model.Sorter.ToString() == "RestaurantsCount" ? true : false)">Restaurants count (desc.)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="text-primary">Show</label>
+            <select class="btn btn-outline-primary" name="PageSize" onchange="this.form.submit();">
+                <option value="6" selected="@(Model.PageSize == 6 ? true : false)">6</option>
+                <option value="12" selected="@(Model.PageSize == 12 ? true : false)">12</option>
+                <option value="24" selected="@(Model.PageSize == 24 ? true : false)">24</option>
+                <option value="48" selected="@(Model.PageSize == 48 ? true : false)">48</option>
+            </select>
+        </div>
+    </div>
+</form>
+<hr />
 <div class="card-deck container-fluid">
     @foreach (var item in Model.DestinationViewModels)
     {

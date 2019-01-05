@@ -172,20 +172,32 @@
 
         public DestinationViewModel[] GetDestinationFromSearch(string searchString)
         {
-            var escapedSearchCharArray = searchString.Split(new char[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var escapedString = string.Join(string.Empty, escapedSearchCharArray);
+            var escapedSearchTokens = searchString.Split(new char[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
             var destinations = this.destinationsRepository
                 .All()
-                .Where(d => d.Name.Contains(escapedString) ||
-                            d.Country.Name.Contains(escapedString) ||
-                            d.Activities.Any(a => a.Name.Contains(escapedString)) ||
-                            d.Restaurants.Any(r => r.Name.Contains(escapedString)))
+                .Where(d => escapedSearchTokens.All(t => d.Name.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => d.Country.Name.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => d.Country.Name.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => d.Activities.Any(a =>
+                                                            a.Name.ToLower().Contains(t.ToLower()))) ||
+                            escapedSearchTokens.All(t => d.Restaurants.Any(a =>
+                                                            a.Name.ToLower().Contains(t.ToLower()))))
                 .To<DestinationViewModel>()
                 .ToArray();
 
             return destinations;
+        }
+
+        public async Task<string> GetDestinationName(int destinationId)
+        {
+            var destination = await this.destinationsRepository.All().FirstOrDefaultAsync(d => d.Id == destinationId);
+            if (destination == null)
+            {
+                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, destinationId));
+            }
+
+            return destination.Name;
         }
 
         public DestinationViewModel[] SortBy(DestinationViewModel[] destinations, DestinationSorter sorter)

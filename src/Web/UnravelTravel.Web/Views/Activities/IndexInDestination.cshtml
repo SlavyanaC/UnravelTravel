@@ -4,14 +4,18 @@
     ViewBag.Title = "Activities";
 }
 
-<h2 class="text-center">All activities</h2>
-<form method="get" asp-controller="Activities" asp-action="Index">
+<h2 class="text-center">All activities in @Model.DestinationName</h2>
+@{
+}
+<form method="get" asp-controller="Activities" asp-action="IndexInDestination">
     <div class="row d-flex justify-content-between">
         <div class="form-group">
             <label class="text-primary">Search</label>
             <input class="btn btn-outline-primary" name="SearchString" value="@Model.SearchString">
         </div>
-        <input type="hidden" name="Page" value="@Model.PageNumber">
+        <input type="hidden" asp-for="@Model.PageNumber">
+        <input type="hidden" asp-for="@Model.DestinationId" />
+        <input type="hidden" asp-for="@Model.DestinationName" />
         <div class="form-group">
             <label class="text-primary">Show:</label>
             <select class="btn btn-outline-primary" name="PageSize" onchange="this.form.submit();">
@@ -27,7 +31,6 @@
                 <option value="1" selected="@(Model.Sorter.ToString() == "Upcoming" ? true : false)">Upcoming</option>
                 <option value="2" selected="@(Model.Sorter.ToString() == "Name" ? true : false)">Name</option>
                 <option value="3" selected="@(Model.Sorter.ToString() == "Type" ? true : false)">Type</option>
-                <option value="4" selected="@(Model.Sorter.ToString() == "Destination" ? true : false)">Destination</option>
             </select>
         </div>
     </div>
@@ -36,28 +39,28 @@
 <div class="card-deck container-fluid">
     @foreach (var item in Model.ActivityViewModels)
     {
-        <div class="col-md-4">
-            <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 450px">
-                <a asp-controller="Activities" asp-action="Details" asp-route-id="@item.Id">
-                    <img style="height: 200px; width: 100%;" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
-                </a>
-                <div class="card-body text-center">
-                    <h5 class="card-title">@item.Name</h5>
-                    <h5 class="card-title">@item.DestinationName</h5>
-                    <p>
-                        @item.DestinationName<br />
-                        @item.DateAsString
-                    </p>
-                    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+    <div class="col-md-4">
+        <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 450px">
+            <a asp-controller="Activities" asp-action="Details" asp-route-id="@item.Id">
+                <img style="height: 200px; width: 100%;" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
+            </a>
+            <div class="card-body text-center">
+                <h5 class="card-title">@item.Name</h5>
+                <h5 class="card-title">@item.DestinationName</h5>
+                <p>
+                    @item.DestinationName<br />
+                    @item.DateAsString
+                </p>
+                @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                     {
-                        <div calss="row">
-                            <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Activities" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                            <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Activities" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </div>
-                    }
+                <div calss="row">
+                    <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Activities" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Activities" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </div>
+                    }
             </div>
         </div>
+    </div>
     }
 </div>
 <div class="d-flex justify-content-around">
