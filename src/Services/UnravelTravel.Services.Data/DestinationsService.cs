@@ -170,21 +170,6 @@
             return searchResultViewModel;
         }
 
-        public DestinationViewModel[] SortBy(DestinationViewModel[] destinations, DestinationSorter sorter)
-        {
-            switch (sorter)
-            {
-                case DestinationSorter.CountryName:
-                    return destinations.OrderBy(d => d.CountryName).ThenBy(d => d.Name).ToArray();
-                case DestinationSorter.ActivitiesCount:
-                    return destinations.OrderByDescending(d => d.ActivitiesCount).ToArray();
-                case DestinationSorter.RestaurantsCount:
-                    return destinations.OrderByDescending(d => d.RestaurantsCount).ToArray();
-                default:
-                    return destinations.OrderBy(d => d.CountryName).ThenBy(d => d.Name).ToArray();
-            }
-        }
-
         public DestinationViewModel[] GetDestinationFromSearch(string searchString)
         {
             var escapedSearchCharArray = searchString.Split(new char[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
@@ -201,6 +186,21 @@
                 .ToArray();
 
             return destinations;
+        }
+
+        public DestinationViewModel[] SortBy(DestinationViewModel[] destinations, DestinationSorter sorter)
+        {
+            switch (sorter)
+            {
+                case DestinationSorter.CountryName:
+                    return destinations.OrderBy(d => d.CountryName).ThenBy(d => d.Name).ToArray();
+                case DestinationSorter.ActivitiesCount:
+                    return destinations.OrderByDescending(d => d.ActivitiesCount).ToArray();
+                case DestinationSorter.RestaurantsCount:
+                    return destinations.OrderByDescending(d => d.RestaurantsCount).ToArray();
+                default:
+                    return destinations.OrderBy(d => d.CountryName).ThenBy(d => d.Name).ToArray();
+            }
         }
     }
 }

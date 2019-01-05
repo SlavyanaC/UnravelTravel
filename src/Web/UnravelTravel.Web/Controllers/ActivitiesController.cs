@@ -1,15 +1,18 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
+    using UnravelTravel.Models.Common;
     using UnravelTravel.Models.InputModels.Reviews;
     using UnravelTravel.Models.ViewModels.Activities;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Common;
+    using X.PagedList;
 
     public class ActivitiesController : BaseController
     {
@@ -22,34 +25,41 @@
             this.memoryCache = memoryCache;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(ActivityIndexViewModel activityIndexViewModel)
         {
-            // if (!this.memoryCache.TryGetValue(WebConstants.AllActivitiesCacheKey, out ActivityViewModel[] cacheEntry))
-            // {
-            //    cacheEntry = await this.activitiesService.GetAllAsync();
-            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
-            //        .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
-            //    this.memoryCache.Set(WebConstants.AllActivitiesCacheKey, cacheEntry, cacheEntryOptions);
-            // }
-            // return this.View(cacheEntry);
+            var activities = await this.activitiesService.GetAllAsync();
+            if (activityIndexViewModel.SearchString != null)
+            {
+                activities = this.activitiesService.GetActivitiesFromSearch(activityIndexViewModel.SearchString).ToArray();
+            }
 
-            var activitiesViewModel = await this.activitiesService.GetAllAsync();
-            return this.View(activitiesViewModel);
+            activities = this.activitiesService.SortBy(activities, activityIndexViewModel.Sorter).ToArray();
+
+            var pageNumber = activityIndexViewModel.PageNumber ?? ModelConstants.DefaultPageNumber;
+            var pageSize = activityIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;
+            var pageDestinationsViewModel = activities.ToPagedList(pageNumber, pageSize);
+
+            activityIndexViewModel.ActivityViewModels = pageDestinationsViewModel;
+
+            return this.View(activityIndexViewModel);
         }
 
-        public async Task<IActionResult> AllInDestination(int destinationId)
+        public async Task<IActionResult> AllInDestination(ActivityIndexViewModel activityIndexViewModel, int destinationId)
         {
-            // if (!this.memoryCache.TryGetValue(WebConstants.AllActivitiesCacheKey, out ActivityViewModel[] cacheEntry))
-            // {
-            //    cacheEntry = await this.activitiesService.GetAllInDestinationAsync(destinationId);
-            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
-            //        .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
-            //    this.memoryCache.Set(WebConstants.AllActivitiesCacheKey, cacheEntry, cacheEntryOptions);
-            // }
-            // return this.View(nameof(this.Index), cacheEntry);
+            var activities = await this.activitiesService.GetAllInDestinationAsync(destinationId);
+            if (activityIndexViewModel.SearchString != null)
+            {
+                activities = this.activitiesService.GetActivitiesFromSearch(activityIndexViewModel.SearchString).ToArray();
+            }
 
-            var activitiesViewModel = await this.activitiesService.GetAllInDestinationAsync(destinationId);
-            return this.View(nameof(this.Index), activitiesViewModel);
+            activities = this.activitiesService.SortBy(activities, activityIndexViewModel.Sorter).ToArray();
+
+            var pageNumber = activityIndexViewModel.PageNumber ?? ModelConstants.DefaultPageNumber;
+            var pageSize = activityIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;
+            var pageDestinationsViewModel = activities.ToPagedList(pageNumber, pageSize);
+
+            activityIndexViewModel.ActivityViewModels = pageDestinationsViewModel;
+            return this.View(nameof(this.Index), activityIndexViewModel);
         }
 
         public async Task<IActionResult> Details(int id)

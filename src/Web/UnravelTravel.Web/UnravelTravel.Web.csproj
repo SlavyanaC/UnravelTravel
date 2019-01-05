@@ -73,9 +73,6 @@
     <Content Update="Areas\Administrator\Views\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Activities\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Areas\Administrator\Views\Activities\Delete.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -98,9 +95,6 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Administrator\Views\Destinations\Create.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Restaurants\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Administrator\Views\Restaurants\Create.cshtml">

@@ -1,15 +1,18 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
+    using UnravelTravel.Models.Common;
     using UnravelTravel.Models.InputModels.Reviews;
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Common;
+    using X.PagedList;
 
     public class RestaurantsController : BaseController
     {
@@ -22,34 +25,42 @@
             this.memoryCache = memoryCache;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(RestaurantIndexViewModel restaurantIndexViewModel)
         {
-            //if (!this.memoryCache.TryGetValue(WebConstants.AllRestaurantsCacheKey, out RestaurantViewModel[] cacheEntry))
-            //{
-            //    cacheEntry = await this.restaurantsService.GetAllAsync();
-            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
-            //        .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
-            //    this.memoryCache.Set(WebConstants.AllRestaurantsCacheKey, cacheEntry, cacheEntryOptions);
-            //}
-            //return this.View(cacheEntry);
+            var restaurants = await this.restaurantsService.GetAllAsync();
+            if (restaurantIndexViewModel.SearchString != null)
+            {
+                restaurants = this.restaurantsService.GetRestaurantsFromSearch(restaurantIndexViewModel.SearchString).ToArray();
+            }
 
-            var restaurantsViewModel = await this.restaurantsService.GetAllAsync();
-            return this.View(restaurantsViewModel);
+            restaurants = this.restaurantsService.SortBy(restaurants, restaurantIndexViewModel.Sorter).ToArray();
+
+            var pageNumber = restaurantIndexViewModel.PageNumber ?? ModelConstants.DefaultPageNumber;
+            var pageSize = restaurantIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;
+            var pageDestinationsViewModel = restaurants.ToPagedList(pageNumber, pageSize);
+
+            restaurantIndexViewModel.RestaurantViewModels = pageDestinationsViewModel;
+
+            return this.View(restaurantIndexViewModel);
         }
 
-        public async Task<IActionResult> AllInDestination(int destinationId)
+        public async Task<IActionResult> AllInDestination(RestaurantIndexViewModel restaurantIndexViewModel, int destinationId)
         {
-            //if (!this.memoryCache.TryGetValue(WebConstants.AllRestaurantsCacheKey, out RestaurantViewModel[] cacheEntry))
-            //{
-            //    cacheEntry = await this.restaurantsService.GetAllInDestinationAsync(destinationId);
-            //    var cacheEntryOptions = new MemoryCacheEntryOptions()
-            //        .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
-            //    this.memoryCache.Set(WebConstants.AllRestaurantsCacheKey, cacheEntry, cacheEntryOptions);
-            //}
-            //return this.View(nameof(this.Index), cacheEntry);
+            var restaurants = await this.restaurantsService.GetAllInDestinationAsync(destinationId);
+            if (restaurantIndexViewModel.SearchString != null)
+            {
+                restaurants = this.restaurantsService.GetRestaurantsFromSearch(restaurantIndexViewModel.SearchString).ToArray();
+            }
 
-            var restaurantsViewModel = await this.restaurantsService.GetAllInDestinationAsync(destinationId);
-            return this.View(nameof(this.Index), restaurantsViewModel);
+            restaurants = this.restaurantsService.SortBy(restaurants, restaurantIndexViewModel.Sorter).ToArray();
+
+            var pageNumber = restaurantIndexViewModel.PageNumber ?? ModelConstants.DefaultPageNumber;
+            var pageSize = restaurantIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;
+            var pageDestinationsViewModel = restaurants.ToPagedList(pageNumber, pageSize);
+
+            restaurantIndexViewModel.RestaurantViewModels = pageDestinationsViewModel;
+
+            return this.View(nameof(this.Index), restaurantIndexViewModel);
         }
 
         public async Task<IActionResult> Details(int id)

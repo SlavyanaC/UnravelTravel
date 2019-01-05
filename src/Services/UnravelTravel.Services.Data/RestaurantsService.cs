@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -11,6 +12,7 @@
     using UnravelTravel.Data.Models.Enums;
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants;
     using UnravelTravel.Models.InputModels.Reviews;
+    using UnravelTravel.Models.ViewModels.Enums;
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
@@ -60,6 +62,28 @@
                 .To<RestaurantViewModel>()
                 .ToArrayAsync();
             return restaurants;
+        }
+
+        public IEnumerable<RestaurantViewModel> GetRestaurantsFromSearch(string searchString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<RestaurantViewModel> SortBy(RestaurantViewModel[] restaurants, RestaurantSorter sorter)
+        {
+            switch (sorter)
+            {
+                case RestaurantSorter.Name:
+                    return restaurants.OrderBy(d => d.Name).ToArray();
+                case RestaurantSorter.Rating:
+                    return restaurants.OrderByDescending(d => d.AverageRating).ToArray();
+                case RestaurantSorter.Type:
+                    return restaurants.OrderBy(d => d.Type).ToArray();
+                case RestaurantSorter.Destination:
+                    return restaurants.OrderBy(d => d.DestinationName).ToArray();
+                default:
+                    return restaurants.OrderBy(d => d.Name).ToArray();
+            }
         }
 
         public async Task<RestaurantDetailsViewModel> CreateAsync(RestaurantCreateInputModel restaurantCreateInputModel)

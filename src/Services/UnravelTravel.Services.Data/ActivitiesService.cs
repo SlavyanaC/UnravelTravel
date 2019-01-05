@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Activities;
     using UnravelTravel.Models.InputModels.Reviews;
     using UnravelTravel.Models.ViewModels.Activities;
+    using UnravelTravel.Models.ViewModels.Enums;
     using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Mapping;
@@ -204,6 +206,44 @@
             await this.activityReviewsRepository.SaveChangesAsync();
 
             await this.UpdateActivityAverageRating(activity);
+        }
+
+        public IEnumerable<ActivityViewModel> GetActivitiesFromSearch(string searchString)
+        {
+            var escapedSearchCharArray = searchString.Split(new char[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var escapedString = string.Join(string.Empty, escapedSearchCharArray);
+
+            var destinations = this.activitiesRepository
+                .All()
+                .Where(a => a.Name.Contains(escapedString) ||
+                            a.Description.Contains(escapedString) ||
+                            a.AdditionalInfo.Contains(escapedString) ||
+                            a.Address.Contains(escapedString) ||
+                            a.Destination.Name.Contains(escapedString) ||
+                            a.Type.ToString().Contains(escapedString) ||
+                            a.LocationName.Contains(escapedString))
+                .To<ActivityViewModel>()
+                .ToArray();
+
+            return destinations;
+        }
+
+        public IEnumerable<ActivityViewModel> SortBy(ActivityViewModel[] activities, ActivitiesSorter sorter)
+        {
+            switch (sorter)
+            {
+                case ActivitiesSorter.Upcoming:
+                    return activities.OrderBy(a => a.Date).ToArray();
+                case ActivitiesSorter.Name:
+                    return activities.OrderBy(a => a.Name).ToArray();
+                case ActivitiesSorter.Type:
+                    return activities.OrderBy(a => a.Type).ToArray();
+                case ActivitiesSorter.Destination:
+                    return activities.OrderBy(a => a.DestinationName).ToArray();
+                default:
+                    return activities.OrderBy(a => a.Date).ToArray();
+            }
         }
 
         private async Task UpdateActivityAverageRating(Activity activity)

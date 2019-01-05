@@ -6,6 +6,7 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
+    using UnravelTravel.Models.Common;
     using UnravelTravel.Models.ViewModels.Destinations;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Common;
@@ -13,9 +14,6 @@
 
     public class DestinationsController : BaseController
     {
-        private const int DefaultPageNumber = 1;
-        private const int DefaultPageSize = 6;
-
         private readonly IDestinationsService destinationsService;
         private readonly IMemoryCache memoryCache;
 
@@ -35,8 +33,8 @@
 
             destinations = this.destinationsService.SortBy(destinations, destinationIndexViewModel.Sorter);
 
-            var pageNumber = destinationIndexViewModel.PageNumber ?? DefaultPageNumber;
-            var pageSize = destinationIndexViewModel.PageSize ?? DefaultPageSize;
+            var pageNumber = destinationIndexViewModel.PageNumber ?? ModelConstants.DefaultPageNumber;
+            var pageSize = destinationIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;
             var pageDestinationsViewModel = destinations.ToPagedList(pageNumber, pageSize);
 
             destinationIndexViewModel.DestinationViewModels = pageDestinationsViewModel;

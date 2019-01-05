@@ -1,21 +1,42 @@
-﻿@model IEnumerable<UnravelTravel.Models.ViewModels.Restaurants.RestaurantViewModel>
+﻿@model UnravelTravel.Models.ViewModels.Restaurants.RestaurantIndexViewModel
 
 @{
-    ViewData["Title"] = "Restaurants";
+    ViewBag.Title = "Restaurants";
 }
 
-<div class="container-fluid text-center">
-    @if (@Model.All(a => a.DestinationName.Equals(Model.First().DestinationName)))
-    {
-        <h1>All restaurants in @Model.First().DestinationName</h1>
-    }
-    else
-    {
-        <h1>All restaurants</h1>
-    }
+
+@if (@Model.RestaurantViewModels.All(a => a.DestinationName.Equals(Model.RestaurantViewModels.First().DestinationName)))
+{
+    <h1 class="text-center">All restaurants in @Model.RestaurantViewModels.First().DestinationName</h1>
+}
+else
+{
+    <h1 class="text-center">All restaurants</h1>
+}
+
+<div class="d-flex justify-content-around">
+    <form method="get" asp-controller="Restaurants" asp-action="Index">
+        <input class="btn btn-outline-primary" name="SearchString" value="@Model.SearchString">
+        <input type="hidden" name="Page" value="@Model.PageNumber">
+        <span class="text-primary">Show:</span>
+        <select class="btn btn-outline-primary" name="PageSize" onchange="this.form.submit();">
+            <option value="6" selected="@(Model.PageSize == 6 ? true : false)">6</option>
+            <option value="12" selected="@(Model.PageSize == 12 ? true : false)">12</option>
+            <option value="24" selected="@(Model.PageSize == 24 ? true : false)">24</option>
+            <option value="48" selected="@(Model.PageSize == 48 ? true : false)">48</option>
+        </select>
+        <span class="text-primary">Sort by:</span>
+        <select class="btn btn-outline-primary" name="Sorter" id="Sorter" onchange="this.form.submit();">
+            <option value="1" selected="@(Model.Sorter.ToString() == "Name" ? true : false)">Name</option>
+            <option value="2" selected="@(Model.Sorter.ToString() == "Rating" ? true : false)">Rating</option>
+            <option value="3" selected="@(Model.Sorter.ToString() == "Type" ? true : false)">Type</option>
+            <option value="4" selected="@(Model.Sorter.ToString() == "Destination" ? true : false)">Destination</option>
+        </select>
+    </form>
 </div>
+<hr />
 <div class="card-deck container-fluid">
-    @foreach (var item in Model)
+    @foreach (var item in Model.RestaurantViewModels)
     {
         <div class="col-md-4">
             <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 400px">
@@ -37,4 +58,16 @@
             </div>
         </div>
     }
+</div>
+<div class="d-flex justify-content-around">
+    @Html.PagedListPager((IPagedList)Model.RestaurantViewModels,
+        page => Url.Action( "Index",
+            new {PageNumber = page,  PageSize = Model.PageSize, SearchString = Model.SearchString,
+            }),
+        new PagedListRenderOptions
+        {
+            MaximumPageNumbersToDisplay = 5,
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+        })
 </div>

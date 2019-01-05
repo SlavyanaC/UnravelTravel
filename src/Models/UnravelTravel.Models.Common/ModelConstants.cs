@@ -2,6 +2,8 @@
 {
     public class ModelConstants
     {
+        public const int DefaultPageNumber = 1;
+        public const int DefaultPageSize = 6;
         public const int AddressMinLength = 3;
         public const int AddressMaxLength = 50;
         public const int DestinationActivitiesToDisplay = 6;
