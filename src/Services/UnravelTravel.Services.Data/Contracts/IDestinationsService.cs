@@ -21,5 +21,7 @@
         DestinationViewModel[] SortBy(DestinationViewModel[] destinations, DestinationSorter sorter);
 
         DestinationViewModel[] GetDestinationFromSearch(string searchString);
+
+        Task<string> GetDestinationName(int destinationId);
     }
 }

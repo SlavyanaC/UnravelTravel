@@ -64,28 +64,6 @@
             return restaurants;
         }
 
-        public IEnumerable<RestaurantViewModel> GetRestaurantsFromSearch(string searchString)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<RestaurantViewModel> SortBy(RestaurantViewModel[] restaurants, RestaurantSorter sorter)
-        {
-            switch (sorter)
-            {
-                case RestaurantSorter.Name:
-                    return restaurants.OrderBy(d => d.Name).ToArray();
-                case RestaurantSorter.Rating:
-                    return restaurants.OrderByDescending(d => d.AverageRating).ToArray();
-                case RestaurantSorter.Type:
-                    return restaurants.OrderBy(d => d.Type).ToArray();
-                case RestaurantSorter.Destination:
-                    return restaurants.OrderBy(d => d.DestinationName).ToArray();
-                default:
-                    return restaurants.OrderBy(d => d.Name).ToArray();
-            }
-        }
-
         public async Task<RestaurantDetailsViewModel> CreateAsync(RestaurantCreateInputModel restaurantCreateInputModel)
         {
             if (!Enum.TryParse(restaurantCreateInputModel.Type, true, out RestaurantType typeEnum))
@@ -216,6 +194,39 @@
             await this.restaurantReviewsRepository.SaveChangesAsync();
 
             await this.UpdateRestaurantAverageRating(restaurant);
+        }
+
+        public IEnumerable<RestaurantViewModel> GetRestaurantsFromSearch(string searchString, int? destinationId)
+        {
+            var escapedSearchTokens = searchString.Split(new[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var restaurants = this.restaurantsRepository
+                .All()
+                .Where(r => escapedSearchTokens.All(t => r.Name.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => r.Address.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => r.Destination.Name.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => r.Type.ToString().ToLower().Contains(t.ToLower())))
+                .To<RestaurantViewModel>()
+                .ToArray();
+
+            return destinationId == null ? restaurants : restaurants.Where(r =>r.DestinationId == destinationId);
+        }
+
+        public IEnumerable<RestaurantViewModel> SortBy(RestaurantViewModel[] restaurants, RestaurantSorter sorter)
+        {
+            switch (sorter)
+            {
+                case RestaurantSorter.Name:
+                    return restaurants.OrderBy(d => d.Name).ToArray();
+                case RestaurantSorter.Rating:
+                    return restaurants.OrderByDescending(d => d.AverageRating).ToArray();
+                case RestaurantSorter.Type:
+                    return restaurants.OrderBy(d => d.Type).ToArray();
+                case RestaurantSorter.Destination:
+                    return restaurants.OrderBy(d => d.DestinationName).ToArray();
+                default:
+                    return restaurants.OrderBy(d => d.Name).ToArray();
+            }
         }
 
         private async Task UpdateRestaurantAverageRating(Restaurant restaurant)

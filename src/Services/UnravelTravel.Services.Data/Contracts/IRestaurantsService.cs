@@ -1,12 +1,11 @@
-﻿using UnravelTravel.Models.ViewModels.Enums;
-
-namespace UnravelTravel.Services.Data.Contracts
+﻿namespace UnravelTravel.Services.Data.Contracts
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants;
     using UnravelTravel.Models.InputModels.Reviews;
+    using UnravelTravel.Models.ViewModels.Enums;
     using UnravelTravel.Models.ViewModels.Restaurants;
 
     public interface IRestaurantsService : IBaseDataService
@@ -21,7 +20,7 @@ namespace UnravelTravel.Services.Data.Contracts
 
         Task<RestaurantViewModel[]> GetAllInDestinationAsync(int destinationId);
 
-        IEnumerable<RestaurantViewModel> GetRestaurantsFromSearch(string searchString);
+        IEnumerable<RestaurantViewModel> GetRestaurantsFromSearch(string searchString, int? destinationId);
 
         IEnumerable<RestaurantViewModel> SortBy(RestaurantViewModel[] restaurants, RestaurantSorter sorter);
     }

@@ -17,11 +17,13 @@
     public class RestaurantsController : BaseController
     {
         private readonly IRestaurantsService restaurantsService;
+        private readonly IDestinationsService destinationsService;
         private readonly IMemoryCache memoryCache;
 
-        public RestaurantsController(IRestaurantsService restaurantsService, IMemoryCache memoryCache)
+        public RestaurantsController(IRestaurantsService restaurantsService, IDestinationsService destinationsService, IMemoryCache memoryCache)
         {
             this.restaurantsService = restaurantsService;
+            this.destinationsService = destinationsService;
             this.memoryCache = memoryCache;
         }
 
@@ -30,7 +32,7 @@
             var restaurants = await this.restaurantsService.GetAllAsync();
             if (restaurantIndexViewModel.SearchString != null)
             {
-                restaurants = this.restaurantsService.GetRestaurantsFromSearch(restaurantIndexViewModel.SearchString).ToArray();
+                restaurants = this.restaurantsService.GetRestaurantsFromSearch(restaurantIndexViewModel.SearchString, null).ToArray();
             }
 
             restaurants = this.restaurantsService.SortBy(restaurants, restaurantIndexViewModel.Sorter).ToArray();
@@ -44,12 +46,12 @@
             return this.View(restaurantIndexViewModel);
         }
 
-        public async Task<IActionResult> AllInDestination(RestaurantIndexViewModel restaurantIndexViewModel, int destinationId)
+        public async Task<IActionResult> IndexInDestination(RestaurantIndexViewModel restaurantIndexViewModel, int destinationId)
         {
             var restaurants = await this.restaurantsService.GetAllInDestinationAsync(destinationId);
             if (restaurantIndexViewModel.SearchString != null)
             {
-                restaurants = this.restaurantsService.GetRestaurantsFromSearch(restaurantIndexViewModel.SearchString).ToArray();
+                restaurants = this.restaurantsService.GetRestaurantsFromSearch(restaurantIndexViewModel.SearchString, restaurantIndexViewModel.DestinationId).ToArray();
             }
 
             restaurants = this.restaurantsService.SortBy(restaurants, restaurantIndexViewModel.Sorter).ToArray();
@@ -58,9 +60,10 @@
             var pageSize = restaurantIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;
             var pageDestinationsViewModel = restaurants.ToPagedList(pageNumber, pageSize);
 
+            restaurantIndexViewModel.DestinationName = await this.destinationsService.GetDestinationName(restaurantIndexViewModel.DestinationId.Value);
             restaurantIndexViewModel.RestaurantViewModels = pageDestinationsViewModel;
 
-            return this.View(nameof(this.Index), restaurantIndexViewModel);
+            return this.View(restaurantIndexViewModel);
         }
 
         public async Task<IActionResult> Details(int id)

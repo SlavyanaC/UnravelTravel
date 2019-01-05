@@ -13,6 +13,10 @@
 
         public int? PageSize { get; set; }
 
+        public int? DestinationId { get; set; }
+
+        public string DestinationName { get; set; }
+
         public RestaurantSorter Sorter { get; set; }
     }
 }
