@@ -62,7 +62,7 @@
             }
 
             await this.destinationsService.EditAsync(destinationEditViewModel);
-            return this.RedirectToAction("All", "Destinations", new { area = "" });
+            return this.RedirectToAction("Index", "Destinations", new { area = "" });
         }
 
         [Authorize]
@@ -77,7 +77,7 @@
         {
             var id = destinationEditViewModel.Id;
             await this.destinationsService.DeleteByIdAsync(id);
-            return this.RedirectToAction("All", "Destinations", new { area = "" });
+            return this.RedirectToAction("Index", "Destinations", new { area = "" });
         }
     }
 }

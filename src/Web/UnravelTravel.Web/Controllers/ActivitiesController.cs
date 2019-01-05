@@ -22,7 +22,7 @@
             this.memoryCache = memoryCache;
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> Index()
         {
             // if (!this.memoryCache.TryGetValue(WebConstants.AllActivitiesCacheKey, out ActivityViewModel[] cacheEntry))
             // {
@@ -46,10 +46,10 @@
             //        .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
             //    this.memoryCache.Set(WebConstants.AllActivitiesCacheKey, cacheEntry, cacheEntryOptions);
             // }
-            // return this.View(nameof(this.All), cacheEntry);
+            // return this.View(nameof(this.Index), cacheEntry);
 
             var activitiesViewModel = await this.activitiesService.GetAllInDestinationAsync(destinationId);
-            return this.View(nameof(this.All), activitiesViewModel);
+            return this.View(nameof(this.Index), activitiesViewModel);
         }
 
         public async Task<IActionResult> Details(int id)

@@ -22,7 +22,7 @@
             this.memoryCache = memoryCache;
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> Index()
         {
             //if (!this.memoryCache.TryGetValue(WebConstants.AllRestaurantsCacheKey, out RestaurantViewModel[] cacheEntry))
             //{
@@ -46,10 +46,10 @@
             //        .SetAbsoluteExpiration(TimeSpan.FromMinutes(WebConstants.AllViewMinutesExpiration));
             //    this.memoryCache.Set(WebConstants.AllRestaurantsCacheKey, cacheEntry, cacheEntryOptions);
             //}
-            //return this.View(nameof(this.All), cacheEntry);
+            //return this.View(nameof(this.Index), cacheEntry);
 
             var restaurantsViewModel = await this.restaurantsService.GetAllInDestinationAsync(destinationId);
-            return this.View(nameof(this.All), restaurantsViewModel);
+            return this.View(nameof(this.Index), restaurantsViewModel);
         }
 
         public async Task<IActionResult> Details(int id)

@@ -61,7 +61,7 @@
             }
 
             await this.restaurantsService.EditAsync(restaurantEditView);
-            return this.RedirectToAction("All", "Restaurants", new { area = "" });
+            return this.RedirectToAction("Index", "Restaurants", new { area = "" });
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -75,7 +75,7 @@
         {
             var id = destinationEditViewModel.Id;
             await this.restaurantsService.DeleteByIdAsync(id);
-            return this.RedirectToAction("All", "Restaurants", new { area = "" });
+            return this.RedirectToAction("Index", "Restaurants", new { area = "" });
         }
     }
 }
