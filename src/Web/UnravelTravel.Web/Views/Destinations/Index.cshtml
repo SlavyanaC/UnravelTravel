@@ -1,0 +1,63 @@
+﻿@model UnravelTravel.Models.ViewModels.Destinations.DestinationIndexViewModel
+
+@{
+    ViewData["Title"] = "Destinations";
+}
+
+<h2 class="text-center">All Destinations</h2>
+
+<div class="d-flex justify-content-around">
+    <form method="get" asp-controller="Destinations" asp-action="Index">
+        <input class="btn btn-outline-primary" name="SearchString" value="@Model.SearchString">
+        <input type="hidden" name="Page" value="@Model.PageNumber">
+        <span class="text-primary">Show:</span>
+        <select class="btn btn-outline-primary" name="PageSize" onchange="this.form.submit();">
+            <option value="6" selected="@(Model.PageSize == 6 ? true : false)">6</option>
+            <option value="12" selected="@(Model.PageSize == 12 ? true : false)">12</option>
+            <option value="24" selected="@(Model.PageSize == 24 ? true : false)">24</option>
+            <option value="48" selected="@(Model.PageSize == 48 ? true : false)">48</option>
+        </select>
+        <span class="text-primary">Sort by:</span>
+        <select class="btn btn-outline-primary" name="Sorter" id="Sorter" onchange="this.form.submit();">
+            <option value="1" selected="@(Model.Sorter.ToString() == "CountryName" ? true : false)">Country name</option>
+            <option value="2" selected="@(Model.Sorter.ToString() == "ActivitiesCount" ? true : false)">Activities count</option>
+            <option value="3" selected="@(Model.Sorter.ToString() == "RestaurantsCount" ? true : false)">Restaurants count</option>
+        </select>
+    </form>
+</div>
+<hr/>
+<div class="card-deck container-fluid">
+    @foreach (var item in Model.DestinationViewModels)
+    {
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 350px">
+                <a asp-controller="Destinations" asp-action="Details" asp-route-id="@item.Id">
+                    <img style="height: 200px; width: 100%;" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="card-title">@item.Name</h5>
+                    <h5 class="card-title">@item.CountryName</h5>
+                    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                    {
+                        <div calss="row">
+                            <a class=" btn btn-outline-primary" asp-area="Administrator" asp-controller="Destinations" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class=" btn btn-outline-warning" asp-area="Administrator" asp-controller="Destinations" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="d-flex justify-content-around">
+    @Html.PagedListPager((IPagedList)Model.DestinationViewModels,
+        page => Url.Action( "Index",
+            new {PageNumber = page,  PageSize = Model.PageSize, SearchString = Model.SearchString,
+            }),
+        new PagedListRenderOptions
+        {
+            MaximumPageNumbersToDisplay = 5,
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+        })
+</div>

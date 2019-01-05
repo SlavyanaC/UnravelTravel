@@ -5,6 +5,7 @@
 
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Destinations;
     using UnravelTravel.Models.ViewModels.Destinations;
+    using UnravelTravel.Models.ViewModels.Enums;
     using UnravelTravel.Models.ViewModels.Home;
 
     public interface IDestinationsService : IBaseDataService
@@ -16,5 +17,9 @@
         Task<DestinationViewModel[]> GetAllDestinationsAsync();
 
         Task<SearchResultViewModel> GetSearchResultAsync(int destinationId, DateTime startDate, DateTime endDate);
+
+        DestinationViewModel[] SortBy(DestinationViewModel[] destinations, DestinationSorter sorter);
+
+        DestinationViewModel[] GetDestinationFromSearch(string searchString);
     }
 }

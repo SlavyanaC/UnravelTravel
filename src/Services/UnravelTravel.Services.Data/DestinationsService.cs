@@ -12,6 +12,7 @@
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Destinations;
     using UnravelTravel.Models.ViewModels.Destinations;
+    using UnravelTravel.Models.ViewModels.Enums;
     using UnravelTravel.Models.ViewModels.Home;
     using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
@@ -167,6 +168,39 @@
             };
 
             return searchResultViewModel;
+        }
+
+        public DestinationViewModel[] SortBy(DestinationViewModel[] destinations, DestinationSorter sorter)
+        {
+            switch (sorter)
+            {
+                case DestinationSorter.CountryName:
+                    return destinations.OrderBy(d => d.CountryName).ThenBy(d => d.Name).ToArray();
+                case DestinationSorter.ActivitiesCount:
+                    return destinations.OrderByDescending(d => d.ActivitiesCount).ToArray();
+                case DestinationSorter.RestaurantsCount:
+                    return destinations.OrderByDescending(d => d.RestaurantsCount).ToArray();
+                default:
+                    return destinations.OrderBy(d => d.CountryName).ThenBy(d => d.Name).ToArray();
+            }
+        }
+
+        public DestinationViewModel[] GetDestinationFromSearch(string searchString)
+        {
+            var escapedSearchCharArray = searchString.Split(new char[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var escapedString = string.Join(string.Empty, escapedSearchCharArray);
+
+            var destinations = this.destinationsRepository
+                .All()
+                .Where(d => d.Name.Contains(escapedString) ||
+                            d.Country.Name.Contains(escapedString) ||
+                            d.Activities.Any(a => a.Name.Contains(escapedString)) ||
+                            d.Restaurants.Any(r => r.Name.Contains(escapedString)))
+                .To<DestinationViewModel>()
+                .ToArray();
+
+            return destinations;
         }
     }
 }
