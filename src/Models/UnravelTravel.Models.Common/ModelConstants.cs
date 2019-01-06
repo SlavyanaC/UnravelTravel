@@ -15,7 +15,7 @@
         public const string NameRegexError = "Name must start with upper case and end with lower case";
         public const string ImageUrlDisplay = "Current image";
         public const string NewImageDisplay = "New Image";
-        public const string UserFullNameDisplay = "Full name";
+        public const string UserFullNameDisplay = "User full name";
         public const string TicketIdDisplay = "Ticket Id";
 
 

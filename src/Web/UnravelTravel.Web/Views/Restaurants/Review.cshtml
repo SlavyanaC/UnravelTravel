@@ -5,12 +5,16 @@
 
 <div class="row justify-content-center">
     <form method="post" asp-area="" asp-controller="Restaurants" asp-action="Review" class="text-center col-md-6">
-        <h3>Review your experience at "@Model.Name"</h3>
+        <h3 class="text-dark">Review your experience at</h3>
+        <h4>@Model.Name</h4>
         <hr />
+        <label asp-for="Rating"></label>
         <div class="form-group">
-            <label asp-for="Rating"></label>
-            <input type="number" min="0" max="5" asp-for="Rating" class="form-control col-md-12" />
-            <span asp-validation-for="Rating" class="text-danger"></span>
+            <input type="radio" asp-for="Rating" value="1" class=" col-md-2" style="margin-right: -30px" />1
+            <input type="radio" asp-for="Rating" value="2" class=" col-md-2" style="margin-right: -30px" />2
+            <input type="radio" asp-for="Rating" value="3" class=" col-md-2" style="margin-right: -30px" />3
+            <input type="radio" asp-for="Rating" value="4" class=" col-md-2" style="margin-right: -30px" />4
+            <input type="radio" asp-for="Rating" value="5" class=" col-md-2" style="margin-right: -30px" />5
         </div>
         <div class="form-group">
             <label asp-for="Content"></label>

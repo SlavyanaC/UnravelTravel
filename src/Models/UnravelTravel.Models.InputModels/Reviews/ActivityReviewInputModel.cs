@@ -18,7 +18,7 @@
         [Required]
         [DataType(DataType.Currency)]
         [Range(ModelConstants.Review.RatingMin, ModelConstants.Review.RatingMax)]
-        public double Rating { get; set; }
+        public double Rating { get; set; } = 1;
 
         public int Id { get; set; }
 

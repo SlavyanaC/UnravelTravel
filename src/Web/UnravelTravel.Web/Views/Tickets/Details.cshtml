@@ -1,45 +1,29 @@
 ﻿@model UnravelTravel.Models.ViewModels.Tickets.TicketDetailsViewModel
+
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Ticket Details";
 }
 
 <h2>Details</h2>
 
 <div>
+    <h4>Ticket #@Model.Id</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserFullName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserFullName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ActivityName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ActivityName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ActivityDateString)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ActivityDateString)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ActivityHourString)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ActivityHourString)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ActivityDestinationName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ActivityDestinationName)
-        </dd>
+        <dt>@Html.DisplayNameFor(model => model.UserFullName)</dt>
+        <dd>@Html.DisplayFor(model => model.UserFullName) </dd>
+        <dt>@Html.DisplayNameFor(model => model.ActivityName)  </dt>
+        <dd>@Html.DisplayFor(model => model.ActivityName) </dd>
+        <dt>@Html.DisplayNameFor(model => model.Quantity)</dt>
+        <dd>@Html.DisplayFor(model => model.Quantity) </dd>
+        <dt>@Html.DisplayNameFor(model => model.ActivityDateString) </dt>
+        <dd>@Html.DisplayFor(model => model.ActivityDateString) </dd>
+        <dt>@Html.DisplayNameFor(model => model.ActivityHourString)  </dt>
+        <dd>@Html.DisplayFor(model => model.ActivityHourString)</dd>
+        <dt>@Html.DisplayNameFor(model => model.ActivityDestinationName) </dt>
+        <dd>@Html.DisplayFor(model => model.ActivityDestinationName) </dd>
     </dl>
 </div>
 <div>
     <a asp-area="" asp-controller="Tickets" asp-action="All">Back to Index</a>
-</div>
+</div>  

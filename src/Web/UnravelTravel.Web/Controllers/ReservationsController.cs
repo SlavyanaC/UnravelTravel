@@ -27,7 +27,7 @@
         {
             var username = this.User.Identity.Name;
             var reservation = await this.reservationsService.BookAsync(id, username, reservationCreateInputModel);
-            return this.RedirectToAction("Details", new { id = reservation.Id });
+            return this.RedirectToAction(nameof(this.All));
         }
 
         public async Task<IActionResult> Details(int id)

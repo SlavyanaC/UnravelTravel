@@ -1,44 +1,27 @@
 ﻿@model UnravelTravel.Models.ViewModels.Reservations.ReservationDetailsViewModel
 
 @{
-    ViewData["Title"] = "Reservation Details";
+    ViewData["Title"] = "Details";
 }
 
-<h2>Reservation Details</h2>
+<h2>Details</h2>
 
 <div>
+    <h4>Reservation #@Model.Id</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserFullName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserFullName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.RestaurantName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RestaurantName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ReservationDayString)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ReservationDayString)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ReservationHourString)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ReservationHourString)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PeopleCount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PeopleCount)
-        </dd>
+        <dt>@Html.DisplayNameFor(model => model.UserFullName)</dt>
+        <dd>@Html.DisplayFor(model => model.UserFullName)</dd>
+        <dt>@Html.DisplayNameFor(model => model.RestaurantId)</dt>
+        <dd>@Html.DisplayFor(model => model.RestaurantId)</dd>
+        <dt>@Html.DisplayNameFor(model => model.RestaurantName)</dt>
+        <dd>@Html.DisplayFor(model => model.RestaurantName)</dd>
+        <dt>@Html.DisplayNameFor(model => model.ReservationDayString)</dt>
+        <dd>@Html.DisplayFor(model => model.ReservationDayString)</dd>
+        <dt>@Html.DisplayNameFor(model => model.ReservationHourString)</dt>
+        <dd>@Html.DisplayFor(model => model.ReservationHourString)</dd>
+        <dt>@Html.DisplayNameFor(model => model.PeopleCount)</dt>
+        <dd>@Html.DisplayFor(model => model.PeopleCount)</dd>
     </dl>
 </div>
 <div>

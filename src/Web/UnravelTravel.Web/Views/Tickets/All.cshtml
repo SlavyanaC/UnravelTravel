@@ -4,56 +4,55 @@
 }
 
 <h3 class="text-center">My Tickets</h3>
-
-<table class="table table-hover text-center" style="width: 100%" id="ticketsTable">
+<table class="table table-hover" style="width: 100%" id="ticketsTable">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ActivityName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ActivityDateString)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ActivityHourString)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ActivityDestinationName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th>Actions</th>
-    </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityDateString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityHourString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityDestinationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>Actions</th>
+        </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td display-for="@item.Id"></td>
-            <td display-for="@item.ActivityName"></td>
-            <td display-for="@item.ActivityDateString"></td>
-            <td display-for="@item.ActivityHourString"></td>
-            <td display-for="@item.ActivityDestinationName"> </td>
-            <td display-for="@item.Quantity"> </td>
-            <td>
-                <a class="btn btn-outline-primary" asp-area="" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;
-                @if (item.HasPassed)
-                {
-                    if (item.IsRated)
+            <tr>
+                <td display-for="@item.Id"></td>
+                <td display-for="@item.ActivityName"></td>
+                <td display-for="@item.ActivityDateString"></td>
+                <td display-for="@item.ActivityHourString"></td>
+                <td display-for="@item.ActivityDestinationName"> </td>
+                <td display-for="@item.Quantity"> </td>
+                <td>
+                    <a class="btn btn-outline-primary" asp-area="" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;
+                    @if (item.HasPassed)
                     {
-                        <button class="btn btn-outline-primary" asp-area="" asp-controller="Activities" asp-action="Review" disabled="">Reviewed</button>
+                        if (item.IsRated)
+                        {
+                            <button class="btn btn-outline-primary" asp-area="" asp-controller="Activities" asp-action="Review" disabled="">Reviewed</button>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-primary" asp-area="" asp-controller="Activities" asp-action="Review" asp-route-id="@item.ActivityId">Review</a>
+                        }
                     }
-                    else
-                    {
-                        <a class="btn btn-outline-primary" asp-area="" asp-controller="Activities" asp-action="Review" asp-route-id="@item.ActivityId">Review</a>
-                    }
-                }
-            </td>
-        </tr>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
