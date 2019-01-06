@@ -9,8 +9,9 @@
     using UnravelTravel.Models.Common;
     using UnravelTravel.Services.Mapping;
 
-    public class TicketDetailsViewModel : IMapFrom<UnravelTravelUser>
+    public class TicketDetailsViewModel : IMapFrom<Ticket>
     {
+        [Display(Name = ModelConstants.TicketIdDisplay)]
         public int Id { get; set; }
 
         public string UserId { get; set; }
@@ -28,6 +29,8 @@
         public string ActivityName { get; set; }
 
         public DateTime ActivityDate { get; set; }
+
+        public int Quantity { get; set; }
 
         [Display(Name = ModelConstants.Activity.DateDisplay)]
         public string ActivityDateString => this.ActivityDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture);

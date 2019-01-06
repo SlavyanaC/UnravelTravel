@@ -4,22 +4,25 @@
     ViewData["Title"] = "Reservations";
 }
 
-<h2 class="text-center">My Reservations</h2>
+<h3 class="text-center">My Reservations</h3>
 
-<table class="table table-hover">
+<table class="table table-hover" style="width: 100%" id="reservationsTable">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserFullName)
+                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RestaurantName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReservationDateString)
+                @Html.DisplayNameFor(model => model.ReservationDayString)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ReservationHourString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserFullName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PeopleCount)
@@ -31,13 +34,14 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td display-for="@item.UserFullName"></td>
+                <td display-for="@item.Id"></td>
                 <td display-for="@item.RestaurantName"></td>
-                <td display-for="@item.ReservationDateString"> </td>
+                <td display-for="@item.ReservationDayString"> </td>
                 <td display-for="@item.ReservationHourString"> </td>
+                <td display-for="@item.UserFullName"></td>
                 <td display-for="@item.PeopleCount"> </td>
                 <td>
-                    <a class="btn btn-outline-primary"asp-area="" asp-controller="Reservations" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-outline-primary" asp-area="" asp-controller="Reservations" asp-action="Details" asp-route-id="@item.Id">Details</a>
                     @if (item.HasPassed)
                     {
                         if (item.IsRated)
@@ -54,3 +58,15 @@
         }
     </tbody>
 </table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#reservationsTable')
+                .addClass('nowrap')
+                .dataTable({
+                    responsive: true,
+                });
+        });
+    </script>
+}

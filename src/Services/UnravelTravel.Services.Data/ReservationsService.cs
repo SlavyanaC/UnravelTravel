@@ -112,7 +112,7 @@
                 reservationDetailsViewModel.Id,
                 reservationDetailsViewModel.RestaurantName,
                 reservationDetailsViewModel.PeopleCount,
-                reservationDetailsViewModel.ReservationDateString + " " + reservationDetailsViewModel.ReservationHourString);
+                reservationDetailsViewModel.ReservationDayString + " " + reservationDetailsViewModel.ReservationHourString);
 
             var restaurant = await this.restaurantsRepository.All()
                 .FirstOrDefaultAsync(r => r.Id == reservationDetailsViewModel.RestaurantId);

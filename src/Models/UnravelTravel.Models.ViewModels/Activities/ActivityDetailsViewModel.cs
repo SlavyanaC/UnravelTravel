@@ -22,6 +22,8 @@
         public string DateString => this.Date.ToString(GlobalConstants.DateFormat + " " + GlobalConstants.HourFormat,
             CultureInfo.InvariantCulture);
 
+        public bool IsPassed => this.Date < DateTime.Now;
+
         public string Description { get; set; }
 
         public string AdditionalInfo { get; set; }
@@ -34,8 +36,6 @@
 
         public string LocationName { get; set; }
 
-        public double AverageRating { get; set; }
-
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
     }
 }

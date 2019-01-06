@@ -30,5 +30,7 @@
         public double AverageRating { get; set; }
 
         public ICollection<TicketDetailsViewModel> Tickets { get; set; }
+
+        public bool IsPassed => this.Date < DateTime.Now;
     }
 }

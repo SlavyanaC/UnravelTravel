@@ -16,6 +16,8 @@
         public const string ImageUrlDisplay = "Current image";
         public const string NewImageDisplay = "New Image";
         public const string UserFullNameDisplay = "Full name";
+        public const string TicketIdDisplay = "Ticket Id";
+
 
         public class Activity
         {
@@ -49,15 +51,20 @@
         {
             public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
+
+            public const string NameDisplay = "Restaurant name";
         }
 
         public class Reservation
         {
             public const int MinMinutesFromNow = 30;
 
+            public const string IdDisplay = "Reservation Id";
             public const string HourError = "Reservation time must be at least 30 minutes from now";
             public const string DateDisplay = "Reservation date and time";
             public const string PeopleCountDisplay = "Table for";
+            public const string ReservationDay = "Reservation day";
+            public const string ReservationHour = "Reservation hour";
         }
 
         public class Search

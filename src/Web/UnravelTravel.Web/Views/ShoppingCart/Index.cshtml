@@ -5,9 +5,9 @@
     ViewData["Title"] = "Shopping Cart";
 }
 
-<h2 class="text-center">Shopping Cart</h2>
+<h3 class="text-center">Shopping Cart</h3>
 
-<table class="table table-hover">
+<table class="table table-hover table-borderless" style="width: 100%" id="shoppingCart">
     <thead>
         <tr>
             <th>
@@ -55,9 +55,9 @@
                 <td>
                     @if (this.User.IsInRole(GlobalConstants.UserRoleName))
                     {
-                        <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Edit" asp-route-id="@item.Id" asp-route-newQuantity="newQuantity">
+                        <form method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Edit" asp-route-id="@item.Id" asp-route-newQuantity="newQuantity">
                             <div class="row">
-                                <input type="number" id="newQuantity" name="newQuantity" class="form-control form-control-sm col-md-3" value="@item.Quantity" />
+                                <input type="number" id="newQuantity" name="newQuantity" class="form-control form-control-sm col-sm-3" value="@item.Quantity" />&nbsp;
                                 <button type="submit" class="btn btn-sm btn-outline-primary">Edit</button>
                             </div>
                         </form>
@@ -110,3 +110,15 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#shoppingCart')
+                .addClass('nowrap')
+                .dataTable({
+                    responsive: true,
+                });
+        });
+    </script>
+}
