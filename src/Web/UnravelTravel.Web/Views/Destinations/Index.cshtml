@@ -14,20 +14,20 @@
         </div>
         <input type="hidden" name="Page" value="@Model.PageNumber">
         <div class="form-group">
-            <label class="text-primary">Sort by</label>
-            <select class="btn btn-outline-primary" name="Sorter" id="Sorter" onchange="this.form.submit();">
-                <option value="1" selected="@(Model.Sorter.ToString() == "CountryName" ? true : false)">Country name</option>
-                <option value="2" selected="@(Model.Sorter.ToString() == "ActivitiesCount" ? true : false)">Activities count (desc.)</option>
-                <option value="3" selected="@(Model.Sorter.ToString() == "RestaurantsCount" ? true : false)">Restaurants count (desc.)</option>
-            </select>
-        </div>
-        <div class="form-group">
             <label class="text-primary">Show</label>
             <select class="btn btn-outline-primary" name="PageSize" onchange="this.form.submit();">
                 <option value="6" selected="@(Model.PageSize == 6 ? true : false)">6</option>
                 <option value="12" selected="@(Model.PageSize == 12 ? true : false)">12</option>
                 <option value="24" selected="@(Model.PageSize == 24 ? true : false)">24</option>
                 <option value="48" selected="@(Model.PageSize == 48 ? true : false)">48</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="text-primary">Sort by</label>
+            <select class="btn btn-outline-primary" name="Sorter" id="Sorter" onchange="this.form.submit();">
+                <option value="1" selected="@(Model.Sorter.ToString() == "CountryName" ? true : false)">Country name</option>
+                <option value="2" selected="@(Model.Sorter.ToString() == "ActivitiesCount" ? true : false)">Activities count (desc.)</option>
+                <option value="3" selected="@(Model.Sorter.ToString() == "RestaurantsCount" ? true : false)">Restaurants count (desc.)</option>
             </select>
         </div>
     </div>

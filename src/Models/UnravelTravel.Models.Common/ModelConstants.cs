@@ -79,7 +79,7 @@
             public const int RatingMin = 1;
             public const int RatingMax = 5;
             public const int ContentMinLength = 5;
-            public const int ContentMaxLength = 500;
+            public const int ContentMaxLength = 400;
 
             public const string ContentError = "Content must be between {2} and {1} symbols";
         }

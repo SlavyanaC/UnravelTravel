@@ -1,4 +1,7 @@
-﻿namespace UnravelTravel.Models.ViewModels.Restaurants
+﻿using System.Collections.Generic;
+using UnravelTravel.Models.ViewModels.Reviews;
+
+namespace UnravelTravel.Models.ViewModels.Restaurants
 {
     using UnravelTravel.Common.Extensions;
     using UnravelTravel.Data.Models;
@@ -27,5 +30,7 @@
         public double AverageRating { get; set; }
 
         public string MapsAddress => $"{this.Address}+{this.DestinationName}";
+
+        public IEnumerable<ReviewViewModel> Reviews { get; set; }
     }
 }
