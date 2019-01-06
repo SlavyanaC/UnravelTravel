@@ -228,18 +228,38 @@
 
         public IEnumerable<ActivityViewModel> SortBy(ActivityViewModel[] activities, ActivitiesSorter sorter)
         {
+            ActivityViewModel[] passedActivities;
             switch (sorter)
             {
                 case ActivitiesSorter.Upcoming:
-                    return activities.OrderBy(a => a.Date).ToArray();
+                    passedActivities = activities.OrderBy(a => a.Date).Where(a => a.Date < DateTime.Now).ToArray();
+                    break;
                 case ActivitiesSorter.Name:
-                    return activities.OrderBy(a => a.Name).ToArray();
+                    passedActivities = activities.OrderBy(a => a.Name).Where(a => a.Date < DateTime.Now).ToArray();
+                    break;
                 case ActivitiesSorter.Type:
-                    return activities.OrderBy(a => a.Type).ToArray();
+                    passedActivities = activities.OrderBy(a => a.Type).Where(a => a.Date < DateTime.Now).ToArray();
+                    break;
                 case ActivitiesSorter.Destination:
-                    return activities.OrderBy(a => a.DestinationName).ToArray();
+                    passedActivities = activities.OrderBy(a => a.DestinationName).Where(a => a.Date < DateTime.Now).ToArray();
+                    break;
                 default:
-                    return activities.OrderBy(a => a.Date).ToArray();
+                    passedActivities = activities.OrderBy(a => a.Date).Where(a => a.Date < DateTime.Now).ToArray();
+                    break;
+            }
+
+            switch (sorter)
+            {
+                case ActivitiesSorter.Upcoming:
+                    return activities.OrderBy(a => a.Date).Where(a => a.Date >= DateTime.Now).ToArray().Concat(passedActivities);
+                case ActivitiesSorter.Name:
+                    return activities.OrderBy(a => a.Name).Where(a => a.Date >= DateTime.Now).ToArray().Concat(passedActivities);
+                case ActivitiesSorter.Type:
+                    return activities.OrderBy(a => a.Type).Where(a => a.Date >= DateTime.Now).ToArray().Concat(passedActivities);
+                case ActivitiesSorter.Destination:
+                    return activities.OrderBy(a => a.DestinationName).Where(a => a.Date >= DateTime.Now).ToArray().Concat(passedActivities);
+                default:
+                    return activities.OrderBy(a => a.Date).Where(a => a.Date >= DateTime.Now).ToArray().Concat(passedActivities);
             }
         }
 

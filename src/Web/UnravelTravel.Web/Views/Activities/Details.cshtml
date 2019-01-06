@@ -18,7 +18,16 @@
         </thead>
         <tbody>
             <tr>
-                <th width=25%;><b>@Model.DateString</b></th>
+                <th width=25%;>
+                    <b>
+                        @Model.DateString
+                        @if (Model.IsPassed)
+                        {
+                            <span class="badge badge-warning">&nbsp;Passed</span>
+                        }
+                    </b>
+                </th>
+
                 <td width=25%;><b>@Model.SplitWordsType</b></td>
                 <td width=25%;><b>$@Model.Price</b></td>
             </tr>
@@ -26,10 +35,10 @@
     </table>
     <hr />
     <h4>Description</h4>
-    <p>@Model.Description</p>
+    <p style="white-space: pre-line">@Model.Description</p>
     <hr />
     <h4>Know before you go</h4>
-    <p>@Model.AdditionalInfo</p>
+    <p style="white-space: pre-line">@Model.AdditionalInfo</p>
     <hr />
     <h4>Address:</h4>
     <p>
