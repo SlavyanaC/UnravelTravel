@@ -2,8 +2,10 @@
 {
     using System;
     using System.Globalization;
+    using System.Collections.Generic;
     using UnravelTravel.Common;
     using UnravelTravel.Common.Extensions;
+    using UnravelTravel.Models.ViewModels.Reviews;
 
     public class ActivityDetailsViewModel
     {
@@ -37,5 +39,7 @@
         public string LocationName { get; set; }
 
         public decimal Price { get; set; }
+
+        public IEnumerable<ReviewViewModel> Reviews { get; set; }
     }
 }

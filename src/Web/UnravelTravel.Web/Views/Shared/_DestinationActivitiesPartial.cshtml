@@ -10,7 +10,13 @@
                 </a>
                 <div class="card-body text-center">
                     <h5 class="card-title">@item.Name</h5>
-                    <p> @item.DateAsString</p>
+                    <p>
+                        @item.DateAsString
+                        @if (item.IsPassed)
+                        {
+                            <span class="badge badge-warning">Passed</span>
+                        }
+                    </p>
                     @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                     {
                         <div calss="row">

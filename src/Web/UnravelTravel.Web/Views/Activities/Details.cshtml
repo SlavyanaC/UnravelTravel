@@ -6,13 +6,17 @@
 <h1 class="text-center">@Model.Name</h1>
 <div class="container">
     <div class="text-center">
-        <img src="@Model.ImageUrl" class="img-fluid rounded" style="height: 450px; width: 75%;" alt="Activity image" />
+        <img src="@Model.ImageUrl" class="img-fluid rounded" style="height: 350px; max-width: 100%;" alt="Activity image" />
     </div>
     <table class="table table-borderless text-center">
         <thead>
             <tr>
                 <th width=25%;><h4>Date</h4></th>
                 <th width=25%;><h4>Type</h4></th>
+                @if (Model.IsPassed)
+                {
+                    <th width=25%;><h4>Rating</h4></th>
+                }
                 <th width=25%;><h4>Price</h4></th>
             </tr>
         </thead>
@@ -21,14 +25,18 @@
                 <th width=25%;>
                     <b>
                         @Model.DateString
-                        @if (Model.IsPassed)
+                        @if (Model.IsPassed && Model.Reviews.Any())
                         {
                             <span class="badge badge-warning">&nbsp;Passed</span>
                         }
                     </b>
                 </th>
-
                 <td width=25%;><b>@Model.SplitWordsType</b></td>
+                @if (Model.IsPassed && Model.Reviews.Any())
+                {
+                    <td width=25%;><b>@Model.Reviews.Average(r => r.ReviewRating)</b></td>
+
+                }
                 <td width=25%;><b>$@Model.Price</b></td>
             </tr>
         </tbody>
@@ -55,6 +63,16 @@
             <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Activities" asp-action="Edit" asp-route-id="@Model.Id">Edit activity</a>
             <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Activities" asp-action="Delete" asp-route-id="@Model.Id">Delete activity</a>
         }
+        @if (Model.IsPassed)
+        {
+            <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
+                <div class="row form-group justify-content-center">
+                    <h4><label>Quantity: </label></h4>&nbsp;
+                    <input type="number" id="quantity" name="quantity" disabled="" class="form-control form-control-sm col-md-3" />
+                </div>
+                <button disabled="" type="submit" class="btn btn-lg btn-outline-warning"><i class="fas fa-cart-plus">&nbsp;</i>Activity has passed</button>
+            </form>
+        }
         else
         {
             <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
@@ -66,7 +84,94 @@
             </form>
         }
     </div>
-    <br />
+    <hr />
+
+    @if (Model.Reviews.Any() && Model.IsPassed)
+    {
+        var totalReviewsCount = @Model.Reviews.Count();
+        var slidesNeeded = Math.Ceiling(totalReviewsCount / 3d);
+        var reviewIndex = 0;
+        <h3 class="text-center">Activity reviews</h3>
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                @for (var i = 0; i < slidesNeeded; i++)
+                {
+                    if (i == 0)
+                    {
+                        <div class="carousel-item active">
+                            <div class="card-deck">
+                                @for (int j = 0; j < 3; j++)
+                                {
+                                    if (reviewIndex >= totalReviewsCount)
+                                    {
+                                        break;
+                                    }
+                                    var review = @Model.Reviews.ToArray().Reverse().ToArray()[reviewIndex];
+                                    <div class="col-md-4">
+                                        <div class="card bg-primary mb-3" style="max-width: 20rem;">
+                                            <div class="card-body">
+                                                <div class="card-header text-center">
+                                                    <h5>Rating @review.ReviewRating</h5>
+                                                </div>
+                                                <p class="text-center text-light">@review.ReviewContent</p>
+                                                <div class="row d-flex justify-content-between">
+                                                    <p class="text-dark"><em>@review.CreatedOnString</em></p>
+                                                    <p class="text-dark"><em>@review.ReviewUserUserName</em></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    reviewIndex++;
+                                }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <div class="card-deck">
+                                @for (int j = 0; j < 3; j++)
+                                {
+                                    if (reviewIndex >= totalReviewsCount)
+                                    {
+                                        break;
+                                    }
+                                    var review = @Model.Reviews.ToArray().Reverse().ToArray()[reviewIndex];
+                                    <div class="col-md-4">
+                                        <div class="card bg-primary mb-3" style="max-width: 20rem;">
+                                            <div class="card-body">
+                                                <div class="card-header text-center">
+                                                    <h5>Rating @review.ReviewRating</h5>
+                                                </div>
+                                                <p class="text-center text-light">@review.ReviewContent</p>
+                                                <div class="row d-flex justify-content-between">
+                                                    <p class="text-dark"><em>@review.CreatedOnString</em></p>
+                                                    <p class="text-dark"><em>@review.ReviewUserUserName</em></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    reviewIndex++;
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <hr />
+    }
+
+
+
     <cache expires-after="@TimeSpan.FromHours(1)" vary-by="@Model.Id">
         <iframe class="w-100"
                 height="450"
@@ -75,3 +180,11 @@
                 allowfullscreen></iframe>
     </cache>
 </div>
+
+@section Scripts{
+    <script>
+        $('.carousel').carousel({
+            interval: 6000
+        });
+    </script>
+}
