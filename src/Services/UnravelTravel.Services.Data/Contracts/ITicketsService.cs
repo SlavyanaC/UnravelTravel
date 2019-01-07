@@ -1,5 +1,6 @@
 ﻿namespace UnravelTravel.Services.Data.Contracts
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using UnravelTravel.Models.ViewModels.ShoppingCart;
@@ -9,7 +10,7 @@
     {
         Task<TicketDetailsViewModel> GetDetailsAsync(int id);
 
-        Task<TicketDetailsViewModel[]> GetAllAsync(string username);
+        Task<IEnumerable<TicketDetailsViewModel>> GetAllAsync(string username);
 
         Task BookAllAsync(string userIdentifier, ShoppingCartActivityViewModel[] shoppingCartActivities, string paymentMethod = "");
     }

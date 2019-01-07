@@ -56,7 +56,7 @@
             return ticketDetailsViewModel;
         }
 
-        public async Task<TicketDetailsViewModel[]> GetAllAsync(string username)
+        public async Task<IEnumerable<TicketDetailsViewModel>> GetAllAsync(string username)
         {
             var ticketsViewModel = await this.ticketsRepository
                 .All()
@@ -70,7 +70,7 @@
         public async Task BookAllAsync(string userIdentifier, ShoppingCartActivityViewModel[] shoppingCartActivities, string paymentMethod = "")
         {
             // If identifier is email the user is guest
-            var isGuest = Regex.IsMatch(userIdentifier, @"[^@]+@[^\.]+\..+"); 
+            var isGuest = Regex.IsMatch(userIdentifier, @"[^@]+@[^\.]+\..+");
             if (isGuest)
             {
                 await this.BookGuestUsersTickets(userIdentifier, shoppingCartActivities, paymentMethod);

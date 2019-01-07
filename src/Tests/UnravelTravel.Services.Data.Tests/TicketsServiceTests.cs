@@ -215,7 +215,7 @@
                     Assert.Equal(expected[1].UserId, elem2.UserId);
                     Assert.Equal(expected[1].ActivityId, elem2.ActivityId);
                 });
-            Assert.Equal(expected.Length, actual.Length);
+            Assert.Equal(expected.Length, actual.Count());
         }
 
         [Fact]
@@ -262,7 +262,7 @@
                     Assert.Equal(expected[0].UserId, elem1.UserId);
                     Assert.Equal(expected[0].ActivityId, elem1.ActivityId);
                 });
-            Assert.Equal(expected.Length, actual.Length);
+            Assert.Equal(expected.Length, actual.Count());
         }
 
         private async Task AddTestingUserToDb()
