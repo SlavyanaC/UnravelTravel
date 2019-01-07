@@ -71,6 +71,18 @@
                 throw new ArgumentException(string.Format(ServicesDataConstants.InvalidRestaurantType, restaurantCreateInputModel.Type));
             }
 
+            // If destination exists return existing view model
+            var restaurantExists = this.restaurantsRepository.All().Any(
+                r => r.Name == restaurantCreateInputModel.Name &&
+                     r.DestinationId == restaurantCreateInputModel.DestinationId);
+            if (restaurantExists)
+            {
+                return AutoMapper.Mapper
+                    .Map<RestaurantDetailsViewModel>(this.restaurantsRepository.All()
+                        .First(r => r.Name == restaurantCreateInputModel.Name &&
+                                    r.DestinationId == restaurantCreateInputModel.DestinationId));
+            }
+
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, restaurantCreateInputModel.Image, restaurantCreateInputModel.Name);
 
             var restaurant = new Restaurant()

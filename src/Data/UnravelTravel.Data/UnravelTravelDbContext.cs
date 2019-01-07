@@ -20,8 +20,6 @@
         {
         }
 
-        public DbSet<Setting> Settings { get; set; }
-
         public DbSet<Activity> Activities { get; set; }
 
         public DbSet<ActivityReview> ActivityReviews { get; set; }

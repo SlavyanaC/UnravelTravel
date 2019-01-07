@@ -1,12 +1,11 @@
-﻿using System;
-using UnravelTravel.Models.Common;
-
-namespace UnravelTravel.Models.ViewModels.Destinations
+﻿namespace UnravelTravel.Models.ViewModels.Destinations
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.ViewModels.Activities;
+    using UnravelTravel.Models.Common;
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Mapping;
 

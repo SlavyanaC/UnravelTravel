@@ -33,7 +33,11 @@
         {
             <tr>
                 <td display-for="@item.Id"></td>
-                <td display-for="@item.ActivityName"></td>
+                <td>
+                    <a class="text-dark" asp-area="" asp-controller="Activities" asp-action="Details" asp-route-id="@item.ActivityId">
+                        @item.ActivityName
+                    </a>
+                </td>
                 <td display-for="@item.ActivityDateString"></td>
                 <td display-for="@item.ActivityHourString"></td>
                 <td display-for="@item.ActivityDestinationName"> </td>

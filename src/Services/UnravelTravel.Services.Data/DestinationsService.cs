@@ -63,6 +63,17 @@
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceCountryId, destinationCreateInputModel.CountryId));
             }
 
+            // If destination exists return existing view model
+            var destinationExists = this.destinationsRepository.All().Any(d =>
+                d.Name == destinationCreateInputModel.Name && d.CountryId == destinationCreateInputModel.CountryId);
+            if (destinationExists)
+            {
+                return AutoMapper.Mapper
+                    .Map<DestinationDetailsViewModel>(this.destinationsRepository.All()
+                        .First(d => d.Name == destinationCreateInputModel.Name &&
+                                    d.CountryId == destinationCreateInputModel.CountryId));
+            }
+
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, destinationCreateInputModel.Image, destinationCreateInputModel.Name);
 
             var destination = new Destination
