@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
@@ -44,7 +45,7 @@
             this.cloudinary = cloudinary;
         }
 
-        public async Task<DestinationViewModel[]> GetAllDestinationsAsync()
+        public async Task<IEnumerable<DestinationViewModel>> GetAllDestinationsAsync()
         {
             var destinations = await this.destinationsRepository.All()
                 .To<DestinationViewModel>()
@@ -182,7 +183,7 @@
             return searchResultViewModel;
         }
 
-        public DestinationViewModel[] GetDestinationFromSearch(string searchString)
+        public IEnumerable<DestinationViewModel> GetDestinationFromSearch(string searchString)
         {
             var escapedSearchTokens = searchString.Split(new char[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -212,7 +213,7 @@
             return destination.Name;
         }
 
-        public DestinationViewModel[] SortBy(DestinationViewModel[] destinations, DestinationSorter sorter)
+        public IEnumerable<DestinationViewModel> SortBy(DestinationViewModel[] destinations, DestinationSorter sorter)
         {
             switch (sorter)
             {

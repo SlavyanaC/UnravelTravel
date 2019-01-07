@@ -18,8 +18,10 @@
 
         public string ActivityImageUrl { get; set; }
 
-        [Display(Name = ModelConstants.Activity.NameDisplay)]
         public string ActivityName { get; set; }
+
+        [Display(Name = ModelConstants.Activity.NameDisplay)]
+        public string ActivityNameSubstring => this.ActivityName.Length >= ModelConstants.ShoppingCartActivityNameLength ? this.ActivityName.Substring(0, ModelConstants.ShoppingCartActivityNameLength) + ModelConstants.ShoppingCartActivityNameCut : this.ActivityName;
 
         public DateTime ActivityDate { get; set; }
 

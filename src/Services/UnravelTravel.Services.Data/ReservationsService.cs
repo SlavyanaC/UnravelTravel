@@ -1,4 +1,6 @@
-﻿namespace UnravelTravel.Services.Data
+﻿using System.Collections.Generic;
+
+namespace UnravelTravel.Services.Data
 {
     using System;
     using System.Linq;
@@ -94,7 +96,7 @@
             return reservationDetailsViewModel;
         }
 
-        public async Task<ReservationDetailsViewModel[]> GetAllAsync(string username)
+        public async Task<IEnumerable<ReservationDetailsViewModel>> GetAllAsync(string username)
         {
             var allReservations = await this.reservationsRepository
                 .All()

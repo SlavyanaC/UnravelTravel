@@ -1,5 +1,6 @@
 ﻿namespace UnravelTravel.Services.Data.Contracts
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using UnravelTravel.Data.Models;
@@ -9,7 +10,7 @@
     {
         Task AssignShoppingCartsUserId(UnravelTravelUser user);
 
-        Task<ShoppingCartActivityViewModel[]> GetAllShoppingCartActivitiesAsync(string username);
+        Task<IEnumerable<ShoppingCartActivityViewModel>> GetAllShoppingCartActivitiesAsync(string username);
 
         Task AddActivityToShoppingCartAsync(int activityId, string username, int quantity);
 
@@ -17,11 +18,11 @@
 
         Task EditShoppingCartActivityAsync(int shoppingCartActivityId, string username, int newQuantity);
 
-        ShoppingCartActivityViewModel[] EditGuestShoppingCartActivity(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart, int newQuantity);
+        IEnumerable<ShoppingCartActivityViewModel> EditGuestShoppingCartActivity(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart, int newQuantity);
 
         Task DeleteActivityFromShoppingCart(int shoppingCartActivityId, string username);
 
-        ShoppingCartActivityViewModel[] DeleteActivityFromGuestShoppingCart(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart);
+        IEnumerable<ShoppingCartActivityViewModel> DeleteActivityFromGuestShoppingCart(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart);
 
         Task ClearShoppingCart(string username);
     }

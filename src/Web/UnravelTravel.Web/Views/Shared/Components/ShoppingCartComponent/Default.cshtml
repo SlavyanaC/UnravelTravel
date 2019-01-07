@@ -16,7 +16,7 @@
                     <div class="d-flex justify-content-around">
                         <a class="dropdown-item col-md-11" asp-area="" asp-controller="Activities" asp-action="Details" asp-route-id="@shoppingCartActivity.ActivityId">
                             <img src="@shoppingCartActivity.ActivityImageUrl" width="50" height="50">
-                            <span>@shoppingCartActivity.ActivityName</span>
+                            <span>@shoppingCartActivity.ActivityNameSubstring</span>
                             <span> @shoppingCartActivity.Quantity</span>
                             <span><b>$@(shoppingCartActivity.ActivityPrice * shoppingCartActivity.Quantity)</b></span>
                         </a>

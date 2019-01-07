@@ -107,7 +107,7 @@
                     Assert.Equal(expected[1].DestinationName, elem2.DestinationName);
                     Assert.Equal(expected[1].Type, elem2.Type);
                 });
-            Assert.Equal(expected.Length, actual.Length);
+            Assert.Equal(expected.Length, actual.Count());
         }
 
         [Fact]

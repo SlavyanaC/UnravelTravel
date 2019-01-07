@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -46,7 +47,7 @@
             await this.shoppingCartActivitiesRepository.SaveChangesAsync();
         }
 
-        public async Task<ShoppingCartActivityViewModel[]> GetAllShoppingCartActivitiesAsync(string username)
+        public async Task<IEnumerable<ShoppingCartActivityViewModel>> GetAllShoppingCartActivitiesAsync(string username)
         {
             var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == username);
             if (user == null)
@@ -142,7 +143,7 @@
             await this.shoppingCartActivitiesRepository.SaveChangesAsync();
         }
 
-        public ShoppingCartActivityViewModel[] DeleteActivityFromGuestShoppingCart(int activityId, ShoppingCartActivityViewModel[] cart)
+        public IEnumerable<ShoppingCartActivityViewModel> DeleteActivityFromGuestShoppingCart(int activityId, ShoppingCartActivityViewModel[] cart)
         {
             var shoppingCartActivityViewModel = cart.FirstOrDefault(sca => sca.ActivityId == activityId);
 
@@ -189,7 +190,7 @@
             await this.shoppingCartActivitiesRepository.SaveChangesAsync();
         }
 
-        public ShoppingCartActivityViewModel[] EditGuestShoppingCartActivity(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart, int newQuantity)
+        public IEnumerable<ShoppingCartActivityViewModel> EditGuestShoppingCartActivity(int shoppingCartActivityId, ShoppingCartActivityViewModel[] cart, int newQuantity)
         {
             if (newQuantity <= 0)
             {

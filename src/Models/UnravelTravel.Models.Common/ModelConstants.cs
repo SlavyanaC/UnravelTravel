@@ -8,6 +8,7 @@
         public const int AddressMaxLength = 50;
         public const int DestinationActivitiesToDisplay = 6;
         public const int DestinationRestaurantsToDisplay = 6;
+        public const int ShoppingCartActivityNameLength = 25;
 
         public const string NameLengthError = "Name must be between {2} and {1} symbols";
         public const string AddressLengthError = "Address must be between {2} and {1} symbols";
@@ -16,13 +17,13 @@
         public const string ImageUrlDisplay = "Current image";
         public const string NewImageDisplay = "New Image";
         public const string UserFullNameDisplay = "User full name";
-        public const string TicketIdDisplay = "Ticket Id";
-
+        public const string TicketIdDisplay = "#";
+        public const string ShoppingCartActivityNameCut = "...";
 
         public class Activity
         {
             public const int NameMinLength = 3;
-            public const int NameMaxLength = 50;
+            public const int NameMaxLength = 70;
             public const int MinMinutesTillStart = 15;
             public const int DescriptionMaxLength = 1950;
             public const int DescriptionMinLength = 10;
@@ -59,7 +60,7 @@
         {
             public const int MinMinutesFromNow = 30;
 
-            public const string IdDisplay = "Reservation Id";
+            public const string IdDisplay = "#";
             public const string HourError = "Reservation time must be at least 30 minutes from now";
             public const string DateDisplay = "Reservation date and time";
             public const string PeopleCountDisplay = "Table for";

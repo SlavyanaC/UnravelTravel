@@ -219,7 +219,7 @@
                     Assert.Equal(expected[1].Date, elem2.Date);
                     Assert.Equal(expected[1].PeopleCount, elem2.PeopleCount);
                 });
-            Assert.Equal(expected.Length, actual.Length);
+            Assert.Equal(expected.Length, actual.Count());
         }
 
         [Fact]
@@ -276,7 +276,7 @@
                     Assert.Equal(expected[0].Date, elem1.Date);
                     Assert.Equal(expected[0].PeopleCount, elem1.PeopleCount);
                 });
-            Assert.Equal(expected.Length, actual.Length);
+            Assert.Equal(expected.Length, actual.Count());
         }
 
         private ReservationCreateInputModel GetTestingReservationCreateInputModel()

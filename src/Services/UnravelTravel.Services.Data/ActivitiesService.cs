@@ -43,7 +43,7 @@
             this.usersRepository = usersRepository;
         }
 
-        public async Task<ActivityViewModel[]> GetAllAsync()
+        public async Task<IEnumerable<ActivityViewModel>> GetAllAsync()
         {
             var activities = await this.activitiesRepository
                 .All()
@@ -53,7 +53,7 @@
             return activities;
         }
 
-        public async Task<ActivityViewModel[]> GetAllInDestinationAsync(int destinationId)
+        public async Task<IEnumerable<ActivityViewModel>> GetAllInDestinationAsync(int destinationId)
         {
             var activities = await this.activitiesRepository
                 .All()
@@ -77,6 +77,7 @@
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, activityCreateInputModel.DestinationId));
             }
 
+            // Sometimes Cloudinady throws null reference exception?!?
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, activityCreateInputModel.Image, activityCreateInputModel.Name);
 
             var activity = new Activity

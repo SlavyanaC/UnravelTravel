@@ -1,5 +1,6 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,7 @@
         {
             var username = this.User.Identity.Name;
             var shoppingCartActivities = await this.shoppingCartsService.GetAllShoppingCartActivitiesAsync(username);
-            await this.ticketsService.BookAllAsync(username, shoppingCartActivities, paymentMethod);
+            await this.ticketsService.BookAllAsync(username, shoppingCartActivities.ToArray(), paymentMethod);
             return this.RedirectToAction("All");
         }
 

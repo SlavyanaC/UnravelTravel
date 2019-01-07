@@ -1,5 +1,6 @@
 ﻿namespace UnravelTravel.Services.Data
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@
             this.countriesRepository = countriesRepository;
         }
 
-        public async Task<CountryViewModel[]> GetAllAsync()
+        public async Task<IEnumerable<CountryViewModel>> GetAllAsync()
         {
             var countries = await this.countriesRepository.All()
                 .OrderBy(c => c.Name)

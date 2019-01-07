@@ -12,13 +12,13 @@
     {
         Task<RestaurantDetailsViewModel> CreateAsync(RestaurantCreateInputModel restaurantCreateInputModel);
 
-        Task<RestaurantViewModel[]> GetAllAsync();
+        Task<IEnumerable<RestaurantViewModel>> GetAllAsync();
 
         Task EditAsync(RestaurantEditViewModel restaurantEditViewModel);
 
         Task Review(int restaurantId, string username, RestaurantReviewInputModel restaurantReviewInputModel);
 
-        Task<RestaurantViewModel[]> GetAllInDestinationAsync(int destinationId);
+        Task<IEnumerable<RestaurantViewModel>> GetAllInDestinationAsync(int destinationId);
 
         IEnumerable<RestaurantViewModel> GetRestaurantsFromSearch(string searchString, int? destinationId);
 

@@ -35,7 +35,7 @@
                 restaurants = this.restaurantsService.GetRestaurantsFromSearch(restaurantIndexViewModel.SearchString, null).ToArray();
             }
 
-            restaurants = this.restaurantsService.SortBy(restaurants, restaurantIndexViewModel.Sorter).ToArray();
+            restaurants = this.restaurantsService.SortBy(restaurants.ToArray(), restaurantIndexViewModel.Sorter).ToArray();
 
             var pageNumber = restaurantIndexViewModel.PageNumber ?? ModelConstants.DefaultPageNumber;
             var pageSize = restaurantIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;
@@ -54,7 +54,7 @@
                 restaurants = this.restaurantsService.GetRestaurantsFromSearch(restaurantIndexViewModel.SearchString, restaurantIndexViewModel.DestinationId).ToArray();
             }
 
-            restaurants = this.restaurantsService.SortBy(restaurants, restaurantIndexViewModel.Sorter).ToArray();
+            restaurants = this.restaurantsService.SortBy(restaurants.ToArray(), restaurantIndexViewModel.Sorter).ToArray();
 
             var pageNumber = restaurantIndexViewModel.PageNumber ?? ModelConstants.DefaultPageNumber;
             var pageSize = restaurantIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;

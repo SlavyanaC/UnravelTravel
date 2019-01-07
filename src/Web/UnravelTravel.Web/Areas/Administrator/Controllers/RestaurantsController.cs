@@ -71,7 +71,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(RestaurantEditViewModel destinationEditViewModel)
+        public async Task<IActionResult> Delete(RestaurantDeleteViewModel destinationEditViewModel)
         {
             var id = destinationEditViewModel.Id;
             await this.restaurantsService.DeleteByIdAsync(id);

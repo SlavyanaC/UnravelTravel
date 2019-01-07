@@ -66,7 +66,7 @@
             else
             {
                 var cart = this.GetShoppingCartFromSession();
-                cart = this.shoppingCartService.EditGuestShoppingCartActivity(id, cart, newQuantity);
+                cart = this.shoppingCartService.EditGuestShoppingCartActivity(id, cart, newQuantity).ToArray();
                 this.HttpContext.Session.SetObjectAsJson(WebConstants.ShoppingCartSessionKey, cart);
             }
 
@@ -83,7 +83,7 @@
             else
             {
                 var cart = this.GetShoppingCartFromSession();
-                cart = this.shoppingCartService.DeleteActivityFromGuestShoppingCart(id, cart);
+                cart = this.shoppingCartService.DeleteActivityFromGuestShoppingCart(id, cart).ToArray();
                 this.HttpContext.Session.SetObjectAsJson(WebConstants.ShoppingCartSessionKey, cart);
             }
 

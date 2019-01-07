@@ -1,12 +1,10 @@
 ﻿@inject IOptions<StripeSettings> Stripe
-@using UnravelTravel.Web.Common
 @model IEnumerable<UnravelTravel.Models.ViewModels.ShoppingCart.ShoppingCartActivityViewModel>
 @{
     ViewData["Title"] = "Shopping Cart";
 }
 
 <h3 class="text-center">Shopping Cart</h3>
-
 <table class="table table-hover table-borderless" style="width: 100%" id="shoppingCart">
     <thead>
         <tr>
@@ -38,7 +36,9 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ActivityName)
+                    <a class="text-dark" asp-area="" asp-controller="Activities" asp-action="Details" asp-route-id="@item.ActivityId">
+                        @item.ActivityNameSubstring
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DateString)
@@ -57,7 +57,7 @@
                     {
                         <form method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Edit" asp-route-id="@item.Id" asp-route-newQuantity="newQuantity">
                             <div class="row">
-                                <input type="number" value="1" min="1" id="newQuantity" name="newQuantity" class="form-control form-control-sm col-sm-3" value="@item.Quantity" />&nbsp;
+                                <input type="number" min="1" id="newQuantity" name="newQuantity" class="form-control form-control-sm col-sm-3" value="@item.Quantity" />&nbsp;
                                 <button type="submit" class="btn btn-sm btn-outline-primary">Edit</button>
                             </div>
                         </form>

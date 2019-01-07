@@ -106,7 +106,7 @@
                     Assert.Equal(expected[1].Name, elem2.Name);
                     Assert.Equal(expected[1].CountryName, elem2.CountryName);
                 });
-            Assert.Equal(expected.Length, actual.Length);
+            Assert.Equal(expected.Length, actual.Count());
         }
 
         [Fact]

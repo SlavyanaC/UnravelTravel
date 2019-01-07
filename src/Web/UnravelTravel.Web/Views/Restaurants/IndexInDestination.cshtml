@@ -38,31 +38,35 @@
 <div class="card-deck container-fluid">
     @foreach (var item in Model.RestaurantViewModels)
     {
-    <div class="col-md-4">
-        <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 400px">
-            <a asp-controller="Restaurants" asp-action="Details" asp-route-id="@item.Id">
-                <img style="height: 200px; width: 100%;" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
-            </a>
-            <div class="card-body text-center">
-                <h5 class="card-title">@item.Name</h5>
-                <h6 class="card-title">@item.SplitWordsType</h6>
-                <h6 class="card-title">Destination: @item.DestinationName</h6>
-                @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 400px">
+                <a asp-controller="Restaurants" asp-action="Details" asp-route-id="@item.Id">
+                    <img style="height: 200px; width: 100%;" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="card-title">@item.Name</h5>
+                    <h6 class="card-title">@item.SplitWordsType</h6>
+                    <h6 class="card-title">Destination: @item.DestinationName</h6>
+                    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                     {
-                <div calss="row">
-                    <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Restaurants" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </div>
+                        <div calss="row">
+                            <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Restaurants" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </div>
                     }
+                </div>
             </div>
         </div>
-    </div>
     }
 </div>
 <div class="d-flex justify-content-around">
     @Html.PagedListPager((IPagedList)Model.RestaurantViewModels,
-        page => Url.Action( "Index",
-            new {PageNumber = page,  PageSize = Model.PageSize, SearchString = Model.SearchString
+        page => Url.Action( "IndexInDestination",
+            new {
+                DestinationId = Model.DestinationId,
+                PageNumber = page,
+                PageSize = Model.PageSize,
+                SearchString = Model.SearchString
             }),
         new PagedListRenderOptions
         {

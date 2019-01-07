@@ -35,7 +35,7 @@
                 activities = this.activitiesService.GetActivitiesFromSearch(activityIndexViewModel.SearchString, null).ToArray();
             }
 
-            activities = this.activitiesService.SortBy(activities, activityIndexViewModel.Sorter).ToArray();
+            activities = this.activitiesService.SortBy(activities.ToArray(), activityIndexViewModel.Sorter).ToArray();
 
             var pageNumber = activityIndexViewModel.PageNumber ?? ModelConstants.DefaultPageNumber;
             var pageSize = activityIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;
@@ -54,7 +54,7 @@
                 activities = this.activitiesService.GetActivitiesFromSearch(activityIndexViewModel.SearchString, activityIndexViewModel.DestinationId).ToArray();
             }
 
-            activities = this.activitiesService.SortBy(activities, activityIndexViewModel.Sorter).ToArray();
+            activities = this.activitiesService.SortBy(activities.ToArray(), activityIndexViewModel.Sorter).ToArray();
 
             var pageNumber = activityIndexViewModel.PageNumber ?? ModelConstants.DefaultPageNumber;
             var pageSize = activityIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;

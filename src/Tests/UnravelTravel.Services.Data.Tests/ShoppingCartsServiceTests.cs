@@ -219,7 +219,7 @@
             var cart = this.GetAllShoppingCartActivitiesExpectedResult();
 
             cart = this.ShoppingCartsServiceMock.DeleteActivityFromGuestShoppingCart(TestShoppingCartId,
-                 cart);
+                 cart).ToArray();
 
             Assert.Single(cart);
         }
@@ -440,7 +440,7 @@
             var cart = this.GetAllShoppingCartActivitiesExpectedResult();
 
             cart = this.ShoppingCartsServiceMock.EditGuestShoppingCartActivity(TestShoppingCartActivityId,
-                 cart, NewShoppingCartActivityQuantity);
+                 cart, NewShoppingCartActivityQuantity).ToArray();
 
             var actualQuantity = cart.FirstOrDefault(c => c.Id == TestShoppingCartActivityId)?.Quantity;
             Assert.Equal(NewShoppingCartActivityQuantity, actualQuantity);

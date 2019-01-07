@@ -31,7 +31,7 @@
                 destinations = this.destinationsService.GetDestinationFromSearch(destinationIndexViewModel.SearchString).ToArray();
             }
 
-            destinations = this.destinationsService.SortBy(destinations, destinationIndexViewModel.Sorter);
+            destinations = this.destinationsService.SortBy(destinations.ToArray(), destinationIndexViewModel.Sorter);
 
             var pageNumber = destinationIndexViewModel.PageNumber ?? ModelConstants.DefaultPageNumber;
             var pageSize = destinationIndexViewModel.PageSize ?? ModelConstants.DefaultPageSize;

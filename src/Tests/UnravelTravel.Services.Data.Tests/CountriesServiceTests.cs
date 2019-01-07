@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Services.Data.Tests
 {
     using System.Threading.Tasks;
+    using System.Linq;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
     using UnravelTravel.Data.Models;
@@ -14,7 +15,7 @@
         private const string Netherlands = "Netherlands";
 
         private ICountriesService CountriesServiceMock => this.ServiceProvider.GetRequiredService<ICountriesService>();
-       
+
         [Fact]
         public async Task GetAllAsyncReturnsAllCountries()
         {
@@ -48,7 +49,7 @@
                     Assert.Equal(expected[2].Id, elem3.Id);
                     Assert.Equal(expected[2].Name, elem3.Name);
                 });
-            Assert.Equal(expected.Length, actual.Length);
+            Assert.Equal(expected.Length, actual.Count());
         }
     }
 }

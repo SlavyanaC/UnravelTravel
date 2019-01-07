@@ -12,9 +12,9 @@
     {
         Task<ActivityDetailsViewModel> CreateAsync(ActivityCreateInputModel activityCreateInputModel);
 
-        Task<ActivityViewModel[]> GetAllAsync();
+        Task<IEnumerable<ActivityViewModel>> GetAllAsync();
 
-        Task<ActivityViewModel[]> GetAllInDestinationAsync(int destinationId);
+        Task<IEnumerable<ActivityViewModel>> GetAllInDestinationAsync(int destinationId);
 
         Task EditAsync(ActivityEditViewModel activityToEditViewModel);
 

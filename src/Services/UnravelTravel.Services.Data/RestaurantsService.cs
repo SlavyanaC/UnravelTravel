@@ -45,7 +45,7 @@
             this.cloudinary = cloudinary;
         }
 
-        public async Task<RestaurantViewModel[]> GetAllAsync()
+        public async Task<IEnumerable<RestaurantViewModel>> GetAllAsync()
         {
             var restaurants = await this.restaurantsRepository
                 .All()
@@ -54,7 +54,7 @@
             return restaurants;
         }
 
-        public async Task<RestaurantViewModel[]> GetAllInDestinationAsync(int destinationId)
+        public async Task<IEnumerable<RestaurantViewModel>> GetAllInDestinationAsync(int destinationId)
         {
             var restaurants = await this.restaurantsRepository
                 .All()

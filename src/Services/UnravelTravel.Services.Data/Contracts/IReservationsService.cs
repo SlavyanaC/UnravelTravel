@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Services.Data.Contracts
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using UnravelTravel.Models.InputModels.Reservations;
@@ -12,6 +13,6 @@
 
         Task<ReservationDetailsViewModel> GetDetailsAsync(int id);
 
-        Task<ReservationDetailsViewModel[]> GetAllAsync(string username);
+        Task<IEnumerable<ReservationDetailsViewModel>> GetAllAsync(string username);
     }
 }

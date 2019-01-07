@@ -1,6 +1,7 @@
 ﻿namespace UnravelTravel.Services.Data.Contracts
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Destinations;
@@ -14,13 +15,13 @@
 
         Task EditAsync(DestinationEditViewModel destinationEditViewModel);
 
-        Task<DestinationViewModel[]> GetAllDestinationsAsync();
+        Task<IEnumerable<DestinationViewModel>> GetAllDestinationsAsync();
 
         Task<SearchResultViewModel> GetSearchResultAsync(int destinationId, DateTime startDate, DateTime endDate);
 
-        DestinationViewModel[] SortBy(DestinationViewModel[] destinations, DestinationSorter sorter);
+        IEnumerable<DestinationViewModel> SortBy(DestinationViewModel[] destinations, DestinationSorter sorter);
 
-        DestinationViewModel[] GetDestinationFromSearch(string searchString);
+        IEnumerable<DestinationViewModel> GetDestinationFromSearch(string searchString);
 
         Task<string> GetDestinationName(int destinationId);
     }
