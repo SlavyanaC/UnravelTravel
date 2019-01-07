@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GoogleMaps.LocationServices" Version="1.2.0.1" />
+    <PackageReference Include="RestSharp" Version="106.6.4" />
     <PackageReference Include="X.PagedList" Version="7.6.0" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.6.0" />
   </ItemGroup>

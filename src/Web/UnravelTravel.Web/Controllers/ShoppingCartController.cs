@@ -49,7 +49,6 @@
                 var cart = this.GetShoppingCartFromSession();
                 var shoppingCartActivity = await this.shoppingCartService.GetGuestShoppingCartActivityToAdd(id, quantity);
 
-                // TODO: Work with List<ShoppingCartActivityViewModel> instead of array
                 var cartAsList = cart.ToList();
                 cartAsList.Add(shoppingCartActivity);
                 this.HttpContext.Session.SetObjectAsJson(WebConstants.ShoppingCartSessionKey, cartAsList);

@@ -1,4 +1,8 @@
-﻿namespace UnravelTravel.Services.Data
+﻿using GoogleMaps.LocationServices;
+using RestSharp;
+using UnravelTravel.Common;
+
+namespace UnravelTravel.Services.Data
 {
     using System;
     using System.Collections.Generic;
@@ -77,14 +81,15 @@
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceDestinationId, activityCreateInputModel.DestinationId));
             }
 
-            // Sometimes Cloudinady throws null reference exception?!?
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, activityCreateInputModel.Image, activityCreateInputModel.Name);
+
+            var utcDate = this.GetUtcDate(destination.Name, destination.Country.Name, activityCreateInputModel.Date);
 
             var activity = new Activity
             {
                 Name = activityCreateInputModel.Name,
                 ImageUrl = imageUrl,
-                Date = activityCreateInputModel.Date,
+                Date = utcDate,
                 Type = activityTypeEnum,
                 Description = activityCreateInputModel.Description,
                 AdditionalInfo = activityCreateInputModel.AdditionalInfo,
@@ -99,6 +104,26 @@
 
             var activityDetailsViewModel = AutoMapper.Mapper.Map<ActivityDetailsViewModel>(activity);
             return activityDetailsViewModel;
+        }
+
+        private DateTime GetUtcDate(string destinationName, string countryName, DateTime localDateTime)
+        {
+            var address = $"{destinationName}, {countryName}";
+            var locationService = new GoogleLocationService(apikey: GoogleUtilitiess.ApiKey);
+            var point = locationService.GetLatLongFromAddress(address);
+            var latitude = point.Latitude;
+            var longitude = point.Longitude;
+
+            var client = new RestClient(GoogleUtilitiess.BaseUrl);
+            var requestTime = new RestRequest(GoogleUtilitiess.TimeZoneResource, Method.GET);
+            requestTime.AddParameter("location", $"{latitude},{longitude}");
+            requestTime.AddParameter("timestamp", GoogleUtilitiess.TimeStamp);
+            requestTime.AddParameter("key", GoogleUtilitiess.ApiKey);
+            var responseTime = client.Execute<GoogleTimeZone>(requestTime);
+            var rawOffsetInSeconds = responseTime.Data.RawOffset;
+
+            var utcDate = localDateTime.Subtract(new TimeSpan(0, 0, (int)rawOffsetInSeconds));
+            return utcDate;
         }
 
         public async Task<TViewModel> GetViewModelByIdAsync<TViewModel>(int id)

@@ -77,7 +77,6 @@
                 throw new InvalidOperationException(ServicesDataConstants.ZeroOrNegativeQuantity);
             }
 
-            // TODO: AutoMapper?
             var shoppingCartActivity = new ShoppingCartActivityViewModel
             {
                 ActivityId = activity.Id,
@@ -158,11 +157,9 @@
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, activityId));
             }
 
-            // TODO: use List<ShoppingCartActivityViewModel>
             var cartAsList = cart.ToList();
             cartAsList.Remove(shoppingCartActivityViewModel);
-            cart = cartAsList.ToArray();
-            return cart;
+            return cartAsList;
         }
 
         public async Task EditShoppingCartActivityAsync(int shoppingCartActivityId, string username, int newQuantity)
