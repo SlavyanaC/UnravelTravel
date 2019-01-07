@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     using HtmlAgilityPack;
@@ -66,21 +67,38 @@
             return ticketsViewModel;
         }
 
-        public async Task BookAllAsync(string username, ShoppingCartActivityViewModel[] shoppingCartActivities, string paymentMethod = "")
+        public async Task BookAllAsync(string userIdentifier, ShoppingCartActivityViewModel[] shoppingCartActivities, string paymentMethod = "")
         {
-            var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == username);
+            // If identifier is email the user is guest
+            var isGuest = Regex.IsMatch(userIdentifier, @"[^@]+@[^\.]+\..+"); 
+            if (isGuest)
+            {
+                await this.BookGuestUsersTickets(userIdentifier, shoppingCartActivities, paymentMethod);
+            }
+            else
+            {
+                await this.BookUsersTickets(userIdentifier, shoppingCartActivities, paymentMethod);
+            }
+        }
+
+        private async Task BookUsersTickets(string userIdentifier, IEnumerable<ShoppingCartActivityViewModel> shoppingCartActivities, string paymentMethod)
+        {
+            var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == userIdentifier);
             if (user == null)
             {
-                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, username));
+                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, userIdentifier));
             }
 
             var ticketIds = new List<int>();
             foreach (var shoppingCartActivity in shoppingCartActivities)
             {
-                var activity = await this.activitiesRepository.All().FirstOrDefaultAsync(a => a.Id == shoppingCartActivity.ActivityId);
+                var activity = await this.activitiesRepository.All()
+                    .FirstOrDefaultAsync(a => a.Id == shoppingCartActivity.ActivityId);
                 if (activity == null)
                 {
-                    throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceActivityId, shoppingCartActivity.ActivityId));
+                    throw new NullReferenceException(string.Format(
+                        ServicesDataConstants.NullReferenceActivityId,
+                        shoppingCartActivity.ActivityId));
                 }
 
                 if (shoppingCartActivity.Quantity <= 0)
@@ -88,11 +106,11 @@
                     throw new InvalidOperationException(ServicesDataConstants.ZeroOrNegativeQuantity);
                 }
 
-                var ticketId = await this.GetBookingId(user, activity, shoppingCartActivity.Quantity);
+                var ticketId = await this.GetBookingId(user.Id, activity, shoppingCartActivity.Quantity);
                 ticketIds.Add(ticketId);
             }
 
-            await this.shoppingCartsService.ClearShoppingCart(username);
+            await this.shoppingCartsService.ClearShoppingCart(userIdentifier);
 
             var emailContent = await this.GenerateEmailContent(ticketIds, paymentMethod);
             await this.emailSender.SendEmailAsync(
@@ -101,11 +119,41 @@
                 emailContent);
         }
 
-        private async Task<int> GetBookingId(UnravelTravelUser user, Activity activity, int quantity)
+        private async Task BookGuestUsersTickets(string userIdentifier, IEnumerable<ShoppingCartActivityViewModel> shoppingCartActivities, string paymentMethod)
+        {
+            var ticketIds = new List<int>();
+            foreach (var shoppingCartActivity in shoppingCartActivities)
+            {
+                var activity = await this.activitiesRepository.All()
+                    .FirstOrDefaultAsync(a => a.Id == shoppingCartActivity.ActivityId);
+                if (activity == null)
+                {
+                    throw new NullReferenceException(string.Format(
+                        ServicesDataConstants.NullReferenceActivityId,
+                        shoppingCartActivity.ActivityId));
+                }
+
+                if (shoppingCartActivity.Quantity <= 0)
+                {
+                    throw new InvalidOperationException(ServicesDataConstants.ZeroOrNegativeQuantity);
+                }
+
+                var ticketId = await this.GetBookingId(null, activity, shoppingCartActivity.Quantity);
+                ticketIds.Add(ticketId);
+            }
+
+            var emailContent = await this.GenerateEmailContent(ticketIds, paymentMethod);
+            await this.emailSender.SendEmailAsync(
+                userIdentifier,
+                ServicesDataConstants.BookingEmailSubject,
+                emailContent);
+        }
+
+        private async Task<int> GetBookingId(string userId, Activity activity, int quantity)
         {
             var ticket = new Ticket
             {
-                User = user,
+                UserId = userId,
                 Activity = activity,
                 Quantity = quantity,
             };
@@ -145,7 +193,9 @@
             var doc = new HtmlDocument();
             doc.Load(receiptPath);
 
-            paymentMethod = paymentMethod == "online" ? "Payed online" : "Pay when you get there";
+            paymentMethod = paymentMethod == GlobalConstants.OnlinePaymentMethod ?
+                ServicesDataConstants.OnlinePaymentEmailString :
+                ServicesDataConstants.CashPaymentEmailString;
 
             var content = doc.Text;
             content = content.Replace(ServicesDataConstants.TicketsInfoPlaceholder, ticketsInfo.ToString())

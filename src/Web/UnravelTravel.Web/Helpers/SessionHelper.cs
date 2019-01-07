@@ -9,7 +9,6 @@
         {
             session.SetString(key, JsonConvert.SerializeObject(value, new JsonSerializerSettings
             {
-                // ReferenceLoopHandling = ReferenceLoopHandling.Ignore, // Potential problems
             }));
         }
 

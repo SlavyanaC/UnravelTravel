@@ -5,6 +5,7 @@
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using UnravelTravel.Common;
     using UnravelTravel.Services.Data.Contracts;
 
     [Authorize]
@@ -19,14 +20,12 @@
             this.shoppingCartsService = shoppingCartsService;
         }
 
-        public async Task<IActionResult> BookGet() => await this.Book("online");
-
         [HttpPost]
-        public async Task<IActionResult> Book(string paymentMethod = "onsite")
+        public async Task<IActionResult> Book()
         {
-            var username = this.User.Identity.Name;
-            var shoppingCartActivities = await this.shoppingCartsService.GetAllShoppingCartActivitiesAsync(username);
-            await this.ticketsService.BookAllAsync(username, shoppingCartActivities.ToArray(), paymentMethod);
+            var userName = this.User.Identity.Name;
+            var shoppingCartActivities = await this.shoppingCartsService.GetAllShoppingCartActivitiesAsync(userName);
+            await this.ticketsService.BookAllAsync(userName, shoppingCartActivities.ToArray(), GlobalConstants.CashPaymentMethod);
             return this.RedirectToAction("All");
         }
 

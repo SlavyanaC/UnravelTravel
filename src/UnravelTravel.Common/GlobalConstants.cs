@@ -17,5 +17,9 @@
         public const string DateFormat = "dd-MMM-yyyy";
 
         public const string HourFormat = "hh:mm tt";
+
+        public const string OnlinePaymentMethod = "online";
+
+        public const string CashPaymentMethod = "cash";
     }
 }

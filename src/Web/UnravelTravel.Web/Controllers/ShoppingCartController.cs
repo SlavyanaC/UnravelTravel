@@ -16,10 +16,12 @@
     public class ShoppingCartController : BaseController
     {
         private readonly IShoppingCartsService shoppingCartService;
+        private readonly ITicketsService ticketsService;
 
-        public ShoppingCartController(IShoppingCartsService shoppingCartService)
+        public ShoppingCartController(IShoppingCartsService shoppingCartService, ITicketsService ticketsService)
         {
             this.shoppingCartService = shoppingCartService;
+            this.ticketsService = ticketsService;
         }
 
         public async Task<IActionResult> Index()
@@ -66,7 +68,7 @@
             else
             {
                 var cart = this.GetShoppingCartFromSession();
-                cart = this.shoppingCartService.EditGuestShoppingCartActivity(id, cart, newQuantity).ToArray();
+                cart = this.shoppingCartService.EditGuestShoppingCartActivity(id, cart.ToArray(), newQuantity).ToArray();
                 this.HttpContext.Session.SetObjectAsJson(WebConstants.ShoppingCartSessionKey, cart);
             }
 
@@ -83,7 +85,7 @@
             else
             {
                 var cart = this.GetShoppingCartFromSession();
-                cart = this.shoppingCartService.DeleteActivityFromGuestShoppingCart(id, cart).ToArray();
+                cart = this.shoppingCartService.DeleteActivityFromGuestShoppingCart(id, cart.ToArray()).ToArray();
                 this.HttpContext.Session.SetObjectAsJson(WebConstants.ShoppingCartSessionKey, cart);
             }
 
@@ -102,24 +104,38 @@
                 SourceToken = stripeToken,
             });
 
-            var username = this.User.Identity.Name;
-            var userTickets = await this.shoppingCartService.GetAllShoppingCartActivitiesAsync(username);
+            IEnumerable<ShoppingCartActivityViewModel> userTickets;
+            var userIdentifier = this.User.Identity.Name ?? stripeEmail;
+            if (this.User.Identity.Name != null)
+            {
+                userTickets = await this.shoppingCartService.GetAllShoppingCartActivitiesAsync(userIdentifier);
+            }
+            else
+            {
+                userTickets = this.GetShoppingCartFromSession();
+            }
+
             var totalSum = userTickets.Sum(ut => ut.ShoppingCartActivityTotalPrice);
             var totalSumInCents = totalSum * 100;
 
             var charge = charges.Create(new ChargeCreateOptions
             {
                 Amount = (long)totalSumInCents,
-                Description = $"{username} bought {userTickets.Count()} ticket on {DateTime.UtcNow}",
+                Description = $"{userIdentifier} bought {userTickets.Count()} ticket on {DateTime.UtcNow}",
                 Currency = "usd",
                 CustomerId = customer.Id,
                 ReceiptEmail = stripeEmail,
             });
 
-            return this.RedirectToAction("BookGet", "Tickets");
+            await this.ticketsService.BookAllAsync(userIdentifier, userTickets.ToArray(), GlobalConstants.OnlinePaymentMethod);
+            this.HttpContext.Session.Clear(); // TODO: Make sure this is ok
+
+            return this.User.Identity.Name != null ?
+                this.RedirectToAction(actionName: "All", controllerName: "Tickets") :
+                this.RedirectToAction(nameof(this.Index));
         }
 
-        private ShoppingCartActivityViewModel[] GetShoppingCartFromSession()
+        private IEnumerable<ShoppingCartActivityViewModel> GetShoppingCartFromSession()
         {
             return this.HttpContext.Session
                    .GetObjectFromJson<ShoppingCartActivityViewModel[]>(WebConstants.ShoppingCartSessionKey) ??

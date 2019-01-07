@@ -62,6 +62,10 @@
 
         public const string PaymentMethodPlaceholder = "@paymentMethod";
 
+        public const string OnlinePaymentEmailString = "Payed online";
+
+        public const string CashPaymentEmailString = "Pay when yuo get there";
+
         public const string ReservationReceiptEmailHtmlPath = "Views/Emails/reservation-receipt.html";
 
         public const string ReservationInfoPlaceholder = "@reservationInfo";

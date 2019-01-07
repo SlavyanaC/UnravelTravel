@@ -11,6 +11,6 @@
 
         Task<TicketDetailsViewModel[]> GetAllAsync(string username);
 
-        Task BookAllAsync(string username, ShoppingCartActivityViewModel[] shoppingCartActivities, string paymentMethod = "");
+        Task BookAllAsync(string userIdentifier, ShoppingCartActivityViewModel[] shoppingCartActivities, string paymentMethod = "");
     }
 }
