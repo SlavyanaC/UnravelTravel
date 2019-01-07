@@ -57,7 +57,7 @@
                     {
                         <form method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Edit" asp-route-id="@item.Id" asp-route-newQuantity="newQuantity">
                             <div class="row">
-                                <input type="number" id="newQuantity" name="newQuantity" class="form-control form-control-sm col-sm-3" value="@item.Quantity" />&nbsp;
+                                <input type="number" value="1" min="1" id="newQuantity" name="newQuantity" class="form-control form-control-sm col-sm-3" value="@item.Quantity" />&nbsp;
                                 <button type="submit" class="btn btn-sm btn-outline-primary">Edit</button>
                             </div>
                         </form>

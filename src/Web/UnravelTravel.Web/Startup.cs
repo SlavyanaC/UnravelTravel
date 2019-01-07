@@ -20,12 +20,12 @@
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Repositories;
     using UnravelTravel.Data.Seeding;
-    using UnravelTravel.Models.InputModels.Account;
     using UnravelTravel.Services.Data;
     using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Services.Mapping;
     using UnravelTravel.Services.Messaging;
+    using UnravelTravel.Web.Areas.Identity.Pages.Account.InputModels;
     using UnravelTravel.Web.Common;
     using UnravelTravel.Web.Middlewares;
 
