@@ -20,10 +20,14 @@
 
     public class ActivitiesServiceTests : BaseServiceTests
     {
+        private const int TestCountryId = 1;
+        private const string TestCountryName = "Bulgaria";
+        private const string SecondTestCountryName = "England";
+
         private const int TestDestinationId = 1;
-        private const string TestDestinationName = "Bulgaria";
+        private const string TestDestinationName = "Sofia";
         private const int SecondTestDestinationId = 2;
-        private const string SecondTestDestinationName = "USA";
+        private const string SecondTestDestinationName = "London";
 
         private const int TestActivityId = 1;
         private const string TestActivityName = "Test Activity 123";
@@ -46,12 +50,14 @@
         private const string TestReviewContent = "Testing review.";
 
         private readonly string testUserId = Guid.NewGuid().ToString();
+        private readonly DateTime testDate = DateTime.Now.AddDays(2);
 
         private IActivitiesService ActivitiesServiceMock => this.ServiceProvider.GetRequiredService<IActivitiesService>();
 
         [Fact]
-        public async Task GetAllAsyncReturnsAllRestaurants()
+        public async Task GetAllAsyncReturnsAllActivities()
         {
+            await this.AddTestingCountryToDb();
             await this.AddTestingDestinationToDb();
 
             this.DbContext.Activities.Add(new Activity
@@ -67,6 +73,7 @@
                 Name = SecondTestActivityName,
                 DestinationId = TestDestinationId,
                 Type = ActivityType.Adventure,
+                Date = testDate,
             });
             await this.DbContext.SaveChangesAsync();
 
@@ -79,6 +86,7 @@
                     DestinationId = TestDestinationId,
                     DestinationName = TestDestinationName,
                     Type = TestActivityType,
+                    Date = testDate,
                 },
                 new ActivityViewModel
                 {
@@ -87,6 +95,7 @@
                     DestinationId = TestDestinationId,
                     DestinationName = TestDestinationName,
                     Type = TestActivityType,
+                    Date = testDate,
                 },
             };
 
@@ -123,6 +132,7 @@
         [Fact]
         public async Task GetViewModelByIdAsyncReturnsCorrectViewModel()
         {
+            await this.AddTestingCountryToDb();
             await this.AddTestingDestinationToDb();
             await this.AddTestingActivityToDb();
 
@@ -254,6 +264,7 @@
         [Fact]
         public async Task CreateAsyncAddsActivityToDbContext()
         {
+            await this.AddTestingCountryToDb();
             await this.AddTestingDestinationToDb();
 
             ActivityDetailsViewModel activityDetailsViewModel;
@@ -271,6 +282,7 @@
                     DestinationId = TestDestinationId,
                     Type = TestActivityType,
                     Image = file,
+                    Date = this.testDate,
                 };
 
                 activityDetailsViewModel = await this.ActivitiesServiceMock.CreateAsync(activityCreateInputModel);
@@ -351,7 +363,7 @@
 
             await this.DbContext.SaveChangesAsync();
 
-            this.DbContext.Destinations.Add(new Destination{Id = SecondTestDestinationId, Name = SecondTestDestinationName});
+            this.DbContext.Destinations.Add(new Destination { Id = SecondTestDestinationId, Name = SecondTestDestinationName });
             await this.DbContext.SaveChangesAsync();
 
             var newName = SecondTestActivityName;
@@ -564,6 +576,7 @@
                 Name = TestActivityName,
                 DestinationId = TestDestinationId,
                 Type = ActivityType.Adventure,
+                Date = this.testDate,
             });
             await this.DbContext.SaveChangesAsync();
         }
@@ -574,7 +587,14 @@
             {
                 Id = TestDestinationId,
                 Name = TestDestinationName,
+                CountryId = TestCountryId,
             });
+            await this.DbContext.SaveChangesAsync();
+        }
+
+        private async Task AddTestingCountryToDb()
+        {
+            this.DbContext.Countries.Add(new Country { Id = TestCountryId, Name = TestCountryName });
             await this.DbContext.SaveChangesAsync();
         }
     }

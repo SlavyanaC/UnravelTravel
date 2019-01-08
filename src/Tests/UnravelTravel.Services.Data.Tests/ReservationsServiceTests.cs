@@ -21,10 +21,10 @@
         private const string TestRestaurantAddress = "123 Lyulyak Street, Sofia";
 
         private const int TestDestinationId = 1;
-        private const string TestDestinationName = "SofiaTest";
+        private const string TestDestinationName = "Sofia";
 
         private const int TestCountryId = 1;
-        private const string TestCountryName = "BulgariaTest";
+        private const string TestCountryName = "Bulgaria";
 
         private const string NotExistingUsername = "Stamat";
 
@@ -44,6 +44,7 @@
             await this.AddTestingCountryToDb();
             await this.AddTestingDestinationToDb();
             await this.AddTestingRestaurantToDb();
+
             var reservationCreateInputModel = this.GetTestingReservationCreateInputModel();
             var reservationViewModel = await this.ReservationsServiceMock.BookAsync(TestRestaurantId, TestUsername, reservationCreateInputModel);
 
@@ -120,6 +121,8 @@
         public async Task GetDetailsAsyncReturnsCorrectReservationDetails()
         {
             await this.AddTestingUserToDb();
+            await this.AddTestingCountryToDb();
+            await this.AddTestingDestinationToDb();
             await this.AddTestingRestaurantToDb();
 
             this.DbContext.Reservations.Add(new Reservation
@@ -161,6 +164,8 @@
         public async Task GetAllAsyncReturnsAllReservationForTheUser()
         {
             await this.AddTestingUserToDb();
+            await this.AddTestingCountryToDb();
+            await this.AddTestingDestinationToDb();
             await this.AddTestingRestaurantToDb();
 
             this.DbContext.Reservations.Add(new Reservation
@@ -226,6 +231,8 @@
         public async Task GetAllAsyncDoesNotReturnAnotherUsersReservations()
         {
             await this.AddTestingUserToDb();
+            await this.AddTestingCountryToDb();
+            await this.AddTestingDestinationToDb();
             await this.AddTestingRestaurantToDb();
 
             this.DbContext.Reservations.Add(new Reservation

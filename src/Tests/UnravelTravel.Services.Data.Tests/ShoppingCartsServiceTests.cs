@@ -12,6 +12,10 @@
 
     public class ShoppingCartsServiceTests : BaseServiceTests
     {
+        private const int TestCountryId = 1;
+        private const string TestCountryName = "Bulgaria";
+        private const string SecondTestCountryName = "England";
+
         private const string TestUsername = "Tester";
         private const string SecondTestUsername = "Prokop";
 
@@ -73,6 +77,7 @@
         [Fact]
         public async Task GetAllShoppingCartActivitiesAsyncReturnsCorrectShoppingCart()
         {
+            await this.AddTestingCountryToDb();
             await this.AddTestingDestinationToDb();
             await this.GetAllShoppingCartActivitiesSetDbContext();
             var expected = GetAllShoppingCartActivitiesExpectedResult();
@@ -524,6 +529,7 @@
             {
                 Id = TestDestinationId,
                 Name = TestDestinationName,
+                CountryId = TestCountryId,
             });
             await this.DbContext.SaveChangesAsync();
         }
@@ -540,6 +546,12 @@
                     UserId = testUserId,
                 }
             });
+            await this.DbContext.SaveChangesAsync();
+        }
+
+        private async Task AddTestingCountryToDb()
+        {
+            this.DbContext.Countries.Add(new Country { Id = TestCountryId, Name = TestCountryName });
             await this.DbContext.SaveChangesAsync();
         }
     }

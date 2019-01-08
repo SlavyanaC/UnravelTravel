@@ -13,6 +13,10 @@
 
     public class TicketsServiceTests : BaseServiceTests
     {
+        private const int TestCountryId = 1;
+        private const string TestCountryName = "Bulgaria";
+        private const string SecondTestCountryName = "England";
+
         private const string TestUsername = "Pesho";
         private const string NotExistingUsername = "Stamat";
         private const string TestUserEmail = "pesho@pesho.pesho";
@@ -133,6 +137,7 @@
         public async Task GetDetailsAsyncReturnsCorrectTicketDetails()
         {
             await this.AddTestingUserToDb();
+            await this.AddTestingCountryToDb();
             await this.AddTestingActivityToDb();
 
             this.DbContext.Tickets.Add(new Ticket
@@ -169,6 +174,7 @@
         public async Task GetAllAsyncReturnsAllTicketsForTheUser()
         {
             await this.AddTestingUserToDb();
+            await this.AddTestingCountryToDb();
             await this.AddTestingActivityToDb();
 
             this.DbContext.Tickets.Add(new Ticket
@@ -222,6 +228,7 @@
         public async Task GetAllAsyncDoesNotReturnAnotherUsersTickets()
         {
             await this.AddTestingUserToDb();
+            await this.AddTestingCountryToDb();
             await this.AddTestingActivityToDb();
 
             this.DbContext.Tickets.Add(new Ticket
@@ -288,16 +295,6 @@
             await this.DbContext.SaveChangesAsync();
         }
 
-        private async Task AddTestingDestinationToDb()
-        {
-            this.DbContext.Destinations.Add(new Destination()
-            {
-                Id = TestingDestinationId,
-                Name = TestingDestinationName,
-            });
-            await this.DbContext.SaveChangesAsync();
-        }
-
         private ShoppingCartActivityViewModel[] GetShoppingCartActivityViewModels()
         {
             return new ShoppingCartActivityViewModel[]
@@ -317,6 +314,23 @@
                     ShoppingCartUserId = testingUserId,
                 },
             };
+        }
+
+        private async Task AddTestingDestinationToDb()
+        {
+            this.DbContext.Destinations.Add(new Destination()
+            {
+                Id = TestingDestinationId,
+                Name = TestingDestinationName,
+                CountryId = TestCountryId,
+            });
+            await this.DbContext.SaveChangesAsync();
+        }
+
+        private async Task AddTestingCountryToDb()
+        {
+            this.DbContext.Countries.Add(new Country { Id = TestCountryId, Name = TestCountryName });
+            await this.DbContext.SaveChangesAsync();
         }
     }
 }
