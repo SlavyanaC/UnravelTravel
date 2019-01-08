@@ -15,7 +15,8 @@
     {
         private const int TestCountryId = 1;
         private const string TestCountryName = "Bulgaria";
-        private const string SecondTestCountryName = "England";
+
+        private const string TestGuestEmail = "guest@guest.guest";
 
         private const string TestUsername = "Pesho";
         private const string NotExistingUsername = "Stamat";
@@ -33,8 +34,10 @@
 
         private ITicketsService TicketsServiceMock => this.ServiceProvider.GetRequiredService<ITicketsService>();
 
-        [Fact]
-        public async Task BookAllAsyncAddsTicketsToUserTickets()
+        [Theory]
+        [InlineData(TestUsername)]
+        [InlineData(TestGuestEmail)]
+        public async Task BookAllAsyncAddsTicketsToUserTickets(string userIdentifier)
         {
             await this.AddTestingUserToDb();
             await this.AddTestingActivityToDb();
@@ -48,7 +51,7 @@
             await this.DbContext.SaveChangesAsync();
 
             var shoppingCartActivityViewModels = this.GetShoppingCartActivityViewModels();
-            await this.TicketsServiceMock.BookAllAsync(TestUsername, shoppingCartActivityViewModels);
+            await this.TicketsServiceMock.BookAllAsync(userIdentifier, shoppingCartActivityViewModels);
 
             var expectedTicketsCount = 2;
             var actualTicketsCount = this.DbContext.Tickets.Count();
@@ -71,6 +74,7 @@
             await this.DbContext.SaveChangesAsync();
 
             var shoppingCartActivityViewModels = this.GetShoppingCartActivityViewModels();
+
             await this.TicketsServiceMock.BookAllAsync(TestUsername, shoppingCartActivityViewModels);
 
             var expectedUsersShoppingCartItemsCount = 0;
@@ -93,19 +97,23 @@
             Assert.Equal(string.Format(ServicesDataConstants.NullReferenceUsername, NotExistingUsername), exception.Message);
         }
 
-        [Fact]
-        public async Task BookAllAsyncThrowsNullReferenceExceptionIfActivityNotFound()
+        [Theory]
+        [InlineData(TestUsername)]
+        [InlineData(TestGuestEmail)]
+        public async Task BookAllAsyncThrowsNullReferenceExceptionIfActivityNotFound(string userIdentifier)
         {
             await this.AddTestingUserToDb();
             var shoppingCartActivityViewModels = this.GetShoppingCartActivityViewModels();
 
             var exception = await Assert.ThrowsAsync<NullReferenceException>(() =>
-                this.TicketsServiceMock.BookAllAsync(TestUsername, shoppingCartActivityViewModels));
+                this.TicketsServiceMock.BookAllAsync(userIdentifier, shoppingCartActivityViewModels));
             Assert.Equal(string.Format(ServicesDataConstants.NullReferenceActivityId, TestingActivityId), exception.Message);
         }
 
-        [Fact]
-        public async Task BookAllAsyncThrowsInvalidOperationExceptionIfZeroOrNegativeQuantity()
+        [Theory]
+        [InlineData(TestUsername)]
+        [InlineData(TestGuestEmail)]
+        public async Task BookAllAsyncThrowsInvalidOperationExceptionIfZeroOrNegativeQuantity(string userIdentifier)
         {
             await this.AddTestingUserToDb();
             await this.AddTestingActivityToDb();
@@ -129,7 +137,7 @@
             };
 
             var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                this.TicketsServiceMock.BookAllAsync(TestUsername, shoppingCartActivityViewModels));
+                this.TicketsServiceMock.BookAllAsync(userIdentifier, shoppingCartActivityViewModels));
             Assert.Equal(ServicesDataConstants.ZeroOrNegativeQuantity, exception.Message);
         }
 
