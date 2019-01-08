@@ -1,4 +1,7 @@
-﻿namespace UnravelTravel.Services.Data.Tests
+﻿using System.Collections.Generic;
+using UnravelTravel.Models.ViewModels.Enums;
+
+namespace UnravelTravel.Services.Data.Tests
 {
     using System;
     using System.IO;
@@ -22,7 +25,6 @@
     {
         private const int TestCountryId = 1;
         private const string TestCountryName = "Bulgaria";
-        private const string SecondTestCountryName = "England";
 
         private const int TestDestinationId = 1;
         private const string TestDestinationName = "Sofia";
@@ -32,6 +34,8 @@
         private const int TestActivityId = 1;
         private const string TestActivityName = "Test Activity 123";
         private const string TestActivityType = "Adventure";
+        private const string TestActivityAddress = "bul. Bulgaria 102";
+        private const string SecondTestActivityAddress = "15 Vitosha Str.";
 
         private const int SecondTestActivityId = 2;
         private const string SecondTestActivityName = "Secondd Activity";
@@ -116,6 +120,123 @@
                     Assert.Equal(expected[1].DestinationName, elem2.DestinationName);
                     Assert.Equal(expected[1].Type, elem2.Type);
                 });
+            Assert.Equal(expected.Length, actual.Count());
+        }
+
+        [Fact]
+        public async Task GetAllInDestinationAsyncReturnsAllActivitiesInDestination()
+        {
+            await this.AddTestingCountryToDb();
+            this.DbContext.Destinations.Add(new Destination
+            {
+                Id = SecondTestDestinationId,
+                Name = SecondTestDestinationName,
+                CountryId = TestCountryId,
+            });
+            this.DbContext.Activities.AddRange(new List<Activity>
+            {
+                new Activity
+                {
+                    Id = TestActivityId,
+                    Name = TestActivityName,
+                    DestinationId = SecondTestDestinationId,
+                    Type = ActivityType.Adventure,
+                },
+                new Activity
+                {
+                    Id = SecondTestActivityId,
+                    Name = SecondTestActivityName,
+                    DestinationId = SecondTestDestinationId,
+                    Type = ActivityType.Other,
+                }
+            });
+            await this.DbContext.SaveChangesAsync();
+
+            var expected = new ActivityViewModel[]
+            {
+                new ActivityViewModel
+                {
+                    Id = TestActivityId,
+                    Name = TestActivityName,
+                    DestinationId = SecondTestDestinationId,
+                    Type = ActivityType.Adventure.ToString(),
+                },
+                new ActivityViewModel
+                {
+                    Id = SecondTestActivityId,
+                    Name = SecondTestActivityName,
+                    DestinationId = SecondTestDestinationId,
+                    Type = ActivityType.Other.ToString(),
+                },
+            };
+
+            var actual = await this.ActivitiesServiceMock.GetAllInDestinationAsync(SecondTestDestinationId);
+
+            Assert.Collection(actual,
+                elem1 =>
+                {
+                    Assert.Equal(expected[0].Id, elem1.Id);
+                    Assert.Equal(expected[0].Name, elem1.Name);
+                    Assert.Equal(expected[0].DestinationId, elem1.DestinationId);
+                    Assert.Equal(expected[0].Type, elem1.Type);
+                },
+                elem2 =>
+                {
+                    Assert.Equal(expected[1].Id, elem2.Id);
+                    Assert.Equal(expected[1].Name, elem2.Name);
+                    Assert.Equal(expected[1].DestinationId, elem2.DestinationId);
+                    Assert.Equal(expected[1].Type, elem2.Type);
+                });
+            Assert.Equal(expected.Length, actual.Count());
+        }
+
+        [Fact]
+        public async Task GetAllInDestinationDoesNotReturnActivitiesInOtherDestinations()
+        {
+            await this.AddTestingCountryToDb();
+            this.DbContext.Destinations.Add(new Destination
+            {
+                Id = SecondTestDestinationId,
+                Name = SecondTestDestinationName,
+                CountryId = TestCountryId,
+            });
+            this.DbContext.Activities.AddRange(new List<Activity>
+            {
+                new Activity
+                {
+                    Id = TestActivityId,
+                    Name = TestActivityName,
+                    DestinationId = SecondTestDestinationId,
+                    Type = ActivityType.Adventure,
+                },
+                new Activity
+                {
+                    Id = SecondTestActivityId,
+                    Name = SecondTestActivityName,
+                    DestinationId = TestDestinationId,
+                    Type = ActivityType.Other,
+                }
+            });
+            await this.DbContext.SaveChangesAsync();
+
+            var expected = new ActivityViewModel[]
+            {
+                new ActivityViewModel
+                {
+                    Id = TestActivityId,
+                    Name = TestActivityName,
+                    DestinationId = SecondTestDestinationId,
+                    Type = ActivityType.Adventure.ToString(),
+                },
+            };
+
+            var actual = await this.ActivitiesServiceMock.GetAllInDestinationAsync(SecondTestDestinationId);
+
+            Assert.Equal(expected[0].Id, actual.First().Id);
+            Assert.Equal(expected[0].Name, actual.First().Name);
+            Assert.Equal(expected[0].DestinationId, actual.First().DestinationId);
+            Assert.Equal(expected[0].Type, actual.First().Type);
+
             Assert.Equal(expected.Length, actual.Count());
         }
 
@@ -562,6 +683,129 @@
             Assert.Equal(expected, actual);
         }
 
+        [Theory]
+        [InlineData(TestActivityName, 1, null)]
+        [InlineData(SecondTestActivityAddress, 1, null)]
+        [InlineData(TestUserName, 0, null)]
+        [InlineData(TestActivityName, 1, TestDestinationId)]
+        [InlineData(SecondTestActivityAddress, 0, SecondTestDestinationId)]
+        public async Task GetActivitiesFromSearchReturnsAllActivitiesContainingSearchString(string searchString, int expectedCount, int? destinationId)
+        {
+            await this.AddTestingCountryToDb();
+            await this.AddTestingDestinationToDb();
+            this.DbContext.Destinations.Add(new Destination { Id = SecondTestDestinationId, Name = SecondTestDestinationName });
+            this.DbContext.Activities.AddRange(new List<Activity>
+            {
+                new Activity
+                {
+                    Id=TestActivityId,
+                    Name = TestActivityName,
+                    DestinationId = TestDestinationId,
+                    Type = ActivityType.Shopping,
+                    Address = SecondTestActivityAddress,
+                    Description = "Some description here",
+
+                },
+                new Activity
+                {
+                    Id = SecondTestActivityId,
+                    Name = SecondTestActivityName,
+                    DestinationId = SecondTestDestinationId,
+                    Type = ActivityType.Adventure,
+                    Address = SecondTestActivityAddress,
+                    Description = "Another description here",
+                }
+            });
+            await this.DbContext.SaveChangesAsync();
+
+            var actual = this.ActivitiesServiceMock.GetActivitiesFromSearch(searchString, destinationId);
+            Assert.Equal(expectedCount, actual.Count());
+        }
+
+        [Theory]
+        [InlineData(ActivitiesSorter.Upcoming, "Aaa")]
+        [InlineData(null, "Aaa")]
+        [InlineData(ActivitiesSorter.Name, "Aaa")]
+        [InlineData(ActivitiesSorter.Destination, "Aaa")]
+        [InlineData(ActivitiesSorter.Type, "Zzz")]
+        public async Task SortBySortsRestaurantAsExpected(ActivitiesSorter sorter, string expectedFirstActivityName)
+        {
+            await this.AddTestingCountryToDb();
+            this.DbContext.Destinations.AddRange(new List<Destination>
+            {
+                new Destination{Id = TestDestinationId, Name = TestDestinationName, CountryId = TestCountryId},
+                new Destination{Id = SecondTestDestinationId, Name = "Aaa", CountryId = TestCountryId},
+            });
+            this.DbContext.Activities.AddRange(new List<Activity>
+            {
+                new Activity
+                {
+                    Name = "Aaa",
+                    DestinationId = TestDestinationId,
+                    Type = ActivityType.Recreation,
+                    Date = DateTime.Now.AddDays(1),
+                },
+                new Activity
+                {
+                    Name = TestActivityName,
+                    DestinationId = SecondTestDestinationId,
+                    Type = ActivityType.Culture,
+                    Date = DateTime.Now.AddDays(2),
+                }, // Destination
+                new Activity
+                {
+                    Name = SecondTestActivityName,
+                    DestinationId = TestDestinationId,
+                    Type = ActivityType.Shopping,
+                    Date = DateTime.Now.AddDays(3),
+                },
+                new Activity
+                {
+                    Name = "Zzz",
+                    DestinationId = TestDestinationId,
+                    Type = ActivityType.Adventure,
+                    Date = DateTime.Now.AddDays(4),
+                }, // Type
+            });
+            await this.DbContext.SaveChangesAsync();
+
+            var activitiesToSort = new ActivityViewModel[]
+            {
+                new ActivityViewModel
+                {
+                    Name = "Aaa",
+                    DestinationId = TestDestinationId,
+                    Type = ActivityType.Recreation.ToString(),
+                    Date = DateTime.Now.AddDays(1),
+                },
+                new ActivityViewModel
+                {
+                    Name = TestActivityName,
+                    DestinationId = SecondTestDestinationId,
+                    Type = ActivityType.Culture.ToString(),
+                    Date = DateTime.Now.AddDays(2),
+                },
+                new ActivityViewModel
+                {
+                    Name = SecondTestActivityName,
+                    DestinationId = TestDestinationId,
+                    Type = ActivityType.Shopping.ToString(),
+                    Date = DateTime.Now.AddDays(3),
+                },
+                new ActivityViewModel
+                {
+                    Name = "Zzz",
+                    DestinationId = TestDestinationId,
+                    Type = ActivityType.Adventure.ToString(),
+                    Date = DateTime.Now.AddDays(4),
+                },
+            };
+
+            var actual = this.ActivitiesServiceMock.SortBy(activitiesToSort, sorter);
+            Assert.Equal(expectedFirstActivityName, actual.First().Name);
+        }
+
+
         private async Task AddTestingUserToDb()
         {
             this.DbContext.Add(new UnravelTravelUser { Id = this.testUserId, UserName = TestUserName });
@@ -577,6 +821,7 @@
                 DestinationId = TestDestinationId,
                 Type = ActivityType.Adventure,
                 Date = this.testDate,
+                Address = TestActivityAddress,
             });
             await this.DbContext.SaveChangesAsync();
         }

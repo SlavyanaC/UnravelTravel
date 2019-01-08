@@ -221,7 +221,6 @@
                 .Where(a => escapedSearchTokens.All(t => a.Name.ToLower().Contains(t.ToLower())) ||
                             escapedSearchTokens.All(t => a.Description.ToLower().Contains(t.ToLower())) ||
                             escapedSearchTokens.All(t => a.Address.ToLower().Contains(t.ToLower())) ||
-                            escapedSearchTokens.All(t => a.Description.ToLower().Contains(t.ToLower())) ||
                             escapedSearchTokens.All(t => a.Destination.Name.ToLower().Contains(t.ToLower())) ||
                             escapedSearchTokens.All(t => a.Type.ToString().ToLower().Contains(t.ToLower())))
                 .To<ActivityViewModel>()
