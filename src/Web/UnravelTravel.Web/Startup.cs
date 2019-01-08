@@ -92,6 +92,8 @@
                     options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
                 });
 
+            services.AddResponseCompression(options => { options.EnableForHttps = true; });
+
             services
                  .ConfigureApplicationCookie(options =>
                  {
@@ -183,6 +185,7 @@
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseResponseCompression();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
