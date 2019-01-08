@@ -185,25 +185,6 @@
             return searchResultViewModel;
         }
 
-        public IEnumerable<DestinationViewModel> GetDestinationFromSearch(string searchString)
-        {
-            var escapedSearchTokens = searchString.Split(new char[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var destinations = this.destinationsRepository
-                .All()
-                .Where(d => escapedSearchTokens.All(t => d.Name.ToLower().Contains(t.ToLower())) ||
-                            escapedSearchTokens.All(t => d.Country.Name.ToLower().Contains(t.ToLower())) ||
-                            escapedSearchTokens.All(t => d.Country.Name.ToLower().Contains(t.ToLower())) ||
-                            escapedSearchTokens.All(t => d.Activities.Any(a =>
-                                                            a.Name.ToLower().Contains(t.ToLower()))) ||
-                            escapedSearchTokens.All(t => d.Restaurants.Any(a =>
-                                                            a.Name.ToLower().Contains(t.ToLower()))))
-                .To<DestinationViewModel>()
-                .ToArray();
-
-            return destinations;
-        }
-
         public async Task<string> GetDestinationName(int destinationId)
         {
             var destination = await this.destinationsRepository.All().FirstOrDefaultAsync(d => d.Id == destinationId);
@@ -213,6 +194,24 @@
             }
 
             return destination.Name;
+        }
+
+        public IEnumerable<DestinationViewModel> GetDestinationFromSearch(string searchString)
+        {
+            var escapedSearchTokens = searchString.Split(new char[] { ' ', ',', '.', ':', '=', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var destinations = this.destinationsRepository
+                .All()
+                .Where(d => escapedSearchTokens.All(t => d.Name.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => d.Country.Name.ToLower().Contains(t.ToLower())) ||
+                            escapedSearchTokens.All(t => d.Activities.Any(a =>
+                                                            a.Name.ToLower().Contains(t.ToLower()))) ||
+                            escapedSearchTokens.All(t => d.Restaurants.Any(a =>
+                                                            a.Name.ToLower().Contains(t.ToLower()))))
+                .To<DestinationViewModel>()
+                .ToArray();
+
+            return destinations;
         }
 
         public IEnumerable<DestinationViewModel> SortBy(DestinationViewModel[] destinations, DestinationSorter sorter)

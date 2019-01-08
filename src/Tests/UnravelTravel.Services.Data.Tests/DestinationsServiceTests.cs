@@ -1,4 +1,7 @@
-﻿namespace UnravelTravel.Services.Data.Tests
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using UnravelTravel.Models.ViewModels.Enums;
+
+namespace UnravelTravel.Services.Data.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -158,6 +161,59 @@
                     Assert.Equal(activitiesDbSet.Last().Name, destinationDetailsViewModel.Name);
                     Assert.Equal(activitiesDbSet.Last().Country.Name, destinationDetailsViewModel.CountryName);
                 });
+        }
+
+        [Fact]
+        public async Task CreateAsyncReturnsExistingViewModelIfRestaurantExists()
+        {
+            await this.AddTestingDestinationToDb();
+            await this.AddTestingCountryToDb();
+
+            DestinationDetailsViewModel destinationDetailsViewModel;
+            using (var stream = File.OpenRead(TestImagePath))
+            {
+                var file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentType = TestImageContentType,
+                };
+
+                var destinationCreateInputModel = new DestinationCreateInputModel()
+                {
+                    Name = TestDestinationName,
+                    CountryId = TestCountryId,
+                    Image = file,
+                };
+
+                destinationDetailsViewModel = await this.DestinationsServiceMock.CreateAsync(destinationCreateInputModel);
+            }
+
+            ApplicationCloudinary.DeleteImage(ServiceProvider.GetRequiredService<Cloudinary>(), destinationDetailsViewModel.Name);
+
+            var destinationsDbSet = this.DbContext.Destinations.OrderBy(r => r.CreatedOn);
+
+            Assert.Equal(destinationsDbSet.Last().Id, destinationDetailsViewModel.Id);
+            Assert.Equal(destinationsDbSet.Last().Name, destinationDetailsViewModel.Name);
+            Assert.Equal(destinationsDbSet.Last().Country.Name, destinationDetailsViewModel.CountryName);
+        }
+
+        [Fact]
+        public async Task GetDestinationNameReturnsDestinationsNameById()
+        {
+            await this.AddTestingCountryToDb();
+            await this.AddTestingDestinationToDb();
+
+            var actual = await this.DestinationsServiceMock.GetDestinationName(TestDestinationId);
+            Assert.Equal(TestDestinationName, actual);
+        }
+
+        [Fact]
+        public async Task GetDestinationNameThrowsNullReferenceExceptionIfDestinationNotFound()
+        {
+            var exception =
+                await Assert.ThrowsAsync<NullReferenceException>(() =>
+                    this.DestinationsServiceMock.GetDestinationName(TestDestinationId));
+            Assert.Equal(string.Format(ServicesDataConstants.NullReferenceDestinationId, TestDestinationId), exception.Message);
         }
 
         [Fact]
@@ -357,6 +413,70 @@
             Assert.Equal(expected.EndDate, actual.EndDate);
             Assert.Equal(expected.Activities.Count(), actual.Activities.Count());
             Assert.Equal(expected.Restaurants.Count(), actual.Restaurants.Count());
+        }
+
+        [Theory]
+        [InlineData(TestCountryName, 1)]
+        [InlineData(SecondTestRestaurantName, 0)]
+        [InlineData(TestActivityName, 1)]
+        [InlineData(TestRestaurantName, 2)]
+        public async Task GetDestinationsFromSearchReturnsAllDestinationsContainingSearchString(string searchString, int expectedCount)
+        {
+            this.DbContext.Countries.AddRange(new List<Country>
+            {
+                new Country { Id=TestCountryId, Name = TestCountryName, },
+                new Country { Id=SecondTestCountryId, Name = SecondTestCountryName, },
+            });
+            this.DbContext.Destinations.AddRange(new List<Destination>
+            {
+                new Destination { Id = TestDestinationId, Name = TestDestinationName, CountryId = TestCountryId},
+                new Destination { Id = SecondTestDestinationId, Name = SecondTestDestinationName, CountryId = SecondTestCountryId},
+            });
+            this.DbContext.Activities.AddRange(new List<Activity>
+            {
+                new Activity { Name = TestActivityName, DestinationId = TestDestinationId, },
+                new Activity { Name = SecondTestActivityName, DestinationId = TestDestinationId, },
+            });
+            this.DbContext.Restaurants.AddRange(new List<Restaurant>()
+            {
+                new Restaurant { Name = TestRestaurantName, DestinationId = TestDestinationId, },
+                new Restaurant { Name = TestRestaurantName, DestinationId = SecondTestDestinationId, },
+            });
+            await this.DbContext.SaveChangesAsync();
+
+            var actual = this.DestinationsServiceMock.GetDestinationFromSearch(searchString);
+
+            Assert.Equal(expectedCount, actual.Count());
+        }
+
+        [Theory]
+        [InlineData(DestinationSorter.CountryName, "Aaa")]
+        [InlineData(DestinationSorter.ActivitiesCount, "Some name")]
+        [InlineData(DestinationSorter.RestaurantsCount, "Another destination")]
+        [InlineData(null, "Aaa")]
+        public async Task SortBySortsDestinationsAsExpected(DestinationSorter sorter, string expectedFirstDestinationName)
+        {
+            this.DbContext.Destinations.AddRange(new List<Destination>
+            {
+                new Destination { Id = TestDestinationId,   Name = "Aaa", },
+                new Destination { Id = SecondTestDestinationId,Name = SecondTestDestinationName, },
+                new Destination { Id = 3,  Name = "Some name", },
+                new Destination { Id = 4, Name = "Another destination", },
+            });
+            this.DbContext.Activities.Add(new Activity { DestinationId = 3 });
+            this.DbContext.Restaurants.Add(new Restaurant { DestinationId = 4 });
+            await this.DbContext.SaveChangesAsync();
+
+            var destinationsToSort = new DestinationViewModel[]
+            {
+                new DestinationViewModel { Id = TestDestinationId,   Name = "Aaa", },
+                new DestinationViewModel { Id = SecondTestDestinationId,Name = SecondTestDestinationName, },
+                new DestinationViewModel { Id = 3,  Name = "Some name", ActivitiesCount = 1},
+                new DestinationViewModel { Id = 4, Name = "Another destination", RestaurantsCount = 1},
+            };
+
+            var actual = this.DestinationsServiceMock.SortBy(destinationsToSort, sorter);
+            Assert.Equal(expectedFirstDestinationName, actual.First().Name);
         }
 
         private SearchResultViewModel GetSearchResultExpected()
