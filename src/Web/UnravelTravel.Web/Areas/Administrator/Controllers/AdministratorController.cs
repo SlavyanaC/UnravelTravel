@@ -9,7 +9,6 @@
     [Area("Administrator")]
     [Authorize(Roles = "Administrator")]
     [AdminExceptionStoreExceptionFilter]
-    [ModelStateValidationActionFilter]
     public class AdministratorController : BaseController
     {
         protected bool IsImageTypeValid(string fileType)

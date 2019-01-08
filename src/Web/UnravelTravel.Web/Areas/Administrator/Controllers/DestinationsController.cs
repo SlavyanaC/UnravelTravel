@@ -1,16 +1,14 @@
 ﻿namespace UnravelTravel.Web.Areas.Administrator.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Destinations;
     using UnravelTravel.Models.ViewModels.Destinations;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Common;
+    using UnravelTravel.Web.Filters;
 
     public class DestinationsController : AdministratorController
     {
@@ -30,6 +28,7 @@
         }
 
         [HttpPost]
+        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Create(DestinationCreateInputModel destinationCreateInputModel)
         {
             var fileType = destinationCreateInputModel.Image.ContentType.Split('/')[1];
@@ -50,6 +49,7 @@
         }
 
         [HttpPost]
+        [ModelStateValidationActionFilter]
         public async Task<IActionResult> Edit(DestinationEditViewModel destinationEditViewModel)
         {
             if (destinationEditViewModel.NewImage != null)
