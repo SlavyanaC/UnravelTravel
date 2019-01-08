@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-
-namespace UnravelTravel.Services.Data
+﻿namespace UnravelTravel.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
     using HtmlAgilityPack;
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.EntityFrameworkCore;
+    using UnravelTravel.Common.Extensions;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.InputModels.Reservations;
@@ -48,8 +48,10 @@ namespace UnravelTravel.Services.Data
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceRestaurantId, restaurantId));
             }
 
-            var reservation = await this.reservationsRepository.All().FirstOrDefaultAsync(r =>
-                r.User == user && r.Restaurant == restaurant && r.Date == reservationCreateInputModel.Date);
+            var reservation = await this.reservationsRepository.All()
+                .FirstOrDefaultAsync(r => r.User == user &&
+                                          r.Restaurant == restaurant &&
+                                          r.Date == reservationCreateInputModel.Date);
             if (reservation != null)
             {
                 reservation.PeopleCount += reservationCreateInputModel.PeopleCount;
@@ -57,11 +59,15 @@ namespace UnravelTravel.Services.Data
             }
             else
             {
+                var utcReservationDate = reservationCreateInputModel.Date.GetUtcDate(
+                    restaurant.Destination.Name,
+                    restaurant.Destination.Country.Name);
+
                 reservation = new Reservation
                 {
                     User = user,
                     Restaurant = restaurant,
-                    Date = reservationCreateInputModel.Date,
+                    Date = utcReservationDate, // Save UTC date to Db
                     PeopleCount = reservationCreateInputModel.PeopleCount,
                 };
 

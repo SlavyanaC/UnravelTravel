@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="GoogleMaps.LocationServices" Version="1.2.0.1" />
+    <PackageReference Include="RestSharp" Version="106.6.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>

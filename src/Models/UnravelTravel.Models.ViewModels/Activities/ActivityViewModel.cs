@@ -4,6 +4,7 @@
     using System.Globalization;
     using System.Collections.Generic;
     using UnravelTravel.Common;
+    using UnravelTravel.Common.Extensions;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.ViewModels.Tickets;
     using UnravelTravel.Services.Mapping;
@@ -18,19 +19,23 @@
 
         public string Type { get; set; }
 
-        public DateTime Date { get; set; }
-
-        public string DateAsString => this.Date.ToString(GlobalConstants.DateFormat + " " + GlobalConstants.HourFormat,
-            CultureInfo.InvariantCulture);
+        public DateTime Date { get; set; } // UTC
 
         public int DestinationId { get; set; }
 
         public string DestinationName { get; set; }
 
+        public string DestinationCountryName { get; set; }
+
         public double AverageRating { get; set; }
 
         public ICollection<TicketDetailsViewModel> Tickets { get; set; }
 
-        public bool IsPassed => this.Date < DateTime.Now;
+        public bool HasPassed => this.Date < DateTime.UtcNow;
+
+        public DateTime LocalDate => this.Date.GetLocalDate(this.DestinationName, this.DestinationCountryName);
+
+        public string DateAsString => this.LocalDate.ToString(GlobalConstants.DateFormat + " " + GlobalConstants.HourFormat,
+            CultureInfo.InvariantCulture);
     }
 }

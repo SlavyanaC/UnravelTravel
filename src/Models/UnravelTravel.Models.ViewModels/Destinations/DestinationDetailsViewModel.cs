@@ -22,7 +22,7 @@
         public ICollection<ActivityViewModel> Activities { get; set; }
 
         public ICollection<ActivityViewModel> LatestActivities =>
-            this.Activities.Where(a => a.Date >= DateTime.Now).OrderBy(a => a.Date).Take(ModelConstants.DestinationActivitiesToDisplay).ToList();
+            this.Activities.Where(a => a.Date >= DateTime.UtcNow).OrderBy(a => a.Date).Take(ModelConstants.DestinationActivitiesToDisplay).ToList();
 
         public ICollection<RestaurantViewModel> Restaurants { get; set; }
 

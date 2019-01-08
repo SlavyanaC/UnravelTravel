@@ -1,4 +1,7 @@
-﻿namespace UnravelTravel.Models.ViewModels.Activities
+﻿using Newtonsoft.Json;
+using UnravelTravel.Common.Extensions;
+
+namespace UnravelTravel.Models.ViewModels.Activities
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -26,12 +29,9 @@
         [Required]
         public string Type { get; set; }
 
-        public DateTime Now => DateTime.Now.AddMinutes(ModelConstants.Activity.MinMinutesTillStart);
-
         [Required]
         [Display(Name = ModelConstants.Activity.AdminDateDisplay)]
         [DataType(DataType.DateTime)]
-        [GreaterThan(nameof(Now), ErrorMessage = ModelConstants.Activity.StartingHourError)]
         public DateTime Date { get; set; }
 
         [Required]

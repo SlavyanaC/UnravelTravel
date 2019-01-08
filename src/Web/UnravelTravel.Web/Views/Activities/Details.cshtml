@@ -13,7 +13,7 @@
             <tr>
                 <th width=25%;><h4>Date</h4></th>
                 <th width=25%;><h4>Type</h4></th>
-                @if (Model.IsPassed)
+                @if (Model.HasPassed && Model.Reviews.Any())
                 {
                     <th width=25%;><h4>Rating</h4></th>
                 }
@@ -25,14 +25,14 @@
                 <th width=25%;>
                     <b>
                         @Model.DateString
-                        @if (Model.IsPassed && Model.Reviews.Any())
+                        @if (Model.HasPassed)
                         {
                             <span class="badge badge-warning">&nbsp;Passed</span>
                         }
                     </b>
                 </th>
                 <td width=25%;><b>@Model.SplitWordsType</b></td>
-                @if (Model.IsPassed && Model.Reviews.Any())
+                @if (Model.HasPassed && Model.Reviews.Any())
                 {
                     <td width=25%;><b>@Model.Reviews.Average(r => r.ReviewRating)</b></td>
 
@@ -65,7 +65,7 @@
         </div>
     }
     <div class="row d-flex justify-content-around">
-        @if (Model.IsPassed)
+        @if (Model.HasPassed)
         {
             <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
                 <div class="row form-group justify-content-center">
@@ -88,7 +88,7 @@
     </div>
     <hr />
 
-    @if (Model.Reviews.Any() && Model.IsPassed)
+    @if (Model.Reviews.Any() && Model.HasPassed)
     {
         var totalReviewsCount = @Model.Reviews.Count();
         var slidesNeeded = Math.Ceiling(totalReviewsCount / 3d);

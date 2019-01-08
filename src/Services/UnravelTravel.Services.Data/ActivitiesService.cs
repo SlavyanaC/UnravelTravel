@@ -1,8 +1,4 @@
-﻿using GoogleMaps.LocationServices;
-using RestSharp;
-using UnravelTravel.Common;
-
-namespace UnravelTravel.Services.Data
+﻿namespace UnravelTravel.Services.Data
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +6,9 @@ namespace UnravelTravel.Services.Data
     using System.Threading.Tasks;
 
     using CloudinaryDotNet;
+    using GoogleMaps.LocationServices;
     using Microsoft.EntityFrameworkCore;
+    using UnravelTravel.Common.Extensions;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Data.Models.Enums;
@@ -83,7 +81,7 @@ namespace UnravelTravel.Services.Data
 
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, activityCreateInputModel.Image, activityCreateInputModel.Name);
 
-            var utcDate = this.GetUtcDate(destination.Name, destination.Country.Name, activityCreateInputModel.Date);
+            var utcDate = activityCreateInputModel.Date.GetUtcDate(destination.Name, destination.Country.Name);
 
             var activity = new Activity
             {
@@ -104,26 +102,6 @@ namespace UnravelTravel.Services.Data
 
             var activityDetailsViewModel = AutoMapper.Mapper.Map<ActivityDetailsViewModel>(activity);
             return activityDetailsViewModel;
-        }
-
-        private DateTime GetUtcDate(string destinationName, string countryName, DateTime localDateTime)
-        {
-            var address = $"{destinationName}, {countryName}";
-            var locationService = new GoogleLocationService(apikey: GoogleUtilitiess.ApiKey);
-            var point = locationService.GetLatLongFromAddress(address);
-            var latitude = point.Latitude;
-            var longitude = point.Longitude;
-
-            var client = new RestClient(GoogleUtilitiess.BaseUrl);
-            var requestTime = new RestRequest(GoogleUtilitiess.TimeZoneResource, Method.GET);
-            requestTime.AddParameter("location", $"{latitude},{longitude}");
-            requestTime.AddParameter("timestamp", GoogleUtilitiess.TimeStamp);
-            requestTime.AddParameter("key", GoogleUtilitiess.ApiKey);
-            var responseTime = client.Execute<GoogleTimeZone>(requestTime);
-            var rawOffsetInSeconds = responseTime.Data.RawOffset;
-
-            var utcDate = localDateTime.Subtract(new TimeSpan(0, 0, (int)rawOffsetInSeconds));
-            return utcDate;
         }
 
         public async Task<TViewModel> GetViewModelByIdAsync<TViewModel>(int id)

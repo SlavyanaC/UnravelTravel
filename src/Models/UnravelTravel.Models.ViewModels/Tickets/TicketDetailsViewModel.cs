@@ -5,6 +5,7 @@
     using System.Globalization;
     using System.Linq;
     using UnravelTravel.Common;
+    using UnravelTravel.Common.Extensions;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.Common;
     using UnravelTravel.Services.Mapping;
@@ -28,23 +29,27 @@
         [Display(Name = ModelConstants.Activity.NameDisplay)]
         public string ActivityName { get; set; }
 
-        public DateTime ActivityDate { get; set; }
+        public DateTime ActivityDate { get; set; } // UTC from Db
 
         public int Quantity { get; set; }
-
-        [Display(Name = ModelConstants.Activity.DateDisplay)]
-        public string ActivityDateString => this.ActivityDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture);
-
-        [Display(Name = ModelConstants.Activity.StartingHourDisplay)]
-        public string ActivityHourString => this.ActivityDate.ToString(GlobalConstants.HourFormat, CultureInfo.InvariantCulture);
 
         [Display(Name = nameof(Destination))]
         public string ActivityDestinationName { get; set; }
 
-        public bool HasPassed => this.ActivityDate <= DateTime.Now;
+        public string ActivityDestinationCountryName { get; set; }
+
+        public bool HasPassed => this.ActivityDate <= DateTime.UtcNow;
 
         public bool IsRated => this.User.Tickets
             .Any(t => t.Activity.Reviews.Any(ar => ar.ActivityId == this.ActivityId &&
                                                    ar.Review.UserId == this.UserId));
+
+        public DateTime ActivityLocalDate => this.ActivityDate.GetLocalDate(this.ActivityDestinationName, this.ActivityDestinationCountryName);
+
+        [Display(Name = ModelConstants.Activity.DateDisplay)]
+        public string ActivityDateString => this.ActivityLocalDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture);
+
+        [Display(Name = ModelConstants.Activity.StartingHourDisplay)]
+        public string ActivityHourString => this.ActivityLocalDate.ToString(GlobalConstants.HourFormat, CultureInfo.InvariantCulture);
     }
 }

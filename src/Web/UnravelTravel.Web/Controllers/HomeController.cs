@@ -1,12 +1,9 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
     using UnravelTravel.Models.InputModels.Home;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Common;

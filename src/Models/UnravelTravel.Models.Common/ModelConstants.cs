@@ -24,11 +24,9 @@
         {
             public const int NameMinLength = 3;
             public const int NameMaxLength = 70;
-            public const int MinMinutesTillStart = 15;
             public const int DescriptionMaxLength = 1950;
             public const int DescriptionMinLength = 10;
 
-            public const string StartingHourError = "Activity starting hour must be at least 15 minutes from now";
             public const string AdminDateDisplay = "Activity date and starting hour";
             public const string NameDisplay = "Activity name";
             public const string DateDisplay = "Activity date";
@@ -58,10 +56,7 @@
 
         public class Reservation
         {
-            public const int MinMinutesFromNow = 30;
-
             public const string IdDisplay = "#";
-            public const string HourError = "Reservation time must be at least 30 minutes from now";
             public const string DateDisplay = "Reservation date and time";
             public const string PeopleCountDisplay = "Table for";
             public const string ReservationDay = "Reservation day";

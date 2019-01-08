@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Globalization;
     using UnravelTravel.Common;
+    using UnravelTravel.Common.Extensions;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.Common;
     using UnravelTravel.Services.Mapping;
@@ -25,15 +26,19 @@
 
         public DateTime ActivityDate { get; set; }
 
+        public DateTime ActivityLocalDate => this.ActivityDate.GetLocalDate(this.ActivityDestinationName, this.ActivityDestinationCountryName);
+
         public decimal? ActivityPrice { get; set; }
 
-        public string DateString => this.ActivityDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture);
+        public string DateString => this.ActivityLocalDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture);
 
         [Display(Name = ModelConstants.Activity.StartingHourDisplay)]
-        public string ActivityHourString => this.ActivityDate.ToString(GlobalConstants.HourFormat, CultureInfo.InvariantCulture);
+        public string ActivityHourString => this.ActivityLocalDate.ToString(GlobalConstants.HourFormat, CultureInfo.InvariantCulture);
 
         [Display(Name = nameof(Destination))]
         public string ActivityDestinationName { get; set; }
+
+        public string ActivityDestinationCountryName { get; set; }
 
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
