@@ -221,7 +221,7 @@
                 .To<RestaurantViewModel>()
                 .ToArray();
 
-            return destinationId == null ? restaurants : restaurants.Where(r =>r.DestinationId == destinationId);
+            return destinationId == null ? restaurants : restaurants.Where(r => r.DestinationId == destinationId);
         }
 
         public IEnumerable<RestaurantViewModel> SortBy(RestaurantViewModel[] restaurants, RestaurantSorter sorter)

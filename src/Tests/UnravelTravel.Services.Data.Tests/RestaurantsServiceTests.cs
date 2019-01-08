@@ -1,7 +1,8 @@
 ﻿namespace UnravelTravel.Services.Data.Tests
 {
-    using System.IO;
     using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@
     using UnravelTravel.Data.Models.Enums;
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Restaurants;
     using UnravelTravel.Models.InputModels.Reviews;
+    using UnravelTravel.Models.ViewModels.Enums;
     using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Common;
     using UnravelTravel.Services.Data.Contracts;
@@ -24,19 +26,26 @@
         private const string TestDestinationName = "Bulgaria";
         private const int SecondTestDestinationId = 2;
         private const string SecondTestDestinationName = "USA";
+
         private const int TestRestaurantId = 1;
         private const string TestRestaurantName = "Test Restaurant 123";
         private const string TestRestaurantAddress = "bul. Bulgaria 102";
+        private const string SecondTestRestaurantAddress = "15 Vitosha Str.";
         private const int TestRestaurantSeats = 102;
         private const int SecondTestRestaurantId = 2;
         private const string SecondTestRestaurantName = "Secondd Restaurant";
         private const string TestRestaurantType = "Bar";
+        private const string TestSearchString = "Vitosha";
+
         private const string InvalidRestaurantType = "InvalidType";
+
         private const string TestImageUrl = "https://someurl.com";
         private const string TestImagePath = "Test.jpg";
         private const string TestImageContentType = "image/jpg";
+
         private const string TestUserName = "Pesho";
         private const string InvalidUsername = "Stamat";
+
         private const double TestReviewRating = 4.2;
         private const double SecondTestReviewRating = 1.2;
         private const string TestReviewContent = "Testing review.";
@@ -106,6 +115,122 @@
                     Assert.Equal(expected[1].Name, elem2.Name);
                     Assert.Equal(expected[1].DestinationName, elem2.DestinationName);
                     Assert.Equal(expected[1].Type, elem2.Type);
+                });
+            Assert.Equal(expected.Length, actual.Count());
+        }
+
+        [Fact]
+        public async Task GetAllInDestinationAsyncReturnsAllRestaurantsInDestination()
+        {
+            await this.AddTestingDestinationToDb();
+            this.DbContext.Destinations.Add(new Destination
+            { Id = SecondTestDestinationId, Name = SecondTestDestinationName });
+            await this.DbContext.SaveChangesAsync();
+
+            this.DbContext.Restaurants.Add(new Restaurant
+            {
+                Id = TestRestaurantId,
+                Name = TestRestaurantName,
+                DestinationId = TestDestinationId,
+                Type = RestaurantType.Bar,
+            });
+            this.DbContext.Restaurants.Add(new Restaurant
+            {
+                Id = SecondTestRestaurantId,
+                Name = SecondTestRestaurantName,
+                DestinationId = TestDestinationId,
+                Type = RestaurantType.Bar,
+            });
+            await this.DbContext.SaveChangesAsync();
+
+            var expected = new RestaurantViewModel[]
+            {
+                new RestaurantViewModel
+                {
+                    Id = TestRestaurantId,
+                    Name = TestRestaurantName,
+                    DestinationId = TestDestinationId,
+                    DestinationName = TestDestinationName,
+                    Type = TestRestaurantType,
+                },
+                new RestaurantViewModel
+                {
+                    Id = SecondTestRestaurantId,
+                    Name = SecondTestRestaurantName,
+                    DestinationId = TestDestinationId,
+                    DestinationName = TestDestinationName,
+                    Type = TestRestaurantType,
+                },
+            };
+
+            var actual = await this.RestaurantsServiceMock.GetAllInDestinationAsync(TestDestinationId);
+
+            Assert.Collection(actual,
+                elem1 =>
+                {
+                    Assert.Equal(expected[0].Id, elem1.Id);
+                    Assert.Equal(expected[0].Name, elem1.Name);
+                    Assert.Equal(expected[0].DestinationName, elem1.DestinationName);
+                    Assert.Equal(expected[0].Type, elem1.Type);
+                },
+                elem2 =>
+                {
+                    Assert.Equal(expected[1].Id, elem2.Id);
+                    Assert.Equal(expected[1].Name, elem2.Name);
+                    Assert.Equal(expected[1].DestinationName, elem2.DestinationName);
+                    Assert.Equal(expected[1].Type, elem2.Type);
+                });
+            Assert.Equal(expected.Length, actual.Count());
+        }
+
+        [Fact]
+        public async Task GetAllInDestinationDoesNotReturnRestaurantsInOtherDestinations()
+        {
+            await this.AddTestingDestinationToDb();
+            this.DbContext.Destinations.Add(new Destination
+            {
+                Id = SecondTestDestinationId,
+                Name = SecondTestDestinationName
+            });
+            await this.DbContext.SaveChangesAsync();
+
+            this.DbContext.Restaurants.Add(new Restaurant
+            {
+                Id = TestRestaurantId,
+                Name = TestRestaurantName,
+                DestinationId = TestDestinationId,
+                Type = RestaurantType.Bar,
+            });
+            this.DbContext.Restaurants.Add(new Restaurant
+            {
+                Id = SecondTestRestaurantId,
+                Name = SecondTestRestaurantName,
+                DestinationId = SecondTestDestinationId,
+                Type = RestaurantType.Bar,
+            });
+            await this.DbContext.SaveChangesAsync();
+
+            var expected = new RestaurantViewModel[]
+            {
+                new RestaurantViewModel
+                {
+                    Id = SecondTestRestaurantId,
+                    Name = SecondTestRestaurantName,
+                    DestinationId = SecondTestDestinationId,
+                    DestinationName = SecondTestDestinationName,
+                    Type = TestRestaurantType,
+                },
+            };
+
+            var actual = await this.RestaurantsServiceMock.GetAllInDestinationAsync(SecondTestDestinationId);
+
+            Assert.Collection(actual,
+                elem1 =>
+                {
+                    Assert.Equal(expected[0].Id, elem1.Id);
+                    Assert.Equal(expected[0].Name, elem1.Name);
+                    Assert.Equal(expected[0].DestinationName, elem1.DestinationName);
+                    Assert.Equal(expected[0].Type, elem1.Type);
                 });
             Assert.Equal(expected.Length, actual.Count());
         }
@@ -284,6 +409,47 @@
                 Assert.Equal(restaurantsDbSet.Last().Type.ToString(), restaurantDetailsViewModel.Type);
                 Assert.Equal(restaurantsDbSet.Last().ImageUrl, restaurantDetailsViewModel.ImageUrl);
             });
+        }
+
+        [Fact]
+        public async Task CreateAsyncReturnsExistingViewModelIfRestaurantExists()
+        {
+            await this.AddTestingDestinationToDb();
+            await this.AddTestingRestaurantToDb();
+
+            RestaurantDetailsViewModel restaurantDetailsViewModel;
+            using (var stream = File.OpenRead(TestImagePath))
+            {
+                var file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentType = TestImageContentType,
+                };
+
+                var restaurantCreateInputModel = new RestaurantCreateInputModel
+                {
+                    Name = TestRestaurantName,
+                    DestinationId = TestDestinationId,
+                    Type = TestRestaurantType,
+                    Image = file,
+                    Address = TestRestaurantAddress,
+                    Seats = TestRestaurantSeats,
+                };
+
+                restaurantDetailsViewModel = await this.RestaurantsServiceMock.CreateAsync(restaurantCreateInputModel);
+            }
+
+            ApplicationCloudinary.DeleteImage(ServiceProvider.GetRequiredService<Cloudinary>(), restaurantDetailsViewModel.Name);
+
+            var restaurantsDbSet = this.DbContext.Restaurants.OrderBy(r => r.CreatedOn);
+
+            Assert.Equal(restaurantsDbSet.Last().Id, restaurantDetailsViewModel.Id);
+            Assert.Equal(restaurantsDbSet.Last().Name, restaurantDetailsViewModel.Name);
+            Assert.Equal(restaurantsDbSet.Last().DestinationId, restaurantDetailsViewModel.DestinationId);
+            Assert.Equal(restaurantsDbSet.Last().Destination.Name, restaurantDetailsViewModel.DestinationName);
+            Assert.Equal(restaurantsDbSet.Last().Address, restaurantDetailsViewModel.Address);
+            Assert.Equal(restaurantsDbSet.Last().Type.ToString(), restaurantDetailsViewModel.Type);
+            Assert.Equal(restaurantsDbSet.Last().ImageUrl, restaurantDetailsViewModel.ImageUrl);
         }
 
         [Fact]
@@ -546,6 +712,113 @@
             var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
                 this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, secondRestaurantReviewInputModel));
             Assert.Equal(string.Format(ServicesDataConstants.RestaurantReviewAlreadyAdded, TestUserName, TestRestaurantId, TestRestaurantName), exception.Message);
+        }
+
+        [Theory]
+        [InlineData(TestRestaurantName, 1, null)]
+        [InlineData(TestRestaurantAddress, 1, null)]
+        [InlineData(TestUserName, 0, null)]
+        [InlineData(TestRestaurantName, 1, 1)]
+        [InlineData(TestRestaurantName, 0, 2)]
+        public async Task GetRestaurantsFromSearchReturnsAllRestaurantsContainingSearchString(string searchString, int expectedCount, int? destinationId)
+        {
+            await this.AddTestingDestinationToDb();
+            await this.AddTestingRestaurantToDb();
+            this.DbContext.Restaurants.Add(new Restaurant
+            {
+                Id = SecondTestRestaurantId,
+                Name = SecondTestRestaurantName,
+                DestinationId = SecondTestDestinationId,
+                Type = RestaurantType.CoffeeShop,
+                Address = SecondTestRestaurantAddress,
+                Seats = TestRestaurantSeats,
+            });
+            await this.DbContext.SaveChangesAsync();
+
+            var actual = this.RestaurantsServiceMock.GetRestaurantsFromSearch(searchString, destinationId);
+
+            Assert.Equal(expectedCount, actual.Count());
+        }
+
+        [Theory]
+        [InlineData(RestaurantSorter.Name, "Aaa")]
+        [InlineData(RestaurantSorter.Rating, "Zzz")]
+        [InlineData(RestaurantSorter.Type, TestRestaurantName)]
+        [InlineData(RestaurantSorter.Destination, SecondTestRestaurantName)]
+        public async Task SortBySortsRestaurantAsExpected(RestaurantSorter sorter, string expectedFirstRestaurantName)
+        {
+            await this.AddTestingDestinationToDb();
+            this.DbContext.Restaurants.AddRange(new List<Restaurant>
+            {
+                new Restaurant
+                {
+                    Name = TestRestaurantName,
+                    DestinationId = TestDestinationId,
+                    Type = RestaurantType.Bar,
+                    AverageRating = 0,
+                },
+                new Restaurant
+                {
+                    Name = SecondTestRestaurantName,
+                    DestinationId = SecondTestDestinationId,
+                    Type = RestaurantType.CoffeeShop,
+                    AverageRating = 1,
+                },
+                new Restaurant
+                {
+                    Name = "Aaaaa",
+                    DestinationId = SecondTestDestinationId,
+                    Type = RestaurantType.FineDining,
+                    AverageRating = 2,
+                },
+                new Restaurant
+                {
+                    Name = "Zzzzz",
+                    DestinationId = SecondTestDestinationId,
+                    Type = RestaurantType.FineDining,
+                    AverageRating = 5,
+                },
+            });
+            await this.DbContext.SaveChangesAsync();
+
+            var expected = new RestaurantViewModel[]
+            {
+                new RestaurantViewModel
+                {
+                    Name = TestRestaurantName,
+                    DestinationId = SecondTestDestinationId,
+                    DestinationName = "Zzz",
+                    Type = RestaurantType.Bar.ToString(),
+                    AverageRating = 0,
+                },
+                new RestaurantViewModel
+                {
+                    Name = SecondTestRestaurantName,
+                    DestinationId = TestDestinationId,
+                    DestinationName = "Aaa",
+                    Type = RestaurantType.CoffeeShop.ToString(),
+                    AverageRating = 1,
+                },
+                new RestaurantViewModel
+                {
+                    Name = "Aaa",
+                    DestinationId = SecondTestDestinationId,
+                    DestinationName = "Aaa",
+                    Type = RestaurantType.FineDining.ToString(),
+                    AverageRating = 2,
+                },
+                new RestaurantViewModel
+                {
+                    Name = "Zzz",
+                    DestinationId = SecondTestDestinationId,
+                    DestinationName = "Aaa",
+                    Type = RestaurantType.FineDining.ToString(),
+                    AverageRating = 5,
+                },
+            };
+
+            var actual = this.RestaurantsServiceMock.SortBy(expected, sorter);
+            Assert.Equal(expectedFirstRestaurantName, actual.First().Name);
         }
 
         private async Task AddTestingUserToDb()
