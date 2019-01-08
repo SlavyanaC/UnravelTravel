@@ -742,6 +742,7 @@
 
         [Theory]
         [InlineData(RestaurantSorter.Name, "Aaa")]
+        [InlineData(null, "Aaa")]
         [InlineData(RestaurantSorter.Rating, "Zzz")]
         [InlineData(RestaurantSorter.Type, TestRestaurantName)]
         [InlineData(RestaurantSorter.Destination, SecondTestRestaurantName)]
