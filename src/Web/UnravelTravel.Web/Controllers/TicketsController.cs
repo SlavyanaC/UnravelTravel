@@ -32,6 +32,13 @@
         public async Task<IActionResult> Details(int id)
         {
             var ticketDetailsViewModel = await this.ticketsService.GetDetailsAsync(id);
+
+            // TODO: It would be better if ticket id as GUID -> parameter tampering would be impossible
+            if (ticketDetailsViewModel.User == null || ticketDetailsViewModel.User.UserName != this.User.Identity.Name)
+            {
+                return this.View("_AccessDenied");
+            }
+
             return this.View(ticketDetailsViewModel);
         }
 

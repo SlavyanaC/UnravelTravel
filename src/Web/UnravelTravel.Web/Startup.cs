@@ -77,13 +77,10 @@
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders();
 
-            services
-                .AddMvc(
-                    options =>
-                    {
-                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-
-                    })
+            services.AddMvc(options =>
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddRazorPagesOptions(options =>
                 {
