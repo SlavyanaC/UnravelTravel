@@ -70,7 +70,7 @@
         public async Task BookAllAsync(string userIdentifier, ShoppingCartActivityViewModel[] shoppingCartActivities, string paymentMethod = "")
         {
             // If identifier is email the user is guest
-            var isGuest = Regex.IsMatch(userIdentifier, @"[^@]+@[^\.]+\..+");
+            var isGuest = Regex.IsMatch(userIdentifier, ServicesDataConstants.EmailRegex);
             if (isGuest)
             {
                 await this.BookGuestUsersTickets(userIdentifier, shoppingCartActivities, paymentMethod);

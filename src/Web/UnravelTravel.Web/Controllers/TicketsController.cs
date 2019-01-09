@@ -28,7 +28,8 @@
             var userName = this.User.Identity.Name;
             var shoppingCartActivities = await this.shoppingCartsService.GetAllShoppingCartActivitiesAsync(userName);
             await this.ticketsService.BookAllAsync(userName, shoppingCartActivities.ToArray(), GlobalConstants.CashPaymentMethod);
-            return this.RedirectToAction("Index");
+            return this.View("_BookingConfirmation");
+            //return this.RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Details(int id)

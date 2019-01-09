@@ -9,7 +9,7 @@
 
     public interface IReservationsService
     {
-        Task<ReservationDetailsViewModel> BookAsync(int restaurantId, string username, ReservationCreateInputModel reservationCreateInputModel);
+        Task<ReservationDetailsViewModel> BookAsync(int restaurantId, string userIdentifier, ReservationCreateInputModel reservationCreateInputModel);
 
         Task<ReservationDetailsViewModel> GetDetailsAsync(int id);
 

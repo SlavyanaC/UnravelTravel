@@ -6,6 +6,10 @@
 
     public class ReservationCreateInputModel
     {
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string GuestUserEmail { get; set; }
+
         [Required]
         [DataType(DataType.DateTime)]
         [Display(Name = ModelConstants.Reservation.DateDisplay)]

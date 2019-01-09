@@ -79,5 +79,7 @@
         public const string RestaurantInfoPlaceholder = "@restaurantInfo";
 
         public const string RestaurantHtmlInfo = @"<p>{0}<br>{1}, {2}</p>";
+
+        public const string EmailRegex = @"[^@]+@[^\.]+\..+";
     }
 }

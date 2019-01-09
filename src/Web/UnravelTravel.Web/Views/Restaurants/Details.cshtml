@@ -33,14 +33,14 @@
         </tbody>
     </table>
     <div class="text-center d-flex justify-content-around">
-        @if (this.User.IsInRole(GlobalConstants.UserRoleName))
-        {
-            <a class="btn btn-lg btn-outline-primary" asp-controller="Reservations" asp-action="Book" asp-route-id="@Model.Id">Book table</a>
-        }
-        else if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+        @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
             <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Edit" asp-route-id="@Model.Id">Edit restaurant</a>
             <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Restaurants" asp-action="Delete" asp-route-id="@Model.Id">Delete restaurant</a>
+        }
+        else
+        {
+            <a class="btn btn-lg btn-outline-primary" asp-controller="Reservations" asp-action="Book" asp-route-id="@Model.Id">Book table</a>
         }
     </div>
     <hr />

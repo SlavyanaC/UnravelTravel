@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     using HtmlAgilityPack;
@@ -34,12 +35,18 @@
             this.emailSender = emailSender;
         }
 
-        public async Task<ReservationDetailsViewModel> BookAsync(int restaurantId, string username, ReservationCreateInputModel reservationCreateInputModel)
+        public async Task<ReservationDetailsViewModel> BookAsync(int restaurantId, string userIdentifier, ReservationCreateInputModel reservationCreateInputModel)
         {
-            var user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == username);
-            if (user == null)
+            // If identifier is email the user is guest
+            var isGuest = Regex.IsMatch(userIdentifier, ServicesDataConstants.EmailRegex);
+            UnravelTravelUser user = null;
+            if (!isGuest)
             {
-                throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, username));
+                user = await this.usersRepository.All().FirstOrDefaultAsync(u => u.UserName == userIdentifier);
+                if (user == null)
+                {
+                    throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceUsername, userIdentifier));
+                }
             }
 
             var restaurant = await this.restaurantsRepository.All().FirstOrDefaultAsync(r => r.Id == restaurantId);
@@ -48,39 +55,41 @@
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceRestaurantId, restaurantId));
             }
 
-            var reservation = await this.reservationsRepository.All()
-                .FirstOrDefaultAsync(r => r.User == user &&
-                                          r.Restaurant == restaurant &&
-                                          r.Date == reservationCreateInputModel.Date);
-            if (reservation != null)
+            Reservation reservation;
+            if (!isGuest)
             {
-                reservation.PeopleCount += reservationCreateInputModel.PeopleCount;
-                this.reservationsRepository.Update(reservation);
-            }
-            else
-            {
-                var utcReservationDate = reservationCreateInputModel.Date.GetUtcDate(
-                    restaurant.Destination.Name,
-                    restaurant.Destination.Country.Name);
+                reservation = await this.reservationsRepository.All()
+                    .FirstOrDefaultAsync(r => r.User == user &&
+                                              r.Restaurant == restaurant &&
+                                              r.Date == reservationCreateInputModel.Date);
 
-                reservation = new Reservation
+                if (reservation != null)
                 {
-                    User = user,
-                    Restaurant = restaurant,
-                    Date = utcReservationDate, // Save UTC date to Db
-                    PeopleCount = reservationCreateInputModel.PeopleCount,
-                };
-
-                this.reservationsRepository.Add(reservation);
+                    reservation.PeopleCount += reservationCreateInputModel.PeopleCount;
+                    this.reservationsRepository.Update(reservation);
+                }
             }
 
+            var utcReservationDate = reservationCreateInputModel.Date.GetUtcDate(
+                restaurant.Destination.Name,
+                restaurant.Destination.Country.Name);
+
+            reservation = new Reservation
+            {
+                UserId = user == null ? null : user.Id,
+                Restaurant = restaurant,
+                Date = utcReservationDate, // Save UTC date to Db
+                PeopleCount = reservationCreateInputModel.PeopleCount,
+            };
+
+            this.reservationsRepository.Add(reservation);
             await this.reservationsRepository.SaveChangesAsync();
 
             var reservationDetailsViewModel = AutoMap.Mapper.Map<ReservationDetailsViewModel>(reservation);
 
             var emailContent = await this.GenerateEmailContent(reservationDetailsViewModel);
             await this.emailSender.SendEmailAsync(
-                user.Email,
+                user != null ? user.Email : userIdentifier,
                 ServicesDataConstants.BookingEmailSubject,
                 emailContent);
 

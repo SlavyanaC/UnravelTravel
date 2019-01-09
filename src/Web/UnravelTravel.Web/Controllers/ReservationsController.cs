@@ -10,7 +10,6 @@
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Filters;
 
-    [Authorize]
     public class ReservationsController : BaseController
     {
         private readonly IReservationsService reservationsService;
@@ -20,20 +19,19 @@
             this.reservationsService = reservationsService;
         }
 
-        public IActionResult Book(int id)
-        {
-            return this.View();
-        }
+        public IActionResult Book(int id) => this.View();
 
         [HttpPost]
         [ModelStateValidationActionFilter]
         public async Task<IActionResult> Book(int id, ReservationCreateInputModel reservationCreateInputModel)
         {
-            var username = this.User.Identity.Name;
-            var reservation = await this.reservationsService.BookAsync(id, username, reservationCreateInputModel);
-            return this.RedirectToAction(nameof(this.Index));
+            var userIdentifier = reservationCreateInputModel.GuestUserEmail ?? this.User.Identity.Name;
+            var reservation = await this.reservationsService.BookAsync(id, userIdentifier, reservationCreateInputModel);
+            return this.View("_BookingConfirmation");
+            //return this.RedirectToAction(nameof(this.Index));
         }
 
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             ReservationDetailsViewModel reservationDetailsViewModel;
@@ -55,6 +53,7 @@
             return this.View(reservationDetailsViewModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var username = this.User.Identity.Name;
