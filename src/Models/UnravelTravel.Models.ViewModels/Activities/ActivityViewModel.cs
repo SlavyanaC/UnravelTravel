@@ -25,7 +25,7 @@
 
         public string DestinationName { get; set; }
 
-        public string DestinationCountryName { get; set; }
+        public double DestinationUtcRawOffset { get; set; }
 
         public double AverageRating { get; set; }
 
@@ -33,7 +33,9 @@
 
         public bool HasPassed => this.Date < DateTime.UtcNow;
 
-        public DateTime LocalDate => this.Date.GetLocalDate(this.DestinationName, this.DestinationCountryName);
+        //public DateTime LocalDate => this.Date.GetLocalDate(this.DestinationName, this.DestinationCountryName);
+
+        public DateTime LocalDate => this.Date.CalculateLocalDate(this.DestinationUtcRawOffset);
 
         public string DateAsString => this.LocalDate.ToString(GlobalConstants.DateFormat + " " + GlobalConstants.HourFormat,
             CultureInfo.InvariantCulture);

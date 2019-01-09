@@ -72,9 +72,11 @@
 
             if (reservation == null)
             {
-                var utcReservationDate = reservationCreateInputModel.Date.GetUtcDate(
-                    restaurant.Destination.Name,
-                    restaurant.Destination.Country.Name);
+                // var utcReservationDate = reservationCreateInputModel.Date.GetUtcDate(
+                //    restaurant.Destination.Name,
+                //    restaurant.Destination.Country.Name);
+                var utcReservationDate =
+                    reservationCreateInputModel.Date.CalculateUtcDateTime(restaurant.Destination.UtcRawOffset);
 
                 reservation = new Reservation
                 {

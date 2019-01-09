@@ -28,14 +28,14 @@ namespace UnravelTravel.Services.Data.Tests
     public class DestinationsServiceTests : BaseServiceTests
     {
         private const int TestDestinationId = 1;
-        private const string TestDestinationName = "SofiaTest";
+        private const string TestDestinationName = "Sofia";
         private const int SecondTestDestinationId = 2;
-        private const string SecondTestDestinationName = "WashingtonTest";
+        private const string SecondTestDestinationName = "Washington";
 
         private const int TestCountryId = 1;
-        private const string TestCountryName = "BulgariaTest";
+        private const string TestCountryName = "Bulgaria";
         private const int SecondTestCountryId = 2;
-        private const string SecondTestCountryName = "USATest";
+        private const string SecondTestCountryName = "USA";
 
         private const string TestImageUrl = "https://someurl.com";
         private const string TestImagePath = "Test.jpg";

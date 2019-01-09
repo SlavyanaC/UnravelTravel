@@ -81,7 +81,8 @@
 
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, activityCreateInputModel.Image, activityCreateInputModel.Name);
 
-            var utcDate = activityCreateInputModel.Date.GetUtcDate(destination.Name, destination.Country.Name);
+            // var utcDate = activityCreateInputModel.Date.GetUtcDate(destination.Name, destination.Country.Name);
+            var utcDate = activityCreateInputModel.Date.CalculateUtcDateTime(destination.UtcRawOffset);
 
             var activity = new Activity
             {

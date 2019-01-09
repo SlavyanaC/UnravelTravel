@@ -9,6 +9,7 @@
     using CloudinaryDotNet;
     using Microsoft.EntityFrameworkCore;
     using UnravelTravel.Common;
+    using UnravelTravel.Common.Extensions;
     using UnravelTravel.Data.Common.Repositories;
     using UnravelTravel.Data.Models;
     using UnravelTravel.Models.InputModels.AdministratorInputModels.Destinations;
@@ -77,12 +78,18 @@
 
             var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, destinationCreateInputModel.Image, destinationCreateInputModel.Name);
 
+            var googleServiceInfo =
+                DateTimeExtensions.GetGoogleServiceInfo(destinationCreateInputModel.Name, country.Name);
+
             var destination = new Destination
             {
                 Name = destinationCreateInputModel.Name,
                 CountryId = destinationCreateInputModel.CountryId,
                 ImageUrl = imageUrl,
                 Information = destinationCreateInputModel.Information,
+                Latitude = googleServiceInfo.Latitude,
+                Longitude = googleServiceInfo.Longitude,
+                UtcRawOffset = googleServiceInfo.UtcRawOffset,
             };
 
             this.destinationsRepository.Add(destination);

@@ -38,7 +38,9 @@
         [Display(Name = nameof(Destination))]
         public string ActivityDestinationName { get; set; }
 
-        public string ActivityDestinationCountryName { get; set; }
+        //public string ActivityDestinationCountryName { get; set; }
+
+        public double ActivityDestinationUtcRawOffset { get; set; }
 
         public bool HasPassed => this.ActivityDate <= DateTime.UtcNow;
 
@@ -46,9 +48,12 @@
             .Any(t => t.Activity.Reviews.Any(ar => ar.ActivityId == this.ActivityId &&
                                                    ar.Review.UserId == this.UserId));
 
-        public DateTime ActivityLocalDate => this.ActivityDate.GetLocalDate(this.ActivityDestinationName, this.ActivityDestinationCountryName);
+        //public DateTime ActivityLocalDate => this.ActivityDate.GetLocalDate(this.ActivityDestinationName, this.ActivityDestinationCountryName);
 
-        [Display(Name = ModelConstants.Activity.DateDisplay)]
+        public DateTime ActivityLocalDate => this.ActivityDate.CalculateLocalDate(this.ActivityDestinationUtcRawOffset);
+
+
+       [Display(Name = ModelConstants.Activity.DateDisplay)]
         public string ActivityDateString => this.ActivityLocalDate.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture);
 
         [Display(Name = ModelConstants.Activity.StartingHourDisplay)]

@@ -685,10 +685,10 @@ namespace UnravelTravel.Services.Data.Tests
 
         [Theory]
         [InlineData(TestActivityName, 1, null)]
-        [InlineData(SecondTestActivityAddress, 1, null)]
+        [InlineData(SecondTestActivityAddress, 2, null)]
         [InlineData(TestUserName, 0, null)]
         [InlineData(TestActivityName, 1, TestDestinationId)]
-        [InlineData(SecondTestActivityAddress, 0, SecondTestDestinationId)]
+        [InlineData(SecondTestActivityAddress, 1, SecondTestDestinationId)]
         public async Task GetActivitiesFromSearchReturnsAllActivitiesContainingSearchString(string searchString, int expectedCount, int? destinationId)
         {
             await this.AddTestingCountryToDb();

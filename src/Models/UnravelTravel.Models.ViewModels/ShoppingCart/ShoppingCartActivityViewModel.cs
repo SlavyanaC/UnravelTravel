@@ -26,7 +26,9 @@
 
         public DateTime ActivityDate { get; set; }
 
-        public DateTime ActivityLocalDate => this.ActivityDate.GetLocalDate(this.ActivityDestinationName, this.ActivityDestinationCountryName);
+        //public DateTime ActivityLocalDate => this.ActivityDate.GetLocalDate(this.ActivityDestinationName, this.ActivityDestinationCountryName);
+
+        public DateTime ActivityLocalDate => this.ActivityDate.CalculateLocalDate(this.ActivityDestinationUtcRawOffset);
 
         public decimal? ActivityPrice { get; set; }
 
@@ -40,7 +42,7 @@
         [Display(Name = nameof(Destination))]
         public string ActivityDestinationName { get; set; }
 
-        public string ActivityDestinationCountryName { get; set; }
+        public double ActivityDestinationUtcRawOffset { get; set; }
 
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }

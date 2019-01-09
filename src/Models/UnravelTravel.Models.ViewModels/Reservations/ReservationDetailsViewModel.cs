@@ -29,12 +29,14 @@
 
         public DateTime Date { get; set; }
 
-        public string RestaurantDestinationName { get; set; }
+        public double RestaurantDestinationUtcRawOffset { get; set; }
 
-        public string RestaurantDestinationCountryName { get; set; }
+        //public string RestaurantDestinationCountryName { get; set; }
 
-        public DateTime LocalDateTime =>
-            this.Date.GetLocalDate(this.RestaurantDestinationName, this.RestaurantDestinationCountryName);
+        //public DateTime LocalDateTime =>
+        //    this.Date.GetLocalDate(this.RestaurantDestinationName, this.RestaurantDestinationCountryName);
+
+        public DateTime LocalDateTime => this.Date.CalculateLocalDate(this.RestaurantDestinationUtcRawOffset);
 
         [Display(Name = ModelConstants.Reservation.ReservationDay)]
         public string ReservationDayString => this.LocalDateTime.ToString(GlobalConstants.DateFormat, CultureInfo.InvariantCulture);
