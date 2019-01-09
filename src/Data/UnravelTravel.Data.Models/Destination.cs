@@ -23,6 +23,12 @@
 
         public virtual Country Country { get; set; }
 
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
+        public double UtcRawOffset { get; set; }
+
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
