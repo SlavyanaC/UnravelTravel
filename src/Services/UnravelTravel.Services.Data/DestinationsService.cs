@@ -169,7 +169,7 @@
 
             var restaurants = this.restaurantsService.GetAllAsync().GetAwaiter().GetResult()
                 .Where(r => r.DestinationId == destinationId)
-                .OrderBy(r => r.AverageRating)
+                .OrderByDescending(r => r.AverageRating)
                 .ToArray();
 
             var searchResultViewModel = new SearchResultViewModel

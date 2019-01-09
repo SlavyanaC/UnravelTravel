@@ -1,11 +1,13 @@
 ﻿namespace UnravelTravel.Web.Controllers
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using UnravelTravel.Common;
+    using UnravelTravel.Models.ViewModels.Tickets;
     using UnravelTravel.Services.Data.Contracts;
 
     [Authorize]
@@ -31,10 +33,18 @@
 
         public async Task<IActionResult> Details(int id)
         {
-            var ticketDetailsViewModel = await this.ticketsService.GetDetailsAsync(id);
+            TicketDetailsViewModel ticketDetailsViewModel;
+            try
+            {
+                ticketDetailsViewModel = await this.ticketsService.GetDetailsAsync(id);
 
-            // TODO: It would be better if ticket id as GUID -> parameter tampering would be impossible
-            if (ticketDetailsViewModel.User == null || ticketDetailsViewModel.User.UserName != this.User.Identity.Name)
+                // TODO: It would be better if ticket id as GUID -> parameter tampering would be impossible
+                if (ticketDetailsViewModel.User == null || ticketDetailsViewModel.User.UserName != this.User.Identity.Name)
+                {
+                    return this.View("_AccessDenied");
+                }
+            }
+            catch (NullReferenceException)
             {
                 return this.View("_AccessDenied");
             }
