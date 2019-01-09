@@ -15,7 +15,6 @@
         <div class="form-group">
             <label asp-for="CountryId"></label>
             <select asp-for="CountryId" asp-items="countries" class="form-control col-md-12">
-                @*<option selected="" disabled="">--Current: @Model.CountryName--</option>*@
             </select>
             <span asp-validation-for="CountryId" class="text-danger"></span>
         </div>

@@ -28,7 +28,7 @@
             var userName = this.User.Identity.Name;
             var shoppingCartActivities = await this.shoppingCartsService.GetAllShoppingCartActivitiesAsync(userName);
             await this.ticketsService.BookAllAsync(userName, shoppingCartActivities.ToArray(), GlobalConstants.CashPaymentMethod);
-            return this.RedirectToAction("All");
+            return this.RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Details(int id)
@@ -52,7 +52,7 @@
             return this.View(ticketDetailsViewModel);
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> Index()
         {
             var username = this.User.Identity.Name;
             var tickets = await this.ticketsService.GetAllAsync(username);

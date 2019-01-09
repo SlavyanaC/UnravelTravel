@@ -40,7 +40,11 @@
                 </td>
                 <td display-for="@item.ActivityDateString"></td>
                 <td display-for="@item.ActivityHourString"></td>
-                <td display-for="@item.ActivityDestinationName"> </td>
+                <td>
+                    <a class="text-dark" asp-area="" asp-controller="Destinations" asp-action="Details" asp-route-id="@item.ActivityDestinationId">
+                        @item.ActivityDestinationName
+                    </a>
+                </td>
                 <td display-for="@item.Quantity"> </td>
                 <td>
                     <a class="btn btn-outline-primary" asp-area="" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;

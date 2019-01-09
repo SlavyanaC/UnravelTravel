@@ -61,7 +61,7 @@
             }
 
             await this.restaurantsService.EditAsync(restaurantEditView);
-            return this.RedirectToAction("Index", "Restaurants", new { area = "" });
+            return this.RedirectToAction("Details", "Restaurants", new { area = "", id = restaurantEditView.Id });
         }
 
         public async Task<IActionResult> Delete(int id)

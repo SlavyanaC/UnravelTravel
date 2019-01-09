@@ -47,7 +47,9 @@
                     @Html.DisplayFor(modelItem => item.ActivityHourString)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ActivityDestinationName)
+                    <a class="text-dark" asp-area="" asp-controller="Destinations" asp-action="Details" asp-route-id="@item.ActivityDestinationId">
+                        @item.ActivityDestinationName
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ActivityPrice)$

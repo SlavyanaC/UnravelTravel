@@ -33,6 +33,8 @@
 
         public int Quantity { get; set; }
 
+        public string ActivityDestinationId { get; set; }
+
         [Display(Name = nameof(Destination))]
         public string ActivityDestinationName { get; set; }
 

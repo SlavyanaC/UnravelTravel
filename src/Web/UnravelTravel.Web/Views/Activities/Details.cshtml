@@ -64,28 +64,31 @@
             <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Activities" asp-action="Delete" asp-route-id="@Model.Id">Delete activity</a>
         </div>
     }
-    <div class="row d-flex justify-content-around">
-        @if (Model.HasPassed)
-        {
-            <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
-                <div class="row form-group justify-content-center">
-                    <h4><label>Quantity: </label></h4>&nbsp;
-                    <input type="number" id="quantity" name="quantity" disabled="" class="form-control form-control-sm col-md-3" />
-                </div>
-                <button disabled="" type="submit" class="btn btn-lg btn-outline-warning"><i class="fas fa-cart-plus">&nbsp;</i>Activity has passed</button>
-            </form>
-        }
-        else
-        {
-            <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
-                <div class="row form-group justify-content-center">
-                    <h4><label>Quantity: </label></h4>&nbsp;
-                    <input type="number" id="quantity" value="1" min="1" name="quantity" class="form-control form-control-sm col-md-3" />
-                </div>
-                <button type="submit" class="btn btn-lg btn-outline-primary"><i class="fas fa-cart-plus">&nbsp;</i>Add to cart</button>
-            </form>
-        }
-    </div>
+    else
+    {
+        <div class="row d-flex justify-content-around">
+            @if (Model.HasPassed)
+            {
+                <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
+                    <div class="row form-group justify-content-center">
+                        <h4><label>Quantity: </label></h4>&nbsp;
+                        <input type="number" id="quantity" name="quantity" disabled="" class="form-control form-control-sm col-md-3" />
+                    </div>
+                    <button disabled="" type="submit" class="btn btn-lg btn-outline-warning"><i class="fas fa-cart-plus">&nbsp;</i>Activity has passed</button>
+                </form>
+            }
+            else
+            {
+                <form class="text-center" method="post" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@Model.Id" asp-route-quantity="quantity">
+                    <div class="row form-group justify-content-center">
+                        <h4><label>Quantity: </label></h4>&nbsp;
+                        <input type="number" id="quantity" value="1" min="1" name="quantity" class="form-control form-control-sm col-md-3" />
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-outline-primary"><i class="fas fa-cart-plus">&nbsp;</i>Add to cart</button>
+                </form>
+            }
+        </div>
+    }
     <hr />
 
     @if (Model.Reviews.Any() && Model.HasPassed)

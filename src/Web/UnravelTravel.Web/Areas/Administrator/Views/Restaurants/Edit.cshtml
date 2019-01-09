@@ -38,9 +38,8 @@
         </div>
         <div class="form-group">
             <label asp-for="Type"></label>
-            <select class="form-control col-md-12" asp-for="Type"
-                    asp-items="@(Html.GetEnumSelectList<RestaurantType>())">
-                <option selected="" disabled="">--Current: @Model.Type--</option>
+            <select class="form-control col-md-12" asp-for="Type" asp-items="@(Html.GetEnumSelectList<RestaurantType>())">
+                <option selected="">@Model.Type</option>
             </select>
             <span asp-validation-for="Type" class="text-danger"></span>
         </div>

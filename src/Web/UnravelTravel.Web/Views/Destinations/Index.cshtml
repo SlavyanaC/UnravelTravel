@@ -38,19 +38,32 @@
     @foreach (var item in Model.DestinationViewModels)
     {
         <div class="col-md-4">
-            <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 350px">
+            <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 400px">
                 <a asp-controller="Destinations" asp-action="Details" asp-route-id="@item.Id">
                     <img style="height: 200px; width: 100%;" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
                 </a>
                 <div class="card-body text-center">
                     <h5 class="card-title">@item.Name</h5>
                     <h5 class="card-title">@item.CountryName</h5>
+                    <div class="row d-flex justify-content-around">
+                        <a class="text-white" asp-area="" asp-controller="Activities" asp-action="IndexInDestination" asp-route-destinationId="@item.Id">
+                            Activities(@item.ActivitiesCount)
+                        </a>
+                        <a class="text-white" asp-area="" asp-controller="Restaurants" asp-action="IndexInDestination" asp-route-destinationId="@item.Id">
+                            Restaurants(@item.RestaurantsCount)
+                        </a>
+                    </div>
+                    <br/>
                     @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                     {
                         <div calss="row">
                             <a class=" btn btn-outline-primary" asp-area="Administrator" asp-controller="Destinations" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                             <a class=" btn btn-outline-warning" asp-area="Administrator" asp-controller="Destinations" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </div>
+                    }
+                    else
+                    {
+                        <a class=" btn btn-outline-info" asp-area="" asp-controller="Destinations" asp-action="Details" asp-route-id="@item.Id">Details</a>
                     }
                 </div>
             </div>

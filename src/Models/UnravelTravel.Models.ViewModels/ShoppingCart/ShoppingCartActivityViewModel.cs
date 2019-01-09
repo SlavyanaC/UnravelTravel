@@ -35,6 +35,8 @@
         [Display(Name = ModelConstants.Activity.StartingHourDisplay)]
         public string ActivityHourString => this.ActivityLocalDate.ToString(GlobalConstants.HourFormat, CultureInfo.InvariantCulture);
 
+        public int ActivityDestinationId { get; set; }
+
         [Display(Name = nameof(Destination))]
         public string ActivityDestinationName { get; set; }
 

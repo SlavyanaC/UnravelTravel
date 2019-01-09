@@ -31,7 +31,7 @@
         {
             var username = this.User.Identity.Name;
             var reservation = await this.reservationsService.BookAsync(id, username, reservationCreateInputModel);
-            return this.RedirectToAction(nameof(this.All));
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         public async Task<IActionResult> Details(int id)
@@ -55,7 +55,7 @@
             return this.View(reservationDetailsViewModel);
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> Index()
         {
             var username = this.User.Identity.Name;
             var userReservationsViewModel = await this.reservationsService.GetAllAsync(username);

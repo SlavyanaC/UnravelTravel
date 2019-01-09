@@ -27,7 +27,7 @@
             return utcDate;
         }
 
-        public static DateTime GetLocalDate(this DateTime date, string cityName, string countryName)
+        public static DateTime GetLocalDate(this DateTime utcDateTime, string cityName, string countryName)
         {
             var address = $"{cityName}, {countryName}";
             var locationService = new GoogleLocationService(apikey: GoogleUtilitiess.ApiKey);
@@ -43,7 +43,7 @@
             var responseTime = client.Execute<GoogleTimeZone>(requestTime);
             var rawOffsetInSeconds = responseTime.Data.RawOffset;
 
-            var localDate = date.Add(new TimeSpan(0, 0, (int)rawOffsetInSeconds));
+            var localDate = utcDateTime.Add(new TimeSpan(0, 0, (int)rawOffsetInSeconds));
             return localDate;
         }
     }

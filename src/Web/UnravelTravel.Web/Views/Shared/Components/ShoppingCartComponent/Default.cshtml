@@ -1,43 +1,46 @@
 ﻿@model IEnumerable<UnravelTravel.Models.ViewModels.ShoppingCart.ShoppingCartActivityViewModel>
 
-<ul class="nav navbar-nav navbar-right">
-    <li class="nav-item dropdown col-md-12" style="max-width: 100%">
-        <div class="dropdown collapse navbar-collapse d-flex" id="navbarNav">
-            <div class="dropdown-toggle nav-link" id="dropdownMenuLink" data-toggle="dropdown" >
-                <i class="fas fa-shopping-cart"></i>&nbsp;Shopping Cart
-            </div>
-            @if (Model.Count() != 0)
-            {
-                <span class="badge badge-pill badge-light">@Model.Count()</span>
-            }
-            <div class="dropdown-menu">
-                @foreach (var shoppingCartActivity in Model)
-                {
-                    <div class="d-flex justify-content-around">
-                        <a class="dropdown-item col-md-11" asp-area="" asp-controller="Activities" asp-action="Details" asp-route-id="@shoppingCartActivity.ActivityId">
-                            <img src="@shoppingCartActivity.ActivityImageUrl" width="50" height="50">
-                            <span>@shoppingCartActivity.ActivityNameSubstring</span>
-                            <span> @shoppingCartActivity.Quantity</span>
-                            <span><b>$@(shoppingCartActivity.ActivityPrice * shoppingCartActivity.Quantity)</b></span>
-                        </a>
-                        <a class="col-md-1 text-danger px-0" asp-area="" asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@shoppingCartActivity.Id">
-                            <i class="fas fa-times"></i>
-                        </a>
-                    </div>
-                }
-                @if (!Model.Any())
-                {
-                    <a class="text-center dropdown-item">
-                        <em class="text-muted">Empty shopping cart</em>
-                    </a>
-                }
-                <div class="text-center">
-                    <b>Total sum: $@(Model.Sum(x => x.ActivityPrice * x.Quantity))</b>
+@if (!this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li class="nav-item dropdown col-md-12" style="max-width: 100%">
+            <div class="dropdown collapse navbar-collapse d-flex" id="navbarNav">
+                <div class="dropdown-toggle nav-link" id="dropdownMenuLink" data-toggle="dropdown">
+                    <i class="fas fa-shopping-cart"></i>&nbsp;Shopping Cart
                 </div>
-                <a class="dropdown-item text-center" asp-area="" asp-controller="ShoppingCart" asp-action="Index">
-                    Open shopping cart
-                </a>
+                @if (Model.Count() != 0)
+                {
+                    <span class="badge badge-pill badge-light">@Model.Count()</span>
+                }
+                <div class="dropdown-menu">
+                    @foreach (var shoppingCartActivity in Model)
+                    {
+                        <div class="d-flex justify-content-around">
+                            <a class="dropdown-item col-md-11" asp-area="" asp-controller="Activities" asp-action="Details" asp-route-id="@shoppingCartActivity.ActivityId">
+                                <img src="@shoppingCartActivity.ActivityImageUrl" width="50" height="50">
+                                <span>@shoppingCartActivity.ActivityNameSubstring</span>
+                                <span> @shoppingCartActivity.Quantity</span>
+                                <span><b>$@(shoppingCartActivity.ActivityPrice * shoppingCartActivity.Quantity)</b></span>
+                            </a>
+                            <a class="col-md-1 text-danger px-0" asp-area="" asp-controller="ShoppingCart" asp-action="Delete" asp-route-id="@shoppingCartActivity.Id">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    }
+                    @if (!Model.Any())
+                    {
+                        <a class="text-center dropdown-item">
+                            <em class="text-muted">Empty shopping cart</em>
+                        </a>
+                    }
+                    <div class="text-center">
+                        <b>Total sum: $@(Model.Sum(x => x.ActivityPrice * x.Quantity))</b>
+                    </div>
+                    <a class="dropdown-item text-center" asp-area="" asp-controller="ShoppingCart" asp-action="Index">
+                        Open shopping cart
+                    </a>
+                </div>
             </div>
-        </div>
-    </li>
-</ul>
+        </li>
+    </ul>
+}

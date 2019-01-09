@@ -27,7 +27,7 @@
             public const int DescriptionMaxLength = 1950;
             public const int DescriptionMinLength = 10;
 
-            public const string AdminDateDisplay = "Activity date and starting hour";
+            public const string AdminDateDisplay = "Date and starting hour";
             public const string NameDisplay = "Activity name";
             public const string DateDisplay = "Activity date";
             public const string StartingHourDisplay = "Activity starting hour";

@@ -38,20 +38,39 @@
     @foreach (var item in Model.RestaurantViewModels)
     {
         <div class="col-md-4">
-            <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 400px">
+            <div class="card text-white bg-info mb-3" style="max-width: 20rem; height: 450px">
                 <a asp-controller="Restaurants" asp-action="Details" asp-route-id="@item.Id">
                     <img style="height: 200px; width: 100%;" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
                 </a>
                 <div class="card-body text-center">
                     <h5 class="card-title">@item.Name</h5>
-                    <h6 class="card-title">@item.SplitWordsType</h6>
-                    <h6 class="card-title">Destination: @item.DestinationName</h6>
+                    <h5 class="card-title">
+                        <a class="text-white" asp-area="" asp-controller="Destinations" asp-action="Details" asp-route-id="@item.DestinationId">
+                            @item.DestinationName
+                        </a>
+                    </h5>
+                    <p class="text-white">@item.SplitWordsType</p>
+                    <p class="text-white">
+                        Rating:
+                        @if (item.AverageRating == 0)
+                        {
+                            <span>No reviews yet</span>
+                        }
+                        else
+                        {
+                            <span>@item.AverageRating</span>
+                        }
+                    </p>
                     @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                     {
                         <div calss="row">
                             <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                             <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Restaurants" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </div>
+                    }
+                    else
+                    {
+                        <a class=" btn btn-outline-info" asp-area="" asp-controller="Restaurants" asp-action="Details" asp-route-id="@item.Id">Details</a>
                     }
                 </div>
             </div>

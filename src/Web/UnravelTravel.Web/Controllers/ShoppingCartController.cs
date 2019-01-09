@@ -127,10 +127,10 @@
             });
 
             await this.ticketsService.BookAllAsync(userIdentifier, userTickets.ToArray(), GlobalConstants.OnlinePaymentMethod);
-            this.HttpContext.Session.Clear(); // TODO: Make sure this is ok
+            this.HttpContext.Session.Remove(WebConstants.ShoppingCartSessionKey);
 
             return this.User.Identity.Name != null ?
-                this.RedirectToAction(actionName: "All", controllerName: "Tickets") :
+                this.RedirectToAction(actionName: "Index", controllerName: "Tickets") :
                 this.RedirectToAction(nameof(this.Index));
         }
 

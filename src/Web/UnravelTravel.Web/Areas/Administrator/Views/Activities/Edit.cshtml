@@ -35,7 +35,6 @@
         <div class="form-group">
             <label asp-for="DestinationId"></label>
             <select asp-for="DestinationId" asp-items="destinations" class="form-control col-md-12">
-                <option selected="">@Model.DestinationName</option>
             </select>
             <span asp-validation-for="DestinationName" class="text-danger"></span>
         </div>
@@ -51,9 +50,8 @@
         </div>
         <div class="form-group">
             <label asp-for="Type"></label>
-            <select class="form-control col-md-12" asp-for="Type"
-                    asp-items="@(Html.GetEnumSelectList<ActivityType>())">
-                <option selected="" disabled="">--Current: @Model.Type--</option>
+            <select class="form-control col-md-12" asp-for="Type" asp-items="@(Html.GetEnumSelectList<ActivityType>())">
+                <option selected="">@Model.Type</option>
             </select>
             <span asp-validation-for="Type" class="text-danger"></span>
         </div>
