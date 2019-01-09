@@ -37,8 +37,10 @@
         private IReservationsService ReservationsServiceMock =>
             this.ServiceProvider.GetRequiredService<IReservationsService>();
 
-        [Fact]
-        public async Task BookAsyncCreatesReservation()
+        [Theory]
+        [InlineData(TestUsername, 1)]
+        [InlineData("gosho@ivan.pesho", 1)]
+        public async Task BookAsyncCreatesReservationForGuestsAndForUsers(string userIdentifier, int expectedReservationsCount)
         {
             await this.AddTestingUserToDb();
             await this.AddTestingCountryToDb();
@@ -46,19 +48,11 @@
             await this.AddTestingRestaurantToDb();
 
             var reservationCreateInputModel = this.GetTestingReservationCreateInputModel();
-            var reservationViewModel = await this.ReservationsServiceMock.BookAsync(TestRestaurantId, TestUsername, reservationCreateInputModel);
+            var reservationViewModel = await this.ReservationsServiceMock.BookAsync(TestRestaurantId, userIdentifier, reservationCreateInputModel);
 
             var reservationsRepository = this.DbContext.Reservations.OrderBy(r => r.CreatedOn);
 
-            Assert.Collection(reservationsRepository,
-                elem1 =>
-                {
-                    Assert.Equal(reservationsRepository.Last().Id, reservationViewModel.Id);
-                    Assert.Equal(reservationsRepository.Last().UserId, reservationViewModel.UserId);
-                    Assert.Equal(reservationsRepository.Last().Date, reservationViewModel.Date);
-                    Assert.Equal(reservationsRepository.Last().PeopleCount, reservationViewModel.PeopleCount);
-                });
-            Assert.Equal(1, reservationsRepository.Count());
+            Assert.Equal(expectedReservationsCount, reservationsRepository.Count());
         }
 
         [Fact]

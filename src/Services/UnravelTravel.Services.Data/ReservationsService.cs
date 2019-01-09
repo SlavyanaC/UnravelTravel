@@ -55,7 +55,7 @@
                 throw new NullReferenceException(string.Format(ServicesDataConstants.NullReferenceRestaurantId, restaurantId));
             }
 
-            Reservation reservation;
+            Reservation reservation = null;
             if (!isGuest)
             {
                 reservation = await this.reservationsRepository.All()
@@ -70,20 +70,23 @@
                 }
             }
 
-            var utcReservationDate = reservationCreateInputModel.Date.GetUtcDate(
-                restaurant.Destination.Name,
-                restaurant.Destination.Country.Name);
-
-            reservation = new Reservation
+            if (reservation == null)
             {
-                UserId = user == null ? null : user.Id,
-                Restaurant = restaurant,
-                Date = utcReservationDate, // Save UTC date to Db
-                PeopleCount = reservationCreateInputModel.PeopleCount,
-            };
+                var utcReservationDate = reservationCreateInputModel.Date.GetUtcDate(
+                    restaurant.Destination.Name,
+                    restaurant.Destination.Country.Name);
 
-            this.reservationsRepository.Add(reservation);
-            await this.reservationsRepository.SaveChangesAsync();
+                reservation = new Reservation
+                {
+                    UserId = user == null ? null : user.Id,
+                    Restaurant = restaurant,
+                    Date = utcReservationDate, // Save UTC date to Db
+                    PeopleCount = reservationCreateInputModel.PeopleCount,
+                };
+
+                this.reservationsRepository.Add(reservation);
+                await this.reservationsRepository.SaveChangesAsync();
+            }
 
             var reservationDetailsViewModel = AutoMap.Mapper.Map<ReservationDetailsViewModel>(reservation);
 
