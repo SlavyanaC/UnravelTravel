@@ -129,9 +129,7 @@
             await this.ticketsService.BookAllAsync(userIdentifier, userTickets.ToArray(), GlobalConstants.OnlinePaymentMethod);
             this.HttpContext.Session.Remove(WebConstants.ShoppingCartSessionKey);
 
-            return this.User.Identity.Name != null ?
-                this.RedirectToAction(actionName: "Index", controllerName: "Tickets") :
-                this.RedirectToAction(nameof(this.Index));
+            return this.View("_BookingConfirmation");
         }
 
         private IEnumerable<ShoppingCartActivityViewModel> GetShoppingCartFromSession()

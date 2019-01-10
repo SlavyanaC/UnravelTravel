@@ -29,7 +29,6 @@
             var shoppingCartActivities = await this.shoppingCartsService.GetAllShoppingCartActivitiesAsync(userName);
             await this.ticketsService.BookAllAsync(userName, shoppingCartActivities.ToArray(), GlobalConstants.CashPaymentMethod);
             return this.View("_BookingConfirmation");
-            //return this.RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Details(int id)

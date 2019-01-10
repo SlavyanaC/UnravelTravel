@@ -28,7 +28,6 @@
             var userIdentifier = reservationCreateInputModel.GuestUserEmail ?? this.User.Identity.Name;
             var reservation = await this.reservationsService.BookAsync(id, userIdentifier, reservationCreateInputModel);
             return this.View("_BookingConfirmation");
-            //return this.RedirectToAction(nameof(this.Index));
         }
 
         [Authorize]

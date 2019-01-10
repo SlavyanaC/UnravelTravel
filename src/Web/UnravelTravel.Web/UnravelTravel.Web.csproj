@@ -107,4 +107,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Connected Services\Key Vault\" />
+  </ItemGroup>
 </Project>
