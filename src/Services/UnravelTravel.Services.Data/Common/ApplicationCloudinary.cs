@@ -21,6 +21,9 @@
 
             using (var ms = new MemoryStream(destinationImage))
             {
+                // Cloudinary doesn't work with &
+                name = name.Replace("&", "And");
+
                 var uploadParams = new ImageUploadParams()
                 {
                     File = new FileDescription(name, ms),
