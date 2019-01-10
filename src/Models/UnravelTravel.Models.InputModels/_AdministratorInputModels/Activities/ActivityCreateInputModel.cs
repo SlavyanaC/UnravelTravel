@@ -38,7 +38,8 @@ namespace UnravelTravel.Models.InputModels.AdministratorInputModels.Activities
         [Required]
         [StringLength(ModelConstants.AddressMaxLength, MinimumLength = ModelConstants.AddressMinLength, ErrorMessage = ModelConstants.AddressLengthError)]
         public string Address { get; set; }
-
+        
+        [Display(Name = ModelConstants.Activity.LocationNameDisplay)]
         public string LocationName { get; set; }
 
         [Required]

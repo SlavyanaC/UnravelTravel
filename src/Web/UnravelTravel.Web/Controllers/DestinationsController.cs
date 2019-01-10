@@ -15,12 +15,12 @@
     public class DestinationsController : BaseController
     {
         private readonly IDestinationsService destinationsService;
-        private readonly IMemoryCache memoryCache;
+        //private readonly IMemoryCache memoryCache;
 
-        public DestinationsController(IDestinationsService destinationsService, IMemoryCache memoryCache)
+        public DestinationsController(IDestinationsService destinationsService/*, IMemoryCache memoryCache*/)
         {
             this.destinationsService = destinationsService;
-            this.memoryCache = memoryCache;
+            //this.memoryCache = memoryCache;
         }
 
         public async Task<IActionResult> Index(DestinationIndexViewModel destinationIndexViewModel)

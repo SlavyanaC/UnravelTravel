@@ -19,13 +19,13 @@
     {
         private readonly IRestaurantsService restaurantsService;
         private readonly IDestinationsService destinationsService;
-        private readonly IMemoryCache memoryCache;
+        //private readonly IMemoryCache memoryCache;
 
-        public RestaurantsController(IRestaurantsService restaurantsService, IDestinationsService destinationsService, IMemoryCache memoryCache)
+        public RestaurantsController(IRestaurantsService restaurantsService, IDestinationsService destinationsService/*, IMemoryCache memoryCache*/)
         {
             this.restaurantsService = restaurantsService;
             this.destinationsService = destinationsService;
-            this.memoryCache = memoryCache;
+            //this.memoryCache = memoryCache;
         }
 
         public async Task<IActionResult> Index(RestaurantIndexViewModel restaurantIndexViewModel)

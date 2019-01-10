@@ -19,13 +19,13 @@
     {
         private readonly IActivitiesService activitiesService;
         private readonly IDestinationsService destinationsService;
-        private readonly IMemoryCache memoryCache;
+        //private readonly IMemoryCache memoryCache;
 
-        public ActivitiesController(IActivitiesService activitiesService, IDestinationsService destinationsService, IMemoryCache memoryCache)
+        public ActivitiesController(IActivitiesService activitiesService, IDestinationsService destinationsService/*, IMemoryCache memoryCache*/)
         {
             this.activitiesService = activitiesService;
             this.destinationsService = destinationsService;
-            this.memoryCache = memoryCache;
+            //this.memoryCache = memoryCache;
         }
 
         public async Task<IActionResult> Index(ActivityIndexViewModel activityIndexViewModel)

@@ -36,6 +36,15 @@
             </p>
         }
     </div>
+    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+    {
+        <hr />
+        <div class="row d-flex justify-content-around">
+            <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Destinations" asp-action="Edit" asp-route-id="@Model.Id">Edit destination</a>
+            <a class="btn btn-outline-warning" asp-area="Administrator" asp-controller="Destinations" asp-action="Delete" asp-route-id="@Model.Id">Delete destination</a>
+        </div>
+        <hr />
+    }
     <cache expires-after="@TimeSpan.FromHours(1)" vary-by="@Model.Id">
         <iframe class="w-100"
                 height="450"

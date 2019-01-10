@@ -5,7 +5,7 @@
         public const int DefaultPageNumber = 1;
         public const int DefaultPageSize = 6;
         public const int AddressMinLength = 3;
-        public const int AddressMaxLength = 50;
+        public const int AddressMaxLength = 100;
         public const int DestinationActivitiesToDisplay = 6;
         public const int DestinationRestaurantsToDisplay = 6;
         public const int ShoppingCartActivityNameLength = 25;
@@ -33,6 +33,7 @@
             public const string StartingHourDisplay = "Activity starting hour";
             public const string AdditionalInfoDisplay = "Know before you go";
             public const string DescriptionLengthError = "Description must be between {2} and {1} symbols";
+            public const string LocationNameDisplay = "Location name";
         }
 
         public class Destination

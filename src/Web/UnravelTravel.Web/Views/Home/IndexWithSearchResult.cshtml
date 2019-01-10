@@ -15,16 +15,13 @@
     <h4>Activities in the period</h4>
     <h5>@Model.StartDate - @Model.EndDate</h5>
     @await this.Html.PartialAsync("_DestinationActivitiesPartial", @Model.Activities)
-    @if (Model.Activities.Any())
-    {
-        <a asp-area="" asp-controller="Activities" asp-action="IndexInDestination" asp-route-destinationId="@Model.DestinationId"><h6 class="text-center text-center text-info">See all activities in @Model.DestinationName</h6></a>
-    }
-    else
+    @if (!Model.Activities.Any())
     {
         <p class="text-center">
             <em class="text-muted">No activities for this period</em>
         </p>
     }
+    <a asp-area="" asp-controller="Activities" asp-action="IndexInDestination" asp-route-destinationId="@Model.DestinationId"><h6 class="text-center text-center text-info">See all activities in @Model.DestinationName</h6></a>
     <h4>Top rated restaurants</h4>
     @await this.Html.PartialAsync("_DestinationRestaurantsPartial", @Model.Restaurants.Take(6))
     @if (Model.Restaurants.Any())
