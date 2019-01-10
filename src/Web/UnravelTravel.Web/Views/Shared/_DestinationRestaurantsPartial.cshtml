@@ -4,13 +4,24 @@
     @foreach (var item in Model)
     {
         <div class="col-md-4">
-            <div class="card text-white bg-dark mb-3" style="max-width: 20rem; height: 300px">
+            <div class="card text-white bg-dark mb-3" style="max-width: 20rem; height: 350px">
                 <a asp-controller="Restaurants" asp-action="Details" asp-route-id="@item.Id">
                     <img style="height: 150px" class="card-img-top" src="@item.ImageUrl" alt="Card image cap">
                 </a>
                 <div class="card-body text-center">
-                    <h5 class="card-title">"@item.Name"</h5>
-                    <h6 class="card-title">@item.SplitWordsType</h6>
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="text-white">@item.SplitWordsType</p>
+                    <p class="text-white">
+                        Rating:
+                        @if (item.AverageRating == 0)
+                        {
+                            <span>No reviews yet</span>
+                        }
+                        else
+                        {
+                            <span>@item.AverageRating</span>
+                        }
+                    </p>
                     @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                     {
                         <div calss="row">
