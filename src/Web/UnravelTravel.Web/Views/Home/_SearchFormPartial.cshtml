@@ -3,8 +3,8 @@
 }
 
 @model UnravelTravel.Models.InputModels.Home.SearchInputModel
-<div class="row d-flex justify-content-center" max-widt:100%>
-    <form asp-area="" asp-controller="Home" asp-action="Index" method="get" class="text-center">
+<div id="searchForm" class="row d-flex justify-content-center" max-widt:100%>
+    <fieldset>
         <h3>Wonder what to do?</h3>
         <hr />
         <div class="row">
@@ -26,6 +26,6 @@
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
         </div>
-        <button type="submit" class="btn btn-lg btn-outline-primary"><i class="fas fa-search"></i>&nbsp;Search</button>
-    </form>
+        <button type="submit" id="search" class="btn btn-lg btn-outline-primary"><i class="fas fa-search"></i>&nbsp;Search</button>
+    </fieldset>
 </div>

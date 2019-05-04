@@ -1,19 +1,9 @@
 ﻿@model UnravelTravel.Models.ViewModels.Home.SearchResultViewModel
-@{
-    this.ViewData["Title"] = "Home Page";
-}
 
-@await this.Html.PartialAsync("_CarouselPartial")
-<br />
-@await this.Html.PartialAsync("_MainEntitiesPartial")
-<br />
-
-<div class="jumbotron text-center" style="padding-top: 30px; padding-bottom: 30px;">
+<div id="searchResult">
     <div class="row d-flex.justify-content-center">
         <h3 class="col-md-12" style="color:salmon">@Model.DestinationName</h3>
     </div>
-    <h4>Activities in the period</h4>
-    <h5>@Model.StartDate - @Model.EndDate</h5>
     @await this.Html.PartialAsync("_DestinationActivitiesPartial", @Model.Activities)
     @if (!Model.Activities.Any())
     {
@@ -34,5 +24,4 @@
             <em class="text-muted">No restaurants in this destination</em>
         </p>
     }
-    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">New search</a>
 </div>

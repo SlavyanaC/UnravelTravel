@@ -1,4 +1,5 @@
-﻿@model UnravelTravel.Models.InputModels.Home.SearchInputModel
+﻿@using Microsoft.AspNetCore.Http
+@model UnravelTravel.Models.InputModels.Home.SearchInputModel
 @{
     this.ViewData["Title"] = "Home Page";
     var destinations = this.ViewData["Destinations"] as IEnumerable<SelectListItem>;
@@ -11,10 +12,29 @@
 </cache>
 <br />
 
-<div class="jumbotron text-center" style="padding-top: 30px; padding-bottom: 30px;">
+<div id="searchContainer" class="jumbotron text-center" style="padding-top: 30px; padding-bottom: 30px;">
     @await this.Html.PartialAsync("_SearchFormPartial", @Model)
 </div>
 
 @section Scripts {
+    <script type="text/javascript">
+        $("#search").click(() => {
+            let destinationId = $("#DestinationId").val();
+            let startDate = $("#StartDate").val();
+            let endDate = $("#EndDate").val();
+
+            $.ajax({
+                type: "GET",
+                url: `/Search?DestinationId=${destinationId}&StartDate=${startDate}&EndDate=${endDate}`,
+                success: function (res) {
+                    $("#searchResult").remove();
+                    $("#searchContainer").append(res);
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+        });
+    </script>
     <partial name="_ValidationScriptsPartial" />
 }
