@@ -19,13 +19,14 @@
     {
         private readonly IActivitiesService activitiesService;
         private readonly IDestinationsService destinationsService;
-        //private readonly IMemoryCache memoryCache;
 
+        // private readonly IMemoryCache memoryCache;
         public ActivitiesController(IActivitiesService activitiesService, IDestinationsService destinationsService/*, IMemoryCache memoryCache*/)
         {
             this.activitiesService = activitiesService;
             this.destinationsService = destinationsService;
-            //this.memoryCache = memoryCache;
+
+            // this.memoryCache = memoryCache;
         }
 
         public async Task<IActionResult> Index(ActivityIndexViewModel activityIndexViewModel)
@@ -86,7 +87,7 @@
         {
             var username = this.User.Identity.Name;
             await this.activitiesService.Review(id, username, activityReviewInputModel);
-            return this.RedirectToAction(nameof(this.Details), new { id = id });
+            return this.RedirectToAction(nameof(this.Details), new { id });
         }
     }
 }

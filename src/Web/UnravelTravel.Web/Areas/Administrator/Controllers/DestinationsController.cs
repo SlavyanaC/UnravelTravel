@@ -62,7 +62,7 @@
             }
 
             await this.destinationsService.EditAsync(destinationEditViewModel);
-            return this.RedirectToAction("Details", "Destinations", new { area = "", id= destinationEditViewModel .Id});
+            return this.RedirectToAction("Details", "Destinations", new { area = "", id = destinationEditViewModel.Id });
         }
 
         [Authorize]

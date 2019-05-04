@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-namespace UnravelTravel.Web.Middlewares
+﻿namespace UnravelTravel.Web.Middlewares
 {
     using System.Linq;
     using System.Threading.Tasks;

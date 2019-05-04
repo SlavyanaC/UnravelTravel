@@ -141,7 +141,6 @@
 
             this.destinationsRepository.Update(destination);
             await this.destinationsRepository.SaveChangesAsync();
-
         }
 
         public async Task DeleteByIdAsync(int id)

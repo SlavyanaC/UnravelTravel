@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace UnravelTravel.Data.Migrations
+﻿namespace UnravelTravel.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddGoogleGeoInfoToDestination : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
