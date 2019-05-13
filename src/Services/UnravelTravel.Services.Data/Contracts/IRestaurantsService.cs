@@ -16,7 +16,7 @@
 
         Task EditAsync(RestaurantEditViewModel restaurantEditViewModel);
 
-        Task Review(int restaurantId, string username, RestaurantReviewInputModel restaurantReviewInputModel);
+        Task Review(int restaurantId, string username, int rating, string content);
 
         Task<IEnumerable<RestaurantViewModel>> GetAllInDestinationAsync(int destinationId);
 

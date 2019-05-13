@@ -75,20 +75,13 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> Review(int id)
-        {
-            var reviewInputModel = await this.restaurantsService.GetViewModelByIdAsync<RestaurantReviewInputModel>(id);
-            return this.View(reviewInputModel);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ModelStateValidationActionFilter]
-        public async Task<IActionResult> Review(int id, RestaurantReviewInputModel restaurantReviewInputModel)
+        //[HttpPost]
+        public async Task<JsonResult> Review(int restaurantId, int rating, string content)
         {
             var username = this.User.Identity.Name;
-            await this.restaurantsService.Review(id, username, restaurantReviewInputModel);
-            return this.RedirectToAction("Details", new { id });
+            await this.restaurantsService.Review(restaurantId, username, rating, content);
+            var result = new JsonResult(new { sucess = 1 });
+            return result;
         }
     }
 }

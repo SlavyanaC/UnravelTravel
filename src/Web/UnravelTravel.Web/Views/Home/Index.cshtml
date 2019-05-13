@@ -17,24 +17,5 @@
 </div>
 
 @section Scripts {
-    <script type="text/javascript">
-        $("#search").click(() => {
-            let destinationId = $("#DestinationId").val();
-            let startDate = $("#StartDate").val();
-            let endDate = $("#EndDate").val();
-
-            $.ajax({
-                type: "GET",
-                url: `/Search?DestinationId=${destinationId}&StartDate=${startDate}&EndDate=${endDate}`,
-                success: function (res) {
-                    $("#searchResult").remove();
-                    $("#searchContainer").append(res);
-                },
-                error: function (res) {
-                    console.log(res);
-                }
-            });
-        });
-    </script>
     <partial name="_ValidationScriptsPartial" />
 }

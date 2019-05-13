@@ -167,7 +167,7 @@
             await this.restaurantsRepository.SaveChangesAsync();
         }
 
-        public async Task Review(int restaurantId, string username, RestaurantReviewInputModel restaurantReviewInputModel)
+        public async Task Review(int restaurantId, string username, int rating, string content)
         {
             var user = await this.usersRepository.All().Where(u => u.UserName == username).FirstOrDefaultAsync();
             if (user == null)
@@ -189,8 +189,8 @@
             var review = new Review
             {
                 User = user,
-                Rating = restaurantReviewInputModel.Rating,
-                Content = restaurantReviewInputModel.Content,
+                Rating = rating,
+                Content = content,
             };
 
             this.reviewsRepository.Add(review);
