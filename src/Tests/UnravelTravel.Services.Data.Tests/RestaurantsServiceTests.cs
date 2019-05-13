@@ -46,8 +46,8 @@
         private const string TestUserName = "Pesho";
         private const string InvalidUsername = "Stamat";
 
-        private const double TestReviewRating = 4.2;
-        private const double SecondTestReviewRating = 1.2;
+        private const int TestReviewRating = 4;
+        private const int SecondTestReviewRating = 1;
         private const string TestReviewContent = "Testing review.";
 
         private readonly string testUserId = Guid.NewGuid().ToString();
@@ -580,7 +580,7 @@
             await this.AddTestingDestinationToDb();
             await this.AddTestingRestaurantToDb();
 
-            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.RestaurantsServiceMock.Review(TestRestaurantId, InvalidUsername, null));
+            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.RestaurantsServiceMock.Review(TestRestaurantId, InvalidUsername, 0, null));
             Assert.Equal(string.Format(ServicesDataConstants.NullReferenceUsername, InvalidUsername), exception.Message);
         }
 
@@ -590,7 +590,7 @@
             await this.AddTestingDestinationToDb();
             await AddTestingUserToDb();
 
-            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, null));
+            var exception = await Assert.ThrowsAsync<NullReferenceException>(() => this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, 0, null));
             Assert.Equal(string.Format(ServicesDataConstants.NullReferenceRestaurantId, TestRestaurantId), exception.Message);
         }
 
@@ -601,51 +601,15 @@
             await this.AddTestingRestaurantToDb();
             await this.AddTestingUserToDb();
 
-            var restaurantReviewInputModel = new RestaurantReviewInputModel
-            {
-                Id = TestRestaurantId,
-                Name = TestRestaurantName,
-                Rating = TestReviewRating,
-                Content = TestReviewContent,
-            };
-
-            await this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, restaurantReviewInputModel);
+            await this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, TestReviewRating, TestReviewContent);
 
             var reviewsDbSet = this.DbContext.Reviews.OrderBy(r => r.CreatedOn);
 
             Assert.Collection(reviewsDbSet,
                 elem1 =>
                 {
-                    Assert.Equal(reviewsDbSet.Last().Rating, restaurantReviewInputModel.Rating);
-                    Assert.Equal(reviewsDbSet.Last().Content, restaurantReviewInputModel.Content);
-                });
-        }
-
-        [Fact]
-        public async Task ReviewAddsNewRestaurantReviewToDbContext()
-        {
-            await this.AddTestingDestinationToDb();
-            await this.AddTestingRestaurantToDb();
-            await this.AddTestingUserToDb();
-
-            var restaurantReviewInputModel = new RestaurantReviewInputModel
-            {
-                Id = TestRestaurantId,
-                Name = TestRestaurantName,
-                Rating = TestReviewRating,
-                Content = TestReviewContent,
-            };
-
-            await this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, restaurantReviewInputModel);
-
-            var reviewId = this.DbContext.Reviews.Last().Id;
-            var reviewsDbSet = this.DbContext.RestaurantReviews.OrderBy(r => r.CreatedOn);
-
-            Assert.Collection(reviewsDbSet,
-                elem1 =>
-                {
-                    Assert.Equal(reviewsDbSet.Last().RestaurantId, restaurantReviewInputModel.Id);
-                    Assert.Equal(reviewsDbSet.Last().ReviewId, reviewId);
+                    Assert.Equal(reviewsDbSet.Last().Rating, TestReviewRating);
+                    Assert.Equal(reviewsDbSet.Last().Content, TestReviewContent);
                 });
         }
 
@@ -659,24 +623,9 @@
             this.DbContext.Users.Add(new UnravelTravelUser { Id = Guid.NewGuid().ToString(), UserName = "Ivan" });
             await this.DbContext.SaveChangesAsync();
 
-            var restaurantReviewInputModel = new RestaurantReviewInputModel
-            {
-                Id = TestRestaurantId,
-                Name = TestRestaurantName,
-                Rating = TestReviewRating,
-                Content = TestReviewContent,
-            };
+            await this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, TestReviewRating, TestReviewContent);
 
-            await this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, restaurantReviewInputModel);
-
-            var secondRestaurantReviewInputModel = new RestaurantReviewInputModel
-            {
-                Id = TestRestaurantId,
-                Name = TestRestaurantName,
-                Rating = SecondTestReviewRating,
-                Content = TestReviewContent,
-            };
-            await this.RestaurantsServiceMock.Review(TestRestaurantId, "Ivan", secondRestaurantReviewInputModel);
+            await this.RestaurantsServiceMock.Review(TestRestaurantId, "Ivan", SecondTestReviewRating, TestReviewContent);
 
             var expected = (TestReviewRating + SecondTestReviewRating) / 2;
             var actual = this.DbContext.Restaurants.Find(TestRestaurantId).AverageRating;
@@ -691,26 +640,10 @@
             await this.AddTestingRestaurantToDb();
             await this.AddTestingUserToDb();
 
-            var restaurantReviewInputModel = new RestaurantReviewInputModel
-            {
-                Id = TestRestaurantId,
-                Name = TestRestaurantName,
-                Rating = TestReviewRating,
-                Content = TestReviewContent,
-            };
-
-            await this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, restaurantReviewInputModel);
-
-            var secondRestaurantReviewInputModel = new RestaurantReviewInputModel
-            {
-                Id = TestRestaurantId,
-                Name = TestRestaurantName,
-                Rating = SecondTestReviewRating,
-                Content = TestReviewContent,
-            };
+            await this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, TestReviewRating, TestReviewContent);
 
             var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, secondRestaurantReviewInputModel));
+                this.RestaurantsServiceMock.Review(TestRestaurantId, TestUserName, SecondTestReviewRating, TestReviewContent));
             Assert.Equal(string.Format(ServicesDataConstants.RestaurantReviewAlreadyAdded, TestUserName, TestRestaurantId, TestRestaurantName), exception.Message);
         }
 
