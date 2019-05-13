@@ -1,0 +1,27 @@
+﻿@model UnravelTravel.Models.ViewModels.Reservations.ReservationDetailsViewModel
+
+<button id="@Model.RestaurantId-detailsButton" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@Model.RestaurantId-detailsModal">Details</button>
+<!-- The Modal -->
+<div class="modal fade" id="@Model.RestaurantId-detailsModal">
+    <div class="modal-dialog" style="width: 90%">
+        <div class="modal-content justify-content-center">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4>Reservation #@Model.Id</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <!-- Modal body -->
+            <div class="container text-center">
+                <p><strong>User full name: </strong>@Model.UserFullName</p>
+                <p><strong>Restaurant name: </strong>@Model.RestaurantName</p>
+                <p><strong>Reservation day: </strong>@Model.ReservationDayString</p>
+                <p><strong>User hour: </strong>@Model.ReservationHourString</p>
+                <p><strong>Table for: </strong>@Model.UserFullName</p>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,11 +1,9 @@
-﻿@using UnravelTravel.Services.Data.Contracts
-@model IEnumerable<UnravelTravel.Models.ViewModels.Reservations.ReservationDetailsViewModel>
+﻿@model IEnumerable<UnravelTravel.Models.ViewModels.Reservations.ReservationDetailsViewModel>
 @{
     ViewData["Title"] = "Reservations";
 }
 
 <h3 class="text-center">My Reservations</h3>
-
 <table class="table table-hover" style="width: 100%" id="reservationsTable">
     <thead>
         <tr>
@@ -45,7 +43,7 @@
                 <td display-for="@item.UserFullName"></td>
                 <td display-for="@item.PeopleCount"> </td>
                 <td>
-                    <a class="btn btn-outline-primary" asp-area="" asp-controller="Reservations" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @await this.Html.PartialAsync("_DetailsModalPartial", @item)
                     @if (item.HasPassed)
                     {
                         if (item.IsRated)
@@ -54,42 +52,7 @@
                         }
                         else
                         {
-                            <button id="@item.RestaurantId-button" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#@item.RestaurantId-reviewModal">Review</button>
-                            <!-- The Modal -->
-                            <div class="modal fade" id="@item.RestaurantId-reviewModal">
-                                <div class="modal-dialog">
-                                    <div class="modal-content justify-content-center">
-                                        <!-- Modal Header -->
-                                        <div class="modal-header">
-                                            <h3 class="modal-title text-center">Review restaurant "<a asp-area="" asp-controller="Restaurants" asp-action="Details" asp-route-id="@item.RestaurantId">@item.RestaurantName</a>"</h3>
-                                            <button type="button" class="close" data-dismiss="modal">×</button>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <div class="modal-body">
-                                            <fieldset class="text-center">
-                                                <label>Rating:</label>
-                                                <div class="form-group">
-                                                    <input name="@item.RestaurantId-rating" type="radio" value="1" class=" col-md-2" style="margin-right: -30px" />1
-                                                    <input name="@item.RestaurantId-rating" type="radio" value="2" class=" col-md-2" style="margin-right: -30px" />2
-                                                    <input name="@item.RestaurantId-rating" type="radio" value="3" class=" col-md-2" style="margin-right: -30px" />3
-                                                    <input name="@item.RestaurantId-rating" type="radio" value="4" class=" col-md-2" style="margin-right: -30px" />4
-                                                    <input name="@item.RestaurantId-rating" type="radio" value="5" class=" col-md-2" style="margin-right: -30px" />5
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Review:</label>
-                                                    <textarea id="@item.RestaurantId-content" rows="5" cold="50" class="form-control col-md-12"></textarea>
-                                                    <span class="text-danger"></span>
-                                                </div>
-                                                <button onclick="reviewRestaurant(@item.RestaurantId)" class="btn btn-outline-primary">Add review</button>
-                                            </fieldset>
-                                        </div>
-                                        <!-- Modal footer -->
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            await this.Html.RenderPartialAsync("_ReviewModalPartial", @item);
                         }
                     }
                 </td>
