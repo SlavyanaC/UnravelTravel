@@ -32,7 +32,7 @@
             </tr>
         </tbody>
     </table>
-    <div class="text-center d-flex justify-content-around">
+    <div id="actionsContainer" class="text-center d-flex justify-content-around">
         @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
             <a class="btn btn-outline-primary" asp-area="Administrator" asp-controller="Restaurants" asp-action="Edit" asp-route-id="@Model.Id">Edit restaurant</a>
@@ -40,7 +40,7 @@
         }
         else
         {
-            <a class="btn btn-lg btn-outline-primary" asp-controller="Reservations" asp-action="Book" asp-route-id="@Model.Id">Book table</a>
+            <btn id="bookTableBtn" onclick="loadTableBookForm(@Model.Id)" class="btn btn-lg btn-outline-primary">Book table</btn>
         }
     </div>
     <hr />

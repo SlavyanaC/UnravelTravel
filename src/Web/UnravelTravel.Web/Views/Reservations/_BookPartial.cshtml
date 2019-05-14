@@ -1,0 +1,20 @@
+﻿@model UnravelTravel.Models.ViewModels.Restaurants.RestaurantDetailsViewModel
+
+<fieldset class="text-center col-md-4">
+    <h4>Book your table</h4>
+    <hr />
+    @if (!this.User.Identity.IsAuthenticated)
+    {
+        <div class="form-group">
+            <input id="email" name="email" class="form-control col-md-12" placeholder="Email" />
+        </div>
+    }
+    <div class="form-group">
+        <input type="datetime-local" id="date" name="date" class="form-control col-md-12" />
+        <small class="text-primary">* Please select local date and time</small>
+    </div>
+    <div class="form-group">
+        <input id="peopleCount" name="peopleCount" class="form-control col-md-12" placeholder="People count" />
+    </div>
+    <button id="finishBookingBtn" onclick="bookTable(@Model.Id)" type="submit" class="btn btn-outline-primary">Book table</button>
+</fieldset>

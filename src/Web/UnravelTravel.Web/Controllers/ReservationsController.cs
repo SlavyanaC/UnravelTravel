@@ -7,27 +7,35 @@
     using Microsoft.AspNetCore.Mvc;
     using UnravelTravel.Models.InputModels.Reservations;
     using UnravelTravel.Models.ViewModels.Reservations;
+    using UnravelTravel.Models.ViewModels.Restaurants;
     using UnravelTravel.Services.Data.Contracts;
     using UnravelTravel.Web.Filters;
 
     public class ReservationsController : BaseController
     {
         private readonly IReservationsService reservationsService;
+        private readonly IRestaurantsService restaurantsService;
 
-        public ReservationsController(IReservationsService reservationsService)
+        public ReservationsController(IReservationsService reservationsService, IRestaurantsService restaurantsService)
         {
             this.reservationsService = reservationsService;
+            this.restaurantsService = restaurantsService;
         }
 
-        public IActionResult Book(int id) => this.View();
+        public async Task<IActionResult> BookPartial(int id)
+        {
+            var restaurant = await this.restaurantsService.GetViewModelByIdAsync<RestaurantDetailsViewModel>(id);
+            return this.PartialView("_BookPartial", restaurant);
+        }
 
-        [HttpPost]
+        //[HttpPost]
         [ModelStateValidationActionFilter]
-        public async Task<IActionResult> Book(int id, ReservationCreateInputModel reservationCreateInputModel)
+        public async Task<JsonResult> Book(int restaurantId, ReservationCreateInputModel reservationCreateInputModel)
         {
             var userIdentifier = reservationCreateInputModel.GuestUserEmail ?? this.User.Identity.Name;
-            var reservation = await this.reservationsService.BookAsync(id, userIdentifier, reservationCreateInputModel);
-            return this.View("_BookingConfirmation");
+            var reservation = await this.reservationsService.BookAsync(restaurantId, userIdentifier, reservationCreateInputModel);
+            var result = new JsonResult(new { success = 1 });
+            return result;
         }
 
         [Authorize]

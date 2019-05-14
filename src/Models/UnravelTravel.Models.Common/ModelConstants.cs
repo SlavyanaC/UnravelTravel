@@ -30,7 +30,7 @@
             public const string AdminDateDisplay = "Date and starting hour";
             public const string NameDisplay = "Activity name";
             public const string DateDisplay = "Activity date";
-            public const string StartingHourDisplay = "Activity starting hour";
+            public const string StartingHourDisplay = "Activity hour";
             public const string AdditionalInfoDisplay = "Know before you go";
             public const string DescriptionLengthError = "Description must be between {2} and {1} symbols";
             public const string LocationNameDisplay = "Location name";

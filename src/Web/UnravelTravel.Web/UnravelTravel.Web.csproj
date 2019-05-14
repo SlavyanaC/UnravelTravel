@@ -55,7 +55,7 @@
     <Content Update="Views\Shared\_DestinationRestaurantsPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Reservations\Book.cshtml">
+    <Content Update="Views\Reservations\_BookPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Shared\_AdminDropdownPartial.cshtml">
