@@ -2,7 +2,7 @@
 {
     public class GoogleUtilitiess
     {
-        public const string ApiKey = @"";
+        public const string ApiKey = @"AIzaSyCjPIGPFEN35vdS1-0Rd8KqASfJasyOUzU";
 
         public const string BaseUrl = @"https://maps.googleapis.com";
 

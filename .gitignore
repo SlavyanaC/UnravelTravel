@@ -328,4 +328,3 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-/src/Services/UnravelTravel.Services.Data/Common/CloudinaryConfig.cs

@@ -143,7 +143,7 @@
             var cloudinaryAccount = new CloudinaryDotNet.Account(
                 this.configuration["Authentication:Cloudinary:CloudName"],
                 this.configuration["Authentication:Cloudinary:ApiKey"],
-                this.configuration["Authentication:Facebook:ApiSecret"]);
+                this.configuration["Authentication:Cloudinary:ApiSecret"]);
             var cloudinary = new Cloudinary(cloudinaryAccount);
             services.AddSingleton(cloudinary);
 
