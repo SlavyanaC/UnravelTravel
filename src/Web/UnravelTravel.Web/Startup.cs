@@ -140,7 +140,10 @@
             });
 
             // Cloudinary Setup
-            var cloudinaryAccount = new CloudinaryDotNet.Account(CloudinaryConfig.CloudName, CloudinaryConfig.ApiKey, CloudinaryConfig.ApiSecret);
+            var cloudinaryAccount = new CloudinaryDotNet.Account(
+                this.configuration["Authentication:Cloudinary:CloudName"],
+                this.configuration["Authentication:Cloudinary:ApiKey"],
+                this.configuration["Authentication:Facebook:ApiSecret"]);
             var cloudinary = new Cloudinary(cloudinaryAccount);
             services.AddSingleton(cloudinary);
 
@@ -188,6 +191,7 @@
             app.UseAuthentication();
             app.UseSession();
             app.UseSetAdminMiddleware();
+            app.UseSeedCountriesMiddleware();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

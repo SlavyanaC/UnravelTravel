@@ -18,6 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="countries.json" />
     <Content Remove="Views\email-confirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -107,5 +108,11 @@
 
   <ItemGroup>
     <Folder Include="Connected Services\Key Vault\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="countries.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
